@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GSC U13 — Session Tracker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+  :root {
+    --red:    #9B1B1B;
+    --red2:   #C0392B;
+    --navy:   #1A2744;
+    --navy2:  #243460;
+    --gold:   #F0A500;
+    --white:  #FFFFFF;
+    --grey:   #F4F5F7;
+    --dgrey:  #2C2C2C;
+    --mgrey:  #8A8F9C;
+    --border: #E2E5EC;
+    --green:  #1A7A3C;
+    --orange: #D97706;
+    --card:   #FFFFFF;
+    --shadow: 0 2px 12px rgba(26,39,68,0.10);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--grey);
+    color: var(--dgrey);
+    min-height: 100vh;
+    padding-bottom: 120px;
+  }
+
+  /* ── Header ── */
+  .header {
+    background: var(--navy);
+    padding: 16px 16px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+  }
+  .header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+  .club-name {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .session-badge {
+    background: var(--red);
+    color: white;
+    font-size: 11px;
+    font-weight: 700;
+    padding: 4px 10px;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── Session Info Bar ── */
+  .session-bar {
+    display: flex;
+    gap: 8px;
+    padding-bottom: 12px;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .session-bar::-webkit-scrollbar { display: none; }
+
+  .session-field {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 10px;
+    padding: 6px 10px;
+    min-width: 130px;
+    flex-shrink: 0;
+  }
+  .session-field label {
+    display: block;
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--gold);
+    margin-bottom: 3px;
+  }
+  .session-field input, .session-field select {
+    background: transparent;
+    border: none;
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    width: 100%;
+    outline: none;
+  }
+  .session-field select option { color: var(--dgrey); background: white; }
+  .session-field input::placeholder { color: rgba(255,255,255,0.4); }
+
+  /* ── Stats Bar ── */
+  .stats-bar {
+    display: flex;
+    gap: 8px;
+    padding: 10px 16px;
+    background: var(--navy2);
+  }
+  .stat-pill {
+    flex: 1;
+    background: rgba(255,255,255,0.08);
+    border-radius: 8px;
+    padding: 6px 8px;
+    text-align: center;
+  }
+  .stat-pill .num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 22px;
+    color: white;
+    line-height: 1;
+  }
+  .stat-pill .lbl {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--mgrey);
+  }
+  .stat-pill.present .num { color: #4ADE80; }
+  .stat-pill.injured .num { color: var(--gold); }
+  .stat-pill.absent .num  { color: #F87171; }
+
+  /* ── Tabs ── */
+  .tabs {
+    display: flex;
+    background: white;
+    border-bottom: 2px solid var(--border);
+    position: sticky;
+    top: 130px;
+    z-index: 90;
+  }
+  .tab {
+    flex: 1;
+    padding: 12px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    color: var(--mgrey);
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .tab.active {
+    color: var(--red);
+    border-bottom-color: var(--red);
+  }
+
+  /* ── Sections ── */
+  .section { display: none; padding: 12px 16px; }
+  .section.active { display: block; }
+
+  /* ── Player Cards ── */
+  .player-card {
+    background: var(--card);
+    border-radius: 14px;
+    margin-bottom: 10px;
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.1s;
+  }
+  .player-card:active { transform: scale(0.99); }
+
+  .player-main {
+    display: flex;
+    align-items: center;
+    padding: 12px 14px;
+    gap: 12px;
+  }
+  .player-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 20px;
+    color: var(--navy);
+    min-width: 28px;
+    text-align: center;
+    line-height: 1;
+  }
+  .player-info { flex: 1; min-width: 0; }
+  .player-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--dgrey);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .player-sub {
+    font-size: 11px;
+    color: var(--mgrey);
+    margin-top: 1px;
+  }
+
+  /* ── Attendance Buttons ── */
+  .att-buttons {
+    display: flex;
+    gap: 6px;
+    flex-shrink: 0;
+  }
+  .att-btn {
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    border: 2px solid var(--border);
+    background: var(--grey);
+    font-size: 13px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--mgrey);
+    -webkit-user-select: none;
+    user-select: none;
+  }
+  .att-btn.present {
+    background: #DCFCE7;
+    border-color: var(--green);
+    color: var(--green);
+    box-shadow: 0 0 0 3px rgba(26,122,60,0.12);
+  }
+  .att-btn.injured {
+    background: #FEF3C7;
+    border-color: var(--orange);
+    color: var(--orange);
+    box-shadow: 0 0 0 3px rgba(217,119,6,0.12);
+  }
+
+  /* ── Player Detail Expand ── */
+  .player-detail {
+    display: none;
+    padding: 0 14px 14px;
+    border-top: 1px solid var(--border);
+    margin-top: 0;
+  }
+  .player-detail.open { display: block; }
+  .detail-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .detail-field {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .detail-field.full { grid-column: 1 / -1; }
+  .detail-field label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--mgrey);
+  }
+  .detail-field input {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 8px 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    color: var(--dgrey);
+    background: var(--grey);
+    outline: none;
+    width: 100%;
+    transition: border-color 0.15s;
+  }
+  .detail-field input:focus { border-color: var(--navy); background: white; }
+  .detail-field input::placeholder { color: #BEC3CC; }
+
+  .remove-btn {
+    width: 100%;
+    margin-top: 12px;
+    padding: 11px;
+    background: #FEE2E2;
+    color: #DC2626;
+    border: 1.5px solid #FECACA;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .remove-btn:active { background: #FECACA; }
+
+  .expand-toggle {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 6px 14px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--mgrey);
+    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+  .expand-toggle .arrow { transition: transform 0.2s; display: inline-block; }
+  .expand-toggle.open .arrow { transform: rotate(180deg); }
+
+  /* ── Add Player ── */
+  .add-player-btn {
+    width: 100%;
+    padding: 14px;
+    background: white;
+    border: 2px dashed var(--border);
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--navy);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 4px;
+    transition: all 0.2s;
+  }
+  .add-player-btn:active { background: var(--grey); }
+
+  /* ── Summary Section ── */
+  .summary-card {
+    background: white;
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+  }
+  .summary-title {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 18px;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+  }
+  .summary-row:last-child { border-bottom: none; }
+  .summary-row .sname { font-weight: 600; }
+  .summary-row .sbadge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+  .sbadge.present { background: #DCFCE7; color: var(--green); }
+  .sbadge.injured { background: #FEF3C7; color: var(--orange); }
+  .sbadge.absent  { background: #FEE2E2; color: #DC2626; }
+
+  .copy-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+    margin-bottom: 10px;
+  }
+  .copy-btn:active { background: var(--navy2); }
+  .copy-btn.success { background: var(--green); }
+
+  .whatsapp-btn {
+    width: 100%;
+    padding: 15px;
+    background: #25D366;
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: background 0.2s;
+  }
+  .whatsapp-btn:active { background: #1ebe5d; }
+
+  /* ── Roster Edit ── */
+  .section-label {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 16px;
+    color: var(--navy);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+  .roster-note {
+    font-size: 12px;
+    color: var(--mgrey);
+    background: white;
+    border-radius: 10px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+    line-height: 1.5;
+  }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed;
+    bottom: 90px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--dgrey);
+    color: white;
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    opacity: 0;
+    transition: all 0.3s;
+    pointer-events: none;
+    z-index: 999;
+    white-space: nowrap;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ── Bottom Nav ── */
+  .bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--navy);
+    display: flex;
+    padding: 8px 0 env(safe-area-inset-bottom, 8px);
+    z-index: 200;
+    box-shadow: 0 -4px 20px rgba(0,0,0,0.2);
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+    padding: 6px 0;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: opacity 0.2s;
+  }
+  .nav-item.active { opacity: 1; }
+  .nav-icon { font-size: 20px; }
+  .nav-label {
+    font-size: 9px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: white;
+  }
+
+  /* ── Formation Buttons ── */
+  .formation-btn {
+    flex:1; padding:10px 8px; border:2px solid var(--navy);
+    background:white; border-radius:10px; font-family:'DM Sans',sans-serif;
+    font-size:13px; font-weight:700; color:var(--navy); cursor:pointer; transition:all 0.15s;
+  }
+  .formation-btn.active { background:var(--navy); color:white; }
+  .formation-btn.clear-btn { border-color:var(--border); color:var(--mgrey); flex:0.6; }
+  .formation-btn.clear-btn:active { background:var(--grey); }
+
+  /* ── Pitch ── */
+  .pitch-wrap {
+    background:#1a6b2f; border-radius:14px; padding:10px;
+    box-shadow:0 4px 20px rgba(0,0,0,0.25); margin-bottom:12px;
+  }
+  .pitch {
+    position:relative; width:100%; padding-top:155%;
+    background:linear-gradient(180deg,#1e7a35 0%,#1e7a35 50%,#1a6b2f 50%,#1a6b2f 100%);
+    border-radius:10px; overflow:hidden;
+  }
+  /* pitch markings */
+  .pitch::before {
+    content:''; position:absolute; inset:0;
+    background:
+      /* centre line */
+      linear-gradient(transparent 49.5%, rgba(255,255,255,0.25) 49.5%, rgba(255,255,255,0.25) 50.5%, transparent 50.5%),
+      /* centre circle */
+      radial-gradient(circle at 50% 50%, transparent 12%, rgba(255,255,255,0.2) 12%, rgba(255,255,255,0.2) 13%, transparent 13%),
+      /* outer border */
+      linear-gradient(white,white) top/100% 2px no-repeat,
+      linear-gradient(white,white) bottom/100% 2px no-repeat,
+      linear-gradient(white,white) left/2px 100% no-repeat,
+      linear-gradient(white,white) right/2px 100% no-repeat;
+    pointer-events:none; border-radius:10px;
+  }
+
+  /* ── Position Spot ── */
+  .pos-spot {
+    position:absolute; transform:translate(-50%,-50%);
+    display:flex; flex-direction:column; align-items:center; gap:3px;
+    cursor:pointer; z-index:10;
+  }
+  .pos-circle {
+    width:46px; height:46px; border-radius:50%;
+    background:rgba(255,255,255,0.15); border:2px dashed rgba(255,255,255,0.5);
+    display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; color:rgba(255,255,255,0.7);
+    transition:all 0.2s; text-align:center; padding:2px;
+  }
+  .pos-spot.filled .pos-circle {
+    background:var(--navy); border:2.5px solid var(--gold);
+    color:white; font-size:9px; font-weight:800;
+  }
+  .pos-spot.filled.gk .pos-circle { background:#8B6914; border-color:#F0D060; }
+  .pos-spot.filled.def .pos-circle { background:#1A5276; border-color:#85C1E9; }
+  .pos-spot.filled.mid .pos-circle { background:#145A32; border-color:#82E0AA; }
+  .pos-spot.filled.fwd .pos-circle { background:var(--red); border-color:var(--gold); }
+  .pos-label {
+    font-size:9px; font-weight:700; color:rgba(255,255,255,0.8);
+    text-shadow:0 1px 3px rgba(0,0,0,0.8); letter-spacing:0.5px; text-transform:uppercase;
+  }
+
+  /* ── Bench ── */
+  .bench-card {
+    background:white; border-radius:14px; padding:14px;
+    box-shadow:var(--shadow); margin-bottom:12px;
+  }
+  .bench-title {
+    font-family:'Bebas Neue',sans-serif; font-size:16px;
+    color:var(--navy); letter-spacing:1px; margin-bottom:10px;
+  }
+  .bench-list { display:flex; flex-wrap:wrap; gap:8px; }
+  .bench-chip {
+    background:var(--grey); border-radius:20px; padding:6px 12px;
+    font-size:12px; font-weight:600; color:var(--dgrey);
+    border:1.5px solid var(--border);
+  }
+  .bench-chip.unassigned { color:var(--mgrey); font-style:italic; }
+
+  /* ── Picker Modal ── */
+  .picker-overlay {
+    display:none; position:fixed; inset:0;
+    background:rgba(0,0,0,0.55); z-index:500; align-items:flex-end;
+  }
+  .picker-overlay.open { display:flex; }
+  .picker-modal {
+    background:white; border-radius:20px 20px 0 0;
+    width:100%; max-height:70vh; overflow-y:auto;
+    padding-bottom:env(safe-area-inset-bottom,16px);
+  }
+  .picker-header {
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 16px 10px; border-bottom:1px solid var(--border);
+    position:sticky; top:0; background:white; z-index:10;
+  }
+  .picker-title { font-family:'Bebas Neue',sans-serif; font-size:18px; color:var(--navy); letter-spacing:1px; }
+  .picker-close {
+    width:32px; height:32px; border-radius:50%; border:none;
+    background:var(--grey); font-size:14px; cursor:pointer; color:var(--mgrey);
+  }
+  .picker-list { padding:8px 12px 16px; }
+  .picker-item {
+    display:flex; align-items:center; gap:10px;
+    padding:12px 10px; border-radius:10px; cursor:pointer;
+    transition:background 0.1s; border-bottom:1px solid var(--border);
+  }
+  .picker-item:last-child { border-bottom:none; }
+  .picker-item:active { background:var(--grey); }
+  .picker-item .pnum {
+    font-family:'Bebas Neue',sans-serif; font-size:18px;
+    color:var(--navy); min-width:26px;
+  }
+  .picker-item .pname { font-size:14px; font-weight:600; flex:1; }
+  .picker-item .already { font-size:11px; color:var(--mgrey); }
+  .picker-remove {
+    width:100%; padding:13px; margin-top:4px;
+    background:#FEE2E2; color:#DC2626; border:none; border-radius:10px;
+    font-family:'DM Sans',sans-serif; font-size:13px; font-weight:700; cursor:pointer;
+  }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="header-top">
+    <div class="club-name">GSC U13</div>
+    <div class="session-badge" id="sessionBadge">Practice</div>
+  </div>
+  <div class="session-bar">
+    <div class="session-field">
+      <label>Date</label>
+      <input type="date" id="sessionDate">
+    </div>
+    <div class="session-field">
+      <label>Session Type</label>
+      <select id="sessionType" onchange="updateBadge()">
+        <option>Practice</option>
+        <option>Game</option>
+        <option>Fitness Assessment</option>
+        <option>Tournament</option>
+        <option>Training Camp</option>
+      </select>
+    </div>
+    <div class="session-field">
+      <label>Notes</label>
+      <input type="text" id="sessionNotes" placeholder="e.g. vs Shimba FC">
+    </div>
+  </div>
+</div>
+
+<!-- Stats Bar -->
+<div class="stats-bar">
+  <div class="stat-pill present"><div class="num" id="countPresent">0</div><div class="lbl">Present</div></div>
+  <div class="stat-pill injured"><div class="num" id="countInjured">0</div><div class="lbl">Injured</div></div>
+  <div class="stat-pill absent"><div class="num" id="countAbsent">30</div><div class="lbl">Absent</div></div>
+  <div class="stat-pill"><div class="num" id="countTotal">30</div><div class="lbl">Squad</div></div>
+</div>
+
+<!-- Tabs -->
+<div class="tabs">
+  <div class="tab active" onclick="showSection('attendance', this)">✓ Attend</div>
+  <div class="tab" onclick="showSection('roster', this)">👤 Players</div>
+  <div class="tab" onclick="showSection('lineup', this)">⚽ Lineup</div>
+  <div class="tab" onclick="showSection('summary', this)">📋 Summary</div>
+</div>
+
+<!-- ATTENDANCE SECTION -->
+<div class="section active" id="sec-attendance">
+  <div id="playerList"></div>
+  <button class="add-player-btn" onclick="addPlayer()">＋ Add New Player</button>
+</div>
+
+<!-- ROSTER SECTION -->
+<div class="section" id="sec-roster">
+  <p class="roster-note">Tap any player in the Attendance tab to expand and edit their details. Changes are saved automatically in this session. Use the Summary tab to copy everything to your tracker.</p>
+  <div id="rosterQuickList"></div>
+</div>
+
+<!-- LINEUP SECTION -->
+<div class="section" id="sec-lineup">
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <button class="formation-btn active" id="btn-433" onclick="setFormation('433')">4-3-3</button>
+    <button class="formation-btn" id="btn-4231" onclick="setFormation('4231')">4-2-3-1</button>
+    <button class="formation-btn clear-btn" onclick="clearLineup()">↺ Clear</button>
+  </div>
+  <div id="subsReminder" style="font-size:11px;color:var(--mgrey);margin-bottom:8px;text-align:center"></div>
+  <div class="pitch-wrap"><div class="pitch" id="pitch"></div></div>
+  <div class="bench-card">
+    <div class="bench-title">🪑 Substitutes</div>
+    <div id="benchList" class="bench-list"></div>
+  </div>
+</div>
+
+<!-- Player Picker Modal -->
+<div id="pickerOverlay" class="picker-overlay" onclick="closePicker()">
+  <div class="picker-modal" onclick="event.stopPropagation()">
+    <div class="picker-header">
+      <div class="picker-title" id="pickerTitle">Select Player</div>
+      <button class="picker-close" onclick="closePicker()">✕</button>
+    </div>
+    <div id="pickerList" class="picker-list"></div>
+  </div>
+</div>
+
+<!-- SUMMARY SECTION -->
+<div class="section" id="sec-summary">
+  <div class="summary-card">
+    <div class="summary-title">📋 Session Summary</div>
+    <div id="summaryContent"></div>
+  </div>
+  <button class="copy-btn" id="copyBtn" onclick="copyToClipboard()">📋 Copy to Clipboard</button>
+  <button class="whatsapp-btn" onclick="shareWhatsApp()">💬 Send to WhatsApp</button>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- Bottom Nav -->
+<div class="bottom-nav">
+  <div class="nav-item active" onclick="showSection('attendance', null, 0)">
+    <div class="nav-icon">✓</div><div class="nav-label">Attend</div>
+  </div>
+  <div class="nav-item" onclick="showSection('roster', null, 1)">
+    <div class="nav-icon">👤</div><div class="nav-label">Players</div>
+  </div>
+  <div class="nav-item" onclick="showSection('lineup', null, 2)">
+    <div class="nav-icon">⚽</div><div class="nav-label">Lineup</div>
+  </div>
+  <div class="nav-item" onclick="showSection('summary', null, 3)">
+    <div class="nav-icon">📋</div><div class="nav-label">Summary</div>
+  </div>
+</div>
+
+<script>
+// ── Default Roster ────────────────────────────────────────────────────────────
+const DEFAULT_PLAYERS = [
+  { num:1,  name:"Alime",               dob:"2013-04-20", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:2,  name:"Cayden Van Den Berg", dob:"2013-11-03", parent:"Drohan",           phone:"0825525610", pos:"", notes:"" },
+  { num:3,  name:"Ethan Pietersen",     dob:"2014-01-29", parent:"Neil / Miss B",    phone:"0609728226", pos:"", notes:"" },
+  { num:4,  name:"Evan Le Roux",        dob:"2014-07-17", parent:"Gustav / Monique", phone:"",           pos:"", notes:"" },
+  { num:5,  name:"Hlumelo",             dob:"2013-02-23", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:6,  name:"Hugo Jansen",         dob:"2013-04-09", parent:"Johan / Ereldine", phone:"0828512939", pos:"", notes:"" },
+  { num:7,  name:"Jared Samboer",       dob:"2013-09-04", parent:"Kelly / Kels",     phone:"0605836247", pos:"", notes:"" },
+  { num:8,  name:"Khayone Kwetana",     dob:"2014-04-17", parent:"Nelson",           phone:"0739868947", pos:"", notes:"" },
+  { num:9,  name:"Liam Kleinhans",      dob:"2013-04-19", parent:"Cindy / Dillon",   phone:"",           pos:"", notes:"" },
+  { num:10, name:"Lulolwethu Jaxa",     dob:"2014-07-25", parent:"Lindo",            phone:"0731174734", pos:"", notes:"" },
+  { num:11, name:"Noah",                dob:"",           parent:"Jeremy",           phone:"0714179445", pos:"", notes:"" },
+  { num:12, name:"Mohammed Mubarak",    dob:"2014-09-13", parent:"Nima",             phone:"",           pos:"", notes:"" },
+  { num:13, name:"Olothando",           dob:"2014-09-13", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:14, name:"Onakho",              dob:"",           parent:"Zim Skade",        phone:"0694614759", pos:"", notes:"" },
+  { num:15, name:"Robert Curtis",       dob:"",           parent:"Sarah",            phone:"",           pos:"", notes:"" },
+  { num:16, name:"Tyler Dunn",          dob:"",           parent:"Martina Dunn",     phone:"0732594916", pos:"", notes:"" },
+  { num:17, name:"Seth Tilley",         dob:"2014-04-03", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:18, name:"Vutho",               dob:"",           parent:"Pheliswa",         phone:"0795435451", pos:"", notes:"" },
+  { num:19, name:"Wade Potts",          dob:"2014-06-25", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:20, name:"Lina",                dob:"2014-01-01", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:21, name:"Elokhanyo",           dob:"2012-09-15", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:22, name:"Onele",               dob:"2013-09-22", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:23, name:"Lumise",              dob:"2012-06-07", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:24, name:"Armand",              dob:"2012-12-12", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:25, name:"Nqobile",             dob:"",           parent:"",                phone:"",           pos:"", notes:"" },
+  { num:26, name:"Yosimela Jaftha",     dob:"2012-06-12", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:27, name:"Imnophele Hans",      dob:"2012-09-08", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:28, name:"Indinakho",           dob:"2011-11-02", parent:"",                phone:"",           pos:"", notes:"" },
+  { num:29, name:"Luniko",              dob:"",           parent:"",                phone:"",           pos:"", notes:"" },
+  { num:30, name:"Simtha",              dob:"",           parent:"",                phone:"",           pos:"", notes:"" },
+];
+
+// ── localStorage helpers ──────────────────────────────────────────────────────
+const LS = {
+  PLAYERS:    'gsc_u13_players',
+  ATTENDANCE: 'gsc_u13_attendance',
+  SESSION:    'gsc_u13_session',
+  LINEUP:     'gsc_u13_lineup',
+  FORMATION:  'gsc_u13_formation',
+};
+
+function lsSave(key, val) {
+  try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {}
+}
+function lsLoad(key, fallback) {
+  try {
+    const v = localStorage.getItem(key);
+    return v ? JSON.parse(v) : fallback;
+  } catch(e) { return fallback; }
+}
+
+// ── State — loaded from localStorage or defaults ───────────────────────────────
+let players    = lsLoad(LS.PLAYERS, DEFAULT_PLAYERS);
+let attendance = lsLoad(LS.ATTENDANCE, {});
+// Ensure every player has an attendance entry
+players.forEach(p => { if (!(p.num in attendance)) attendance[p.num] = null; });
+
+let currentFormation = lsLoad(LS.FORMATION, '433');
+let lineup = lsLoad(LS.LINEUP, {});
+
+// ── Session header ────────────────────────────────────────────────────────────
+function loadSession() {
+  const s = lsLoad(LS.SESSION, {});
+  if (s.date)  document.getElementById('sessionDate').value  = s.date;
+  if (s.type)  document.getElementById('sessionType').value  = s.type;
+  if (s.notes) document.getElementById('sessionNotes').value = s.notes;
+  updateBadge();
+}
+function saveSession() {
+  lsSave(LS.SESSION, {
+    date:  document.getElementById('sessionDate').value,
+    type:  document.getElementById('sessionType').value,
+    notes: document.getElementById('sessionNotes').value,
+  });
+}
+function updateBadge() {
+  document.getElementById('sessionBadge').textContent = document.getElementById('sessionType').value;
+  saveSession();
+}
+
+// ── Render Player List ────────────────────────────────────────────────────────
+function renderPlayers() {
+  const list = document.getElementById('playerList');
+  list.innerHTML = '';
+  players.forEach(p => {
+    const att = attendance[p.num];
+    const card = document.createElement('div');
+    card.className = 'player-card';
+    card.id = `card-${p.num}`;
+    const dobDisplay = p.dob ? formatDob(p.dob) : '—';
+    const subInfo = [p.pos||null, p.dob ? `DOB: ${dobDisplay}` : null].filter(Boolean).join(' · ') || 'Tap ▾ to add details';
+    card.innerHTML = `
+      <div class="player-main">
+        <div class="player-num">${p.num}</div>
+        <div class="player-info">
+          <div class="player-name">${p.name}</div>
+          <div class="player-sub">${subInfo}</div>
+        </div>
+        <div class="att-buttons">
+          <button class="att-btn ${att==='x'?'present':''}" onclick="setAtt(${p.num},'x')">✓</button>
+          <button class="att-btn ${att==='I'?'injured':''}" onclick="setAtt(${p.num},'I')">I</button>
+        </div>
+      </div>
+      <button class="expand-toggle ${p._open?'open':''}" onclick="toggleExpand(${p.num})">
+        <span class="arrow">▾</span> Edit player details
+      </button>
+      <div class="player-detail ${p._open?'open':''}">
+        <div class="detail-grid">
+          <div class="detail-field full">
+            <label>Full Name</label>
+            <input type="text" value="${p.name}" onchange="updatePlayer(${p.num},'name',this.value)" placeholder="Full name">
+          </div>
+          <div class="detail-field">
+            <label>Date of Birth</label>
+            <input type="date" value="${p.dob}" onchange="updatePlayer(${p.num},'dob',this.value)">
+          </div>
+          <div class="detail-field">
+            <label>Position</label>
+            <input type="text" value="${p.pos}" onchange="updatePlayer(${p.num},'pos',this.value)" placeholder="e.g. GK, CB, ST">
+          </div>
+          <div class="detail-field">
+            <label>Parent / Guardian</label>
+            <input type="text" value="${p.parent}" onchange="updatePlayer(${p.num},'parent',this.value)" placeholder="Parent name">
+          </div>
+          <div class="detail-field">
+            <label>Contact Number</label>
+            <input type="tel" value="${p.phone}" onchange="updatePlayer(${p.num},'phone',this.value)" placeholder="0XX XXX XXXX">
+          </div>
+          <div class="detail-field full">
+            <label>Notes</label>
+            <input type="text" value="${p.notes}" onchange="updatePlayer(${p.num},'notes',this.value)" placeholder="Any notes...">
+          </div>
+        </div>
+        <button class="remove-btn" onclick="removePlayer(${p.num})">🗑 Remove ${p.name} from list</button>
+      </div>
+    `;
+    list.appendChild(card);
+  });
+  updateStats();
+}
+
+function formatDob(dob) {
+  if (!dob) return '—';
+  const d = new Date(dob);
+  return d.toLocaleDateString('en-ZA', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+function setAtt(num, val) {
+  attendance[num] = attendance[num] === val ? null : val;
+  lsSave(LS.ATTENDANCE, attendance);
+  renderPlayers();
+}
+
+function toggleExpand(num) {
+  const p = players.find(x => x.num === num);
+  p._open = !p._open;
+  const card = document.getElementById(`card-${num}`);
+  card.querySelector('.player-detail').classList.toggle('open', p._open);
+  card.querySelector('.expand-toggle').classList.toggle('open', p._open);
+}
+
+function updatePlayer(num, field, value) {
+  const p = players.find(x => x.num === num);
+  if (p) {
+    p[field] = value;
+    lsSave(LS.PLAYERS, players);
+  }
+}
+
+function updateStats() {
+  const present = Object.values(attendance).filter(v => v==='x').length;
+  const injured = Object.values(attendance).filter(v => v==='I').length;
+  document.getElementById('countPresent').textContent = present;
+  document.getElementById('countInjured').textContent = injured;
+  document.getElementById('countAbsent').textContent  = players.length - present - injured;
+  document.getElementById('countTotal').textContent   = players.length;
+}
+
+function addPlayer() {
+  const num = players.length > 0 ? Math.max(...players.map(p=>p.num)) + 1 : 1;
+  const np = { num, name:`New Player ${num}`, dob:'', parent:'', phone:'', pos:'', notes:'', _open:true };
+  players.push(np);
+  attendance[num] = null;
+  lsSave(LS.PLAYERS, players);
+  lsSave(LS.ATTENDANCE, attendance);
+  renderPlayers();
+  setTimeout(() => {
+    const card = document.getElementById(`card-${num}`);
+    if (card) card.scrollIntoView({ behavior:'smooth', block:'center' });
+  }, 100);
+}
+
+function removePlayer(num) {
+  const p = players.find(x => x.num === num);
+  if (!confirm(`Remove ${p.name} from the list?`)) return;
+  players = players.filter(x => x.num !== num);
+  delete attendance[num];
+  lsSave(LS.PLAYERS, players);
+  lsSave(LS.ATTENDANCE, attendance);
+  renderPlayers();
+  showToast(`${p.name} removed`);
+}
+
+// ── Roster Quick List ─────────────────────────────────────────────────────────
+function renderRoster() {
+  const list = document.getElementById('rosterQuickList');
+  list.innerHTML = `<p class="section-label">Squad — ${players.length} players</p>`;
+  players.forEach(p => {
+    const hasDob   = p.dob   ? '✓' : '—';
+    const hasPhone = p.phone ? '✓' : '—';
+    const div = document.createElement('div');
+    div.style.cssText = 'background:white;border-radius:10px;padding:10px 14px;margin-bottom:8px;display:flex;align-items:center;gap:10px;box-shadow:0 1px 6px rgba(0,0,0,0.07)';
+    div.innerHTML = `
+      <div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy);min-width:24px">${p.num}</div>
+      <div style="flex:1">
+        <div style="font-size:14px;font-weight:700">${p.name}</div>
+        <div style="font-size:11px;color:var(--mgrey);margin-top:2px">DOB ${hasDob} · Phone ${hasPhone} · ${p.pos||'No position'}</div>
+      </div>
+      <button onclick="showSection('attendance',null,0);setTimeout(()=>{toggleExpand(${p.num});document.getElementById('card-${p.num}').scrollIntoView({behavior:'smooth',block:'center'})},200)"
+        style="background:var(--navy);color:white;border:none;border-radius:8px;padding:6px 10px;font-size:11px;font-weight:700;cursor:pointer">Edit</button>
+    `;
+    list.appendChild(div);
+  });
+}
+
+// ── Summary ───────────────────────────────────────────────────────────────────
+function renderSummary() {
+  const present = players.filter(p => attendance[p.num]==='x');
+  const injured = players.filter(p => attendance[p.num]==='I');
+  const absent  = players.filter(p => !attendance[p.num]);
+  const content = document.getElementById('summaryContent');
+  const makeRows = (list, status) => list.map(p => `
+    <div class="summary-row">
+      <span class="sname">${p.num}. ${p.name}</span>
+      <span class="sbadge ${status}">${status==='present'?'Present':status==='injured'?'Injured':'Absent'}</span>
+    </div>`).join('');
+  content.innerHTML = `
+    <div style="font-size:12px;color:var(--mgrey);margin-bottom:10px">
+      ${document.getElementById('sessionType').value} · ${formatDisplayDate(document.getElementById('sessionDate').value)}
+      ${document.getElementById('sessionNotes').value ? ' · '+document.getElementById('sessionNotes').value : ''}
+    </div>
+    ${makeRows(present,'present')}
+    ${makeRows(injured,'injured')}
+    ${makeRows(absent,'absent')}
+  `;
+}
+
+function formatDisplayDate(val) {
+  if (!val) return '—';
+  const d = new Date(val);
+  return d.toLocaleDateString('en-ZA', { weekday:'short', day:'numeric', month:'short', year:'numeric' });
+}
+
+function buildTextSummary() {
+  const date    = formatDisplayDate(document.getElementById('sessionDate').value);
+  const type    = document.getElementById('sessionType').value;
+  const notes   = document.getElementById('sessionNotes').value;
+  const present = players.filter(p => attendance[p.num]==='x').map(p => p.name);
+  const injured = players.filter(p => attendance[p.num]==='I').map(p => p.name);
+  const absent  = players.filter(p => !attendance[p.num]).map(p => p.name);
+  let txt = `GSC U13 — ${type}\n`;
+  txt += `${date}${notes?' · '+notes:''}\n`;
+  txt += `${'─'.repeat(30)}\n`;
+  txt += `✅ PRESENT (${present.length}): ${present.join(', ')||'None'}\n`;
+  if (injured.length) txt += `🟡 INJURED/SICK (${injured.length}): ${injured.join(', ')}\n`;
+  txt += `❌ ABSENT (${absent.length}): ${absent.join(', ')||'None'}\n`;
+  txt += `${'─'.repeat(30)}\n`;
+  txt += `Total squad: ${players.length}`;
+  return txt;
+}
+
+async function copyToClipboard() {
+  const text = buildTextSummary();
+  try {
+    await navigator.clipboard.writeText(text);
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('success'); btn.textContent = '✓ Copied!';
+    showToast('Copied to clipboard!');
+    setTimeout(() => { btn.classList.remove('success'); btn.innerHTML = '📋 Copy to Clipboard'; }, 2500);
+  } catch { showToast('Long-press the text to copy'); }
+}
+
+function shareWhatsApp() {
+  const encoded = encodeURIComponent(buildTextSummary());
+  window.open(`https://wa.me/?text=${encoded}`, '_blank');
+}
+
+// ── Lineup / Formation ────────────────────────────────────────────────────────
+const formations = {
+  '433': {
+    label: '4-3-3',
+    positions: [
+      { id:'gk',  label:'GK',  role:'gk',  x:50, y:92 },
+      { id:'lb',  label:'LB',  role:'def', x:15, y:74 },
+      { id:'cb1', label:'CB',  role:'def', x:35, y:76 },
+      { id:'cb2', label:'CB',  role:'def', x:65, y:76 },
+      { id:'rb',  label:'RB',  role:'def', x:85, y:74 },
+      { id:'cm1', label:'CM',  role:'mid', x:25, y:55 },
+      { id:'cm2', label:'CM',  role:'mid', x:50, y:52 },
+      { id:'cm3', label:'CM',  role:'mid', x:75, y:55 },
+      { id:'lw',  label:'LW',  role:'fwd', x:15, y:28 },
+      { id:'st',  label:'ST',  role:'fwd', x:50, y:22 },
+      { id:'rw',  label:'RW',  role:'fwd', x:85, y:28 },
+    ]
+  },
+  '4231': {
+    label: '4-2-3-1',
+    positions: [
+      { id:'gk',   label:'GK',  role:'gk',  x:50, y:92 },
+      { id:'lb',   label:'LB',  role:'def', x:15, y:74 },
+      { id:'cb1',  label:'CB',  role:'def', x:35, y:76 },
+      { id:'cb2',  label:'CB',  role:'def', x:65, y:76 },
+      { id:'rb',   label:'RB',  role:'def', x:85, y:74 },
+      { id:'cdm1', label:'CDM', role:'mid', x:35, y:58 },
+      { id:'cdm2', label:'CDM', role:'mid', x:65, y:58 },
+      { id:'lam',  label:'LAM', role:'mid', x:18, y:38 },
+      { id:'cam',  label:'CAM', role:'mid', x:50, y:36 },
+      { id:'ram',  label:'RAM', role:'mid', x:82, y:38 },
+      { id:'st',   label:'ST',  role:'fwd', x:50, y:20 },
+    ]
+  }
+};
+
+function setFormation(f) {
+  currentFormation = f;
+  lsSave(LS.FORMATION, f);
+  document.querySelectorAll('.formation-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(`btn-${f}`).classList.add('active');
+  renderPitch();
+}
+
+function renderPitch() {
+  const pitch = document.getElementById('pitch');
+  pitch.innerHTML = '';
+  const form = formations[currentFormation];
+  form.positions.forEach(pos => {
+    const assigned = lineup[pos.id];
+    const player = assigned ? players.find(p => p.num === assigned) : null;
+    const firstName = player ? player.name.split(' ')[0] : null;
+    const spot = document.createElement('div');
+    spot.className = `pos-spot ${player ? 'filled '+pos.role : ''}`;
+    spot.style.left = pos.x + '%';
+    spot.style.top  = pos.y + '%';
+    spot.onclick = () => openPicker(pos.id, pos.label);
+    spot.innerHTML = `
+      <div class="pos-circle">${player ? `<span>${firstName}</span>` : pos.label}</div>
+      <div class="pos-label">${pos.label}</div>
+    `;
+    pitch.appendChild(spot);
+  });
+  renderBench();
+  updateSubsReminder();
+}
+
+function renderBench() {
+  const bench = document.getElementById('benchList');
+  const assignedNums = Object.values(lineup).filter(Boolean);
+  const subs = players.filter(p => attendance[p.num]==='x' && !assignedNums.includes(p.num));
+  bench.innerHTML = subs.length === 0
+    ? '<span class="bench-chip unassigned">All present players assigned</span>'
+    : subs.map(p => `<span class="bench-chip">${p.num}. ${p.name.split(' ')[0]}</span>`).join('');
+}
+
+function updateSubsReminder() {
+  const assigned = Object.values(lineup).filter(Boolean).length;
+  const total    = formations[currentFormation].positions.length;
+  document.getElementById('subsReminder').textContent = `${assigned} of ${total} positions filled`;
+}
+
+let pickerTargetPos = null;
+
+function openPicker(posId, posLabel) {
+  pickerTargetPos = posId;
+  document.getElementById('pickerTitle').textContent = `Pick player for ${posLabel}`;
+  const list = document.getElementById('pickerList');
+  list.innerHTML = '';
+  const presentPlayers = players.filter(p => attendance[p.num]==='x');
+  if (presentPlayers.length === 0) {
+    list.innerHTML = '<p style="padding:16px;color:var(--mgrey);font-size:13px">No players marked present yet — go to Attendance first.</p>';
+  } else {
+    presentPlayers.forEach(p => {
+      const inPos = Object.entries(lineup).find(([pid,num]) => num===p.num && pid!==posId);
+      const item = document.createElement('div');
+      item.className = 'picker-item';
+      item.innerHTML = `
+        <div class="pnum">${p.num}</div>
+        <div class="pname">${p.name}</div>
+        ${inPos ? `<div class="already">(${formations[currentFormation].positions.find(x=>x.id===inPos[0])?.label||inPos[0]})</div>` : ''}
+      `;
+      item.onclick = () => assignPlayer(posId, p.num);
+      list.appendChild(item);
+    });
+  }
+  if (lineup[posId]) {
+    const btn = document.createElement('button');
+    btn.className = 'picker-remove';
+    btn.textContent = '✕ Remove from this position';
+    btn.onclick = () => { delete lineup[posId]; lsSave(LS.LINEUP, lineup); closePicker(); renderPitch(); };
+    list.appendChild(btn);
+  }
+  document.getElementById('pickerOverlay').classList.add('open');
+}
+
+function assignPlayer(posId, playerNum) {
+  Object.keys(lineup).forEach(pid => { if (lineup[pid]===playerNum) delete lineup[pid]; });
+  lineup[posId] = playerNum;
+  lsSave(LS.LINEUP, lineup);
+  closePicker();
+  renderPitch();
+  const p = players.find(x => x.num===playerNum);
+  showToast(`${p.name.split(' ')[0]} → ${formations[currentFormation].positions.find(x=>x.id===posId).label}`);
+}
+
+function closePicker() {
+  document.getElementById('pickerOverlay').classList.remove('open');
+  pickerTargetPos = null;
+}
+
+function clearLineup() {
+  Object.keys(lineup).forEach(k => delete lineup[k]);
+  lsSave(LS.LINEUP, lineup);
+  renderPitch();
+  showToast('Lineup cleared');
+}
+
+function renderLineup() { renderPitch(); }
+
+// ── Navigation ────────────────────────────────────────────────────────────────
+function showSection(name, tabEl, navIdx) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(`sec-${name}`).classList.add('active');
+  if (tabEl) tabEl.classList.add('active');
+  else {
+    const tabs = document.querySelectorAll('.tab');
+    if (tabs[navIdx]) tabs[navIdx].classList.add('active');
+  }
+  const navItems = document.querySelectorAll('.nav-item');
+  const ni = navIdx !== undefined ? navIdx : 0;
+  if (navItems[ni]) navItems[ni].classList.add('active');
+  if (name==='summary') renderSummary();
+  if (name==='roster')  renderRoster();
+  if (name==='lineup')  renderLineup();
+  window.scrollTo(0, 0);
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+// ── Reset (danger zone) ───────────────────────────────────────────────────────
+function resetAll() {
+  if (!confirm('Reset everything? This clears all attendance and lineup data for today. Player details are kept.')) return;
+  players.forEach(p => attendance[p.num] = null);
+  Object.keys(lineup).forEach(k => delete lineup[k]);
+  lsSave(LS.ATTENDANCE, attendance);
+  lsSave(LS.LINEUP, lineup);
+  renderPlayers();
+  showToast('Session reset');
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────────
+loadSession();
+document.getElementById('sessionDate').addEventListener('change', saveSession);
+document.getElementById('sessionType').addEventListener('change', saveSession);
+document.getElementById('sessionNotes').addEventListener('input', saveSession);
+// Restore formation button state
+document.getElementById(`btn-${currentFormation}`).classList.add('active');
+renderPlayers();
+</script>
+</body>
+</html>
