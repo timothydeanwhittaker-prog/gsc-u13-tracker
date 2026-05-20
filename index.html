@@ -1,0 +1,1683 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GSC U13</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --red:#9B1B1B;--red2:#C0392B;--navy:#1A2744;--navy2:#243460;
+  --gold:#F0A500;--grey:#F4F5F7;--dgrey:#2C2C2C;--mgrey:#8A8F9C;
+  --border:#E2E5EC;--green:#1A7A3C;--orange:#D97706;
+  --shadow:0 2px 12px rgba(26,39,68,0.10);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:'DM Sans',sans-serif;background:var(--grey);color:var(--dgrey);min-height:100vh;padding-bottom:80px}
+
+/* ── HEADER ── */
+.hdr{background:var(--navy);padding:12px 16px 0;position:sticky;top:0;z-index:100;box-shadow:0 2px 16px rgba(0,0,0,0.25)}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.club{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);letter-spacing:2px}
+.badge{background:var(--red);color:#fff;font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;letter-spacing:1px;text-transform:uppercase}
+.sbar{display:flex;gap:8px;padding-bottom:10px;overflow-x:auto;scrollbar-width:none}
+.sbar::-webkit-scrollbar{display:none}
+.sf{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:10px;padding:6px 10px;min-width:118px;flex-shrink:0}
+.sf label{display:block;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--gold);margin-bottom:2px}
+.sf input,.sf select{background:transparent;border:none;color:#fff;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;width:100%;outline:none}
+.sf select option{color:var(--dgrey);background:#fff}
+.sf input::placeholder{color:rgba(255,255,255,0.4)}
+
+/* ── STATS BAR ── */
+.sbar2{display:flex;gap:6px;padding:8px 16px;background:var(--navy2)}
+.sp{flex:1;background:rgba(255,255,255,0.08);border-radius:8px;padding:5px;text-align:center}
+.sp .sn{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;line-height:1}
+.sp .sl{font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey)}
+.sp.pres .sn{color:#4ADE80}.sp.late .sn{color:var(--gold)}.sp.inj .sn{color:#F87171}.sp.abs .sn{color:#94A3B8}
+
+/* ── TABS ── */
+.tabs{display:flex;background:#fff;border-bottom:2px solid var(--border);position:sticky;top:128px;z-index:90}
+.tab{flex:1;padding:10px 4px;font-size:10px;font-weight:700;text-align:center;color:var(--mgrey);cursor:pointer;border-bottom:3px solid transparent;transition:all 0.2s;text-transform:uppercase;letter-spacing:0.3px}
+.tab.active{color:var(--red);border-bottom-color:var(--red)}
+
+/* ── SECTIONS ── */
+.sec{display:none;padding:12px 16px}.sec.active{display:block}
+
+/* ── CARDS ── */
+.card{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+
+/* ── ATTEND ── */
+.att-row{display:flex;align-items:center;padding:10px 12px;gap:10px;border-bottom:1px solid var(--border)}
+.att-row:last-child{border-bottom:none}
+.att-num{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--navy);min-width:22px;text-align:center}
+.att-info{flex:1;min-width:0}
+.att-name{font-size:13px;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.att-pos{font-size:10px;color:var(--mgrey);margin-top:1px}
+.att-btns{display:flex;gap:4px;flex-shrink:0}
+.att-btn{height:36px;padding:0 8px;border-radius:8px;border:1.5px solid var(--border);background:var(--grey);font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--mgrey);transition:all 0.15s;user-select:none;white-space:nowrap}
+.att-btn.pres{background:#DCFCE7;border-color:var(--green);color:var(--green)}
+.att-btn.late{background:#FEF3C7;border-color:#B45309;color:#B45309}
+.att-btn.inj{background:#FEE2E2;border-color:#DC2626;color:#DC2626}
+.att-btn.abs{background:#F1F5F9;border-color:#64748B;color:#64748B}
+
+/* ── MOTM ── */
+.motm-section{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.motm-hdr{background:var(--gold);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.motm-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--navy);letter-spacing:1px}
+.motm-player{padding:12px 14px;font-size:14px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:8px}
+.motm-pick{background:var(--navy);color:#fff;border:none;border-radius:8px;padding:6px 14px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.motm-clear{background:#FEE2E2;color:#DC2626;border:none;border-radius:8px;padding:6px 10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+
+/* ── SCORERS ── */
+.scorers-wrap{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;display:none}
+.scorers-hdr{background:var(--red2);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.scorers-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;letter-spacing:1px}
+.add-scorer{background:rgba(255,255,255,0.2);color:#fff;border:none;border-radius:8px;padding:5px 12px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.scorer-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:10px}
+.scorer-row:last-child{border-bottom:none}
+.scorer-name{flex:1;font-size:13px;font-weight:600}
+.goal-btns{display:flex;align-items:center;gap:6px}
+.gbtn{width:26px;height:26px;border-radius:50%;border:1.5px solid var(--border);background:var(--grey);font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.gbtn.add{border-color:var(--green);color:var(--green);background:#DCFCE7}
+.gbtn.rem{border-color:#DC2626;color:#DC2626;background:#FEE2E2}
+.goal-count{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy);min-width:18px;text-align:center}
+.scorer-del{background:none;border:none;color:var(--mgrey);font-size:15px;cursor:pointer}
+.no-scorers{padding:12px 14px;font-size:12px;color:var(--mgrey);text-align:center;font-style:italic}
+
+/* ── GAME DETAILS ── */
+.game-details{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;display:none}
+.game-hdr{background:var(--navy2);padding:10px 14px}
+.game-hdr-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold);letter-spacing:1px}
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}
+.game-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey);display:block;margin-bottom:3px}
+.game-field input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--dgrey);background:var(--grey);outline:none}
+.game-field input:focus{border-color:var(--navy);background:#fff}
+.game-field.full{grid-column:1/-1}
+
+/* ── TRAINING TAGS ── */
+.tags-section{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);padding:12px 14px}
+.tags-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey);margin-bottom:8px}
+.tags-list{display:flex;flex-wrap:wrap;gap:6px}
+.tag-chip{padding:6px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:12px;font-weight:600;color:var(--mgrey);cursor:pointer;transition:all 0.15s}
+.tag-chip.active{background:var(--navy);border-color:var(--navy);color:#fff}
+
+/* ── NOTES + SAVE ── */
+.notes-input{width:100%;border:1.5px solid var(--border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--dgrey);background:#fff;outline:none;resize:none;margin-bottom:10px}
+.notes-input:focus{border-color:var(--navy)}
+.save-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--green),#145A32);color:#fff;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 15px rgba(26,122,60,0.3)}
+.save-btn:active{transform:scale(0.98)}
+
+/* ── PLAYERS ── */
+.pc{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.pc-hdr{display:flex;align-items:center;padding:12px 14px;gap:10px;cursor:pointer}
+.pc-num{font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--navy);min-width:26px;text-align:center}
+.pc-info{flex:1;min-width:0}
+.pc-name{font-size:14px;font-weight:700}
+.pc-sub{font-size:11px;color:var(--mgrey);margin-top:2px}
+.pc-stats-row{display:flex;gap:6px;margin-top:4px}
+.pstat{font-size:10px;font-weight:700;padding:2px 6px;border-radius:6px;background:var(--grey);color:var(--mgrey)}
+.pstat.green{background:#DCFCE7;color:var(--green)}
+.pc-arr{font-size:13px;color:var(--mgrey);transition:transform 0.2s;flex-shrink:0}
+.pc-arr.open{transform:rotate(180deg)}
+.pc-body{display:none;border-top:1px solid var(--border)}
+.pc-body.open{display:block}
+
+/* Player body tabs */
+.pc-tabs{display:flex;border-bottom:1px solid var(--border)}
+.pc-tab{flex:1;padding:8px 4px;font-size:10px;font-weight:700;text-align:center;color:var(--mgrey);cursor:pointer;border-bottom:2px solid transparent;text-transform:uppercase;letter-spacing:0.3px}
+.pc-tab.active{color:var(--navy);border-bottom-color:var(--navy)}
+.pc-panel{display:none;padding:12px 14px}
+.pc-panel.active{display:block}
+
+/* Fields */
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ff{grid-column:1/-1}
+.fl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey);margin-bottom:3px;display:block}
+.fi{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--dgrey);background:var(--grey);outline:none;transition:border-color 0.15s}
+.fi:focus{border-color:var(--navy);background:#fff}
+.fi::placeholder{color:#BEC3CC}
+select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%238A8F9C' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;background-color:var(--grey);padding-right:28px}
+
+/* Phone quick actions */
+.phone-actions{display:flex;gap:6px;margin-top:6px}
+.phone-btn{flex:1;padding:8px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:4px}
+.phone-btn.call{background:#DCFCE7;color:var(--green)}
+.phone-btn.wa{background:#E8F8EE;color:#128C7E}
+
+/* Save player button */
+.save-player-btn{width:100%;padding:10px;background:var(--navy);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:10px;display:flex;align-items:center;justify-content:center;gap:6px}
+.save-player-btn:active{opacity:0.85}
+.rm-btn{width:100%;margin-top:6px;padding:10px;background:#FEE2E2;color:#DC2626;border:1.5px solid #FECACA;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+
+/* ── STATS PANEL ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-box{background:var(--grey);border-radius:10px;padding:10px;text-align:center}
+.stat-box .sv{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--navy);line-height:1}
+.stat-box .sk{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey)}
+
+/* ── FITNESS PANEL ── */
+.fitness-entry{background:var(--grey);border-radius:10px;padding:10px;margin-bottom:8px;position:relative}
+.fitness-date{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:6px}
+.fitness-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.fm{text-align:center;background:#fff;border-radius:6px;padding:5px 3px}
+.fm .fv{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--navy);line-height:1}
+.fm .fk{font-size:8px;font-weight:700;color:var(--mgrey);text-transform:uppercase;letter-spacing:0.5px}
+.fm .fa{font-size:10px}
+.fa.up{color:var(--green)}.fa.down{color:#DC2626}.fa.same{color:var(--mgrey)}
+.add-fitness-btn{width:100%;padding:10px;background:var(--grey);border:1.5px dashed var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px}
+.fitness-form{background:var(--grey);border-radius:10px;padding:12px;margin-bottom:8px;display:none}
+.fitness-form.open{display:block}
+.fitness-fg{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.fitness-save{width:100%;padding:9px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.squad-avg{background:linear-gradient(135deg,var(--navy),var(--navy2));border-radius:12px;padding:12px;margin-bottom:12px;color:#fff}
+.squad-avg-title{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold);letter-spacing:1px;margin-bottom:8px}
+.squad-avg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.avg-box{text-align:center}
+.avg-box .av{font-family:'Bebas Neue',sans-serif;font-size:18px;color:#fff;line-height:1}
+.avg-box .ak{font-size:8px;font-weight:700;color:rgba(255,255,255,0.6);text-transform:uppercase}
+
+/* ── ADD PLAYER ── */
+.add-player{width:100%;padding:14px;background:#fff;border:2px dashed var(--border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--navy);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;margin-top:4px}
+
+/* ── BACKUP ── */
+.backup-card{background:#fff;border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px}
+.backup-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--navy);letter-spacing:1px;margin-bottom:4px}
+.backup-sub{font-size:11px;color:var(--mgrey);margin-bottom:12px;line-height:1.5}
+.backup-btns{display:flex;gap:8px}
+.bk-btn{flex:1;padding:11px 8px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:5px}
+.bk-btn.export{background:var(--navy);color:#fff}
+.bk-btn.import{background:var(--grey);color:var(--navy);border:2px solid var(--border)}
+.backup-info{margin-top:8px;font-size:11px;color:var(--mgrey);text-align:center;font-style:italic}
+
+/* ── LINEUP ── */
+.setup-card{background:#fff;border-radius:14px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow)}
+.setup-lbl{font-family:'Bebas Neue',sans-serif;font-size:12px;color:var(--mgrey);letter-spacing:1px;margin-bottom:8px}
+.btn-grp{display:flex;gap:6px;flex-wrap:wrap}
+.sel-btn{padding:7px 12px;border:2px solid var(--border);background:#fff;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:var(--mgrey);cursor:pointer;transition:all 0.15s}
+.sel-btn.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.half-tabs{display:flex;gap:8px;margin-bottom:10px}
+.half-tab{flex:1;padding:10px;background:#fff;border:2px solid var(--border);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:var(--mgrey);cursor:pointer;text-align:center;transition:all 0.15s}
+.half-tab.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.lock-btn{width:100%;margin-top:10px;padding:11px;background:var(--red);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer}
+.reset-btn{width:100%;padding:10px;background:#FEE2E2;color:#DC2626;border:1.5px solid #FECACA;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;margin-top:4px}
+.dur-row{display:flex;align-items:center;gap:10px;margin-top:10px}
+.dur-label{font-size:12px;font-weight:700;color:var(--mgrey);white-space:nowrap}
+.dur-input{border:1.5px solid var(--border);border-radius:8px;padding:6px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--dgrey);background:var(--grey);outline:none;width:70px;text-align:center}
+
+/* ── PITCH ── */
+.pitch-wrap{background:#1a6b2f;border-radius:14px;padding:8px;box-shadow:0 4px 20px rgba(0,0,0,0.25);margin-bottom:10px}
+.pitch{position:relative;width:100%;padding-top:150%;background:linear-gradient(180deg,#1e7a35 0%,#1e7a35 50%,#1a6b2f 50%,#1a6b2f 100%);border-radius:10px;overflow:hidden}
+.pitch::before{content:'';position:absolute;inset:0;background:
+  linear-gradient(transparent 49.5%,rgba(255,255,255,0.25) 49.5%,rgba(255,255,255,0.25) 50.5%,transparent 50.5%),
+  radial-gradient(circle at 50% 50%,transparent 12%,rgba(255,255,255,0.2) 12%,rgba(255,255,255,0.2) 13%,transparent 13%),
+  linear-gradient(#fff,#fff) top/100% 2px no-repeat,
+  linear-gradient(#fff,#fff) bottom/100% 2px no-repeat,
+  linear-gradient(#fff,#fff) left/2px 100% no-repeat,
+  linear-gradient(#fff,#fff) right/2px 100% no-repeat;
+  pointer-events:none;border-radius:10px}
+.pos-spot{position:absolute;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;cursor:pointer;z-index:10}
+.pos-circle{width:44px;height:44px;border-radius:50%;background:rgba(255,255,255,0.15);border:2px dashed rgba(255,255,255,0.5);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:rgba(255,255,255,0.7);transition:all 0.2s;text-align:center;padding:2px}
+.pos-spot.filled .pos-circle{background:var(--navy);border:2.5px solid var(--gold);color:#fff;font-size:9px;font-weight:800}
+.pos-spot.filled.gk .pos-circle{background:#8B6914;border-color:#F0D060}
+.pos-spot.filled.def .pos-circle{background:#1A5276;border-color:#85C1E9}
+.pos-spot.filled.mid .pos-circle{background:#145A32;border-color:#82E0AA}
+.pos-spot.filled.fwd .pos-circle{background:var(--red);border-color:var(--gold)}
+.pos-lbl{font-size:9px;font-weight:700;color:rgba(255,255,255,0.9);text-shadow:0 1px 3px rgba(0,0,0,0.8);letter-spacing:0.5px;text-transform:uppercase}
+
+/* ── BENCH / SUBS / PEN ── */
+.bench-card{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:10px}
+.bench-title{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--navy);letter-spacing:1px;margin-bottom:8px}
+.bench-list{display:flex;flex-wrap:wrap;gap:6px}
+.bench-chip{background:var(--grey);border-radius:20px;padding:5px 10px;font-size:11px;font-weight:600;color:var(--dgrey);border:1.5px solid var(--border)}
+.subs-card{background:#fff;border-radius:14px;padding:12px 14px;box-shadow:var(--shadow);margin-bottom:10px}
+.sub-row{display:flex;align-items:center;gap:6px;padding:6px 0;border-bottom:1px solid var(--border);font-size:12px}
+.sub-row:last-child{border-bottom:none}
+.on-badge{background:#DCFCE7;color:var(--green);border-radius:4px;padding:2px 5px;font-size:10px;font-weight:700}
+.off-badge{background:#FEE2E2;color:#DC2626;border-radius:4px;padding:2px 5px;font-size:10px;font-weight:700}
+.pen-card{background:#fff;border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;display:none}
+.pen-sec-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mgrey);margin:10px 0 6px}
+.pen-slot{display:flex;align-items:center;gap:10px;padding:7px 0;border-bottom:1px solid var(--border)}
+.pen-slot:last-child{border-bottom:none}
+.pen-num{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--navy);min-width:20px}
+.pen-name{flex:1;font-size:13px;font-weight:600;color:var(--dgrey)}
+.pen-pick{background:var(--navy);color:#fff;border:none;border-radius:7px;padding:5px 10px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
+.pen-clear{background:#FEE2E2;color:#DC2626;border:none;border-radius:7px;padding:5px 8px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;cursor:pointer}
+
+/* ── HISTORY ── */
+.hist-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:4px}
+.hist-filter::-webkit-scrollbar{display:none}
+.hf-btn{padding:6px 12px;border:1.5px solid var(--border);background:#fff;border-radius:20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--mgrey);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.hf-btn.active{background:var(--navy);border-color:var(--navy);color:#fff}
+.hc{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden}
+.hc-hdr{background:var(--navy);padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hc-date{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold);letter-spacing:1px}
+.hc-type{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--red);color:#fff;text-transform:uppercase;letter-spacing:1px}
+.hc-opp{font-size:11px;color:rgba(255,255,255,0.7);flex:1;text-align:right;font-style:italic}
+.hc-result{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px}
+.hc-result.win{color:#4ADE80}.hc-result.draw{color:var(--gold)}.hc-result.loss{color:#F87171}
+.hc-stats{display:flex;padding:8px 14px;gap:6px;border-bottom:1px solid var(--border)}
+.hs{flex:1;text-align:center;padding:4px;background:var(--grey);border-radius:7px}
+.hs .hn{font-family:'Bebas Neue',sans-serif;font-size:17px;line-height:1}
+.hs .hl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey)}
+.hs.hp .hn{color:var(--green)}.hs.hi .hn{color:#F87171}.hs.hlt .hn{color:var(--gold)}.hs.ha .hn{color:var(--mgrey)}
+.hc-tags{display:flex;flex-wrap:wrap;gap:4px;padding:8px 14px;border-bottom:1px solid var(--border)}
+.htag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:var(--grey);color:var(--mgrey)}
+.hc-body{padding:10px 14px;font-size:12px;color:var(--dgrey);line-height:1.8}
+.hc-body strong{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--navy)}
+.hc-acts{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border)}
+.hc-btn{flex:1;padding:8px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.hc-btn.share{background:#25D366;color:#fff}
+.hc-btn.del{background:#FEE2E2;color:#DC2626}
+.h-empty{text-align:center;padding:40px 20px;color:var(--mgrey);font-size:13px;line-height:1.8}
+.h-empty .big{font-size:36px;margin-bottom:8px}
+
+/* ── MODAL ── */
+.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.55);z-index:500;align-items:flex-end}
+.overlay.open{display:flex}
+.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:75vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px)}
+.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border);position:sticky;top:0;background:#fff;z-index:10}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy);letter-spacing:1px}
+.modal-close{width:30px;height:30px;border-radius:50%;border:none;background:var(--grey);font-size:14px;cursor:pointer;color:var(--mgrey)}
+.modal-body{padding:8px 12px 16px}
+.modal-sec{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mgrey);padding:8px 4px 4px}
+.pi{display:flex;align-items:center;gap:10px;padding:10px;border-radius:10px;cursor:pointer;transition:background 0.1s;border-bottom:1px solid var(--border)}
+.pi:last-child{border-bottom:none}
+.pi:active{background:var(--grey)}
+.pi-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy);min-width:24px}
+.pi-name{font-size:14px;font-weight:600;flex:1}
+.pi-tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--grey);color:var(--mgrey)}
+.pi-tag.match{background:#DCFCE7;color:var(--green)}
+.modal-remove{width:100%;padding:11px;margin-top:6px;background:#FEE2E2;color:#DC2626;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--dgrey);color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;transition:all 0.3s;pointer-events:none;z-index:999;white-space:nowrap}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── BOTTOM NAV ── */
+.bnav{position:fixed;bottom:0;left:0;right:0;background:var(--navy);display:flex;padding:6px 0 env(safe-area-inset-bottom,6px);z-index:200;box-shadow:0 -4px 20px rgba(0,0,0,0.2)}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px 0;cursor:pointer;opacity:0.5;transition:opacity 0.2s}
+.ni.active{opacity:1}
+.ni-icon{font-size:18px}
+.ni-lbl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#fff}
+
+/* ── FITNESS ASSESSMENT CAPTURE ── */
+.fa-section{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;display:none}
+.fa-hdr{background:linear-gradient(135deg,#1A5276,#2E86C1);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.fa-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;letter-spacing:1px}
+.fa-subtitle{font-size:10px;color:rgba(255,255,255,0.7);margin-top:1px}
+.fa-player-row{border-bottom:1px solid var(--border)}
+.fa-player-row:last-child{border-bottom:none}
+.fa-player-hdr{display:flex;align-items:center;padding:10px 14px;gap:10px;cursor:pointer;background:#fff}
+.fa-player-hdr:active{background:var(--grey)}
+.fa-pnum{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--navy);min-width:22px;text-align:center}
+.fa-pname{flex:1;font-size:13px;font-weight:700}
+.fa-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.fa-status.done{background:#DCFCE7;color:var(--green)}
+.fa-status.pending{background:var(--grey);color:var(--mgrey)}
+.fa-parr{font-size:12px;color:var(--mgrey);transition:transform 0.2s}
+.fa-parr.open{transform:rotate(180deg)}
+.fa-fields{display:none;padding:10px 14px 14px;background:var(--grey)}
+.fa-fields.open{display:block}
+.fa-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:8px}
+.fa-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey);display:block;margin-bottom:3px}
+.fa-field input{width:100%;border:1.5px solid var(--border);border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--dgrey);background:#fff;outline:none}
+.fa-field input:focus{border-color:var(--navy)}
+.fa-field.full{grid-column:1/-1}
+.fa-save-row{display:flex;gap:6px}
+.fa-save-btn{flex:1;padding:9px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.fa-clear-btn{padding:9px 12px;background:#FEE2E2;color:#DC2626;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.fa-progress{display:flex;align-items:center;gap:4px;margin-top:4px}
+.fa-prog-item{font-size:11px;font-weight:600;color:var(--mgrey)}
+.fa-prog-item.done{color:var(--green)}
+
+/* History fitness detail */
+.hist-fitness-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px}
+.hfg-row{background:var(--grey);border-radius:8px;padding:8px 10px}
+.hfg-name{font-size:12px;font-weight:700;color:var(--navy);margin-bottom:4px}
+.hfg-metrics{display:flex;flex-wrap:wrap;gap:4px}
+.hfg-m{font-size:10px;font-weight:600;padding:2px 6px;border-radius:6px;background:#fff;color:var(--dgrey)}
+.edit-fitness-btn{width:100%;padding:9px;background:var(--navy);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer;margin-top:8px}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-top">
+    <div class="club">GSC U13</div>
+    <div class="badge" id="badge">Practice</div>
+  </div>
+  <div class="sbar">
+    <div class="sf"><label>Date</label><input type="date" id="sDate"></div>
+    <div class="sf"><label>Session Type</label>
+      <select id="sType" onchange="onTypeChange()">
+        <option>Practice</option><option>Game</option><option>Skills Assessment</option>
+        <option>Fitness Assessment</option><option>Tournament</option><option>Training Camp</option>
+      </select>
+    </div>
+    <div class="sf" id="oppWrap" style="display:none"><label>Opponent</label><input type="text" id="sOpp" placeholder="e.g. Shimba FC" oninput="saveHdr()"></div>
+    <div class="sf"><label>Notes</label><input type="text" id="sNotes" placeholder="Venue, kit…" oninput="saveHdr()"></div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="sbar2">
+  <div class="sp pres"><div class="sn" id="cP">0</div><div class="sl">Present</div></div>
+  <div class="sp late"><div class="sn" id="cL">0</div><div class="sl">Late</div></div>
+  <div class="sp inj"><div class="sn" id="cI">0</div><div class="sl">Injured</div></div>
+  <div class="sp abs"><div class="sn" id="cA">0</div><div class="sl">Absent</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tabs">
+  <div class="tab active" onclick="showTab('attend',0)">✓ Attend</div>
+  <div class="tab" onclick="showTab('players',1)">👤 Players</div>
+  <div class="tab" onclick="showTab('lineup',2)">⚽ Lineup</div>
+  <div class="tab" onclick="showTab('history',3)">📅 History</div>
+</div>
+
+<!-- ═══ ATTEND ═══ -->
+<div class="sec active" id="sec-attend">
+  <div class="card" id="attList"></div>
+
+  <!-- MOTM / Player of Session -->
+  <div class="motm-section" id="motmSection">
+    <div class="motm-hdr">
+      <div class="motm-title">🏆 Player of the Session</div>
+    </div>
+    <div class="motm-player" id="motmDisplay">
+      <span id="motmName" style="flex:1;color:var(--mgrey);font-style:italic;font-weight:400">Not selected yet</span>
+      <button class="motm-pick" onclick="openMotmPicker()">Select</button>
+      <button class="motm-clear" id="motmClearBtn" style="display:none" onclick="clearMotm()">✕</button>
+    </div>
+  </div>
+
+  <!-- GAME DETAILS -->
+  <div class="game-details" id="gameDetails">
+    <div class="game-hdr"><div class="game-hdr-title">📋 Match Details</div></div>
+    <div class="game-grid">
+      <div class="game-field"><label>Competition</label><input type="text" id="gComp" placeholder="e.g. League" oninput="saveHdr()"></div>
+      <div class="game-field"><label>Venue</label><input type="text" id="gVenue" placeholder="e.g. GSC Field" oninput="saveHdr()"></div>
+      <div class="game-field"><label>Kick-off Time</label><input type="time" id="gKickoff" oninput="saveHdr()"></div>
+      <div class="game-field"><label>Score (GF – GA)</label>
+        <div style="display:flex;gap:4px;align-items:center">
+          <input type="number" id="gGF" min="0" placeholder="0" style="width:50px;border:1.5px solid var(--border);border-radius:8px;padding:7px 8px;font-size:14px;font-weight:700;text-align:center;background:var(--grey);outline:none" oninput="saveHdr()">
+          <span style="font-weight:700;color:var(--mgrey)">–</span>
+          <input type="number" id="gGA" min="0" placeholder="0" style="width:50px;border:1.5px solid var(--border);border-radius:8px;padding:7px 8px;font-size:14px;font-weight:700;text-align:center;background:var(--grey);outline:none" oninput="saveHdr()">
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORERS -->
+  <div class="scorers-wrap" id="scorersWrap">
+    <div class="scorers-hdr">
+      <div class="scorers-title">⚽ Goal Scorers</div>
+      <button class="add-scorer" onclick="openScorerPicker()">+ Add Scorer</button>
+    </div>
+    <div id="scorersList"></div>
+  </div>
+
+  <!-- TRAINING TAGS -->
+  <div class="tags-section" id="tagsSection">
+    <div class="tags-label">Session Focus</div>
+    <div class="tags-list">
+      <div class="tag-chip" onclick="toggleTag('Passing')">Passing</div>
+      <div class="tag-chip" onclick="toggleTag('Finishing')">Finishing</div>
+      <div class="tag-chip" onclick="toggleTag('Defending')">Defending</div>
+      <div class="tag-chip" onclick="toggleTag('Set Pieces')">Set Pieces</div>
+      <div class="tag-chip" onclick="toggleTag('Fitness')">Fitness</div>
+      <div class="tag-chip" onclick="toggleTag('Tactical')">Tactical</div>
+      <div class="tag-chip" onclick="toggleTag('GK Training')">GK Training</div>
+      <div class="tag-chip" onclick="toggleTag('Transition')">Transition</div>
+    </div>
+  </div>
+
+
+  <!-- FITNESS ASSESSMENT CAPTURE — shown only for Fitness/Skills Assessment -->
+  <div class="fa-section" id="faSection">
+    <div class="fa-hdr">
+      <div>
+        <div class="fa-title">💪 Fitness Assessment</div>
+        <div class="fa-subtitle">Tap each player to enter their scores</div>
+      </div>
+      <div id="faProgress" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff">0/0</div>
+    </div>
+    <div id="faPlayerList"></div>
+  </div>
+
+  <textarea class="notes-input" id="attNotes" rows="2" placeholder="Session notes…"></textarea>
+  <button class="save-btn" onclick="saveSession()">💾 Save Session</button>
+</div>
+
+<!-- ═══ PLAYERS ═══ -->
+<div class="sec" id="sec-players">
+  <div id="playersList"></div>
+  <div style="margin-top:10px">
+    <div class="backup-card">
+      <div class="backup-title">🔒 Backup & Restore</div>
+      <div class="backup-sub">Export saves all data to a file. Import restores it after any app update.</div>
+      <div class="backup-btns">
+        <button class="bk-btn export" onclick="exportData()">📤 Export</button>
+        <button class="bk-btn import" onclick="document.getElementById('importFile').click()">📥 Import</button>
+      </div>
+      <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(event)">
+      <div class="backup-info" id="backupInfo">Export before every app update</div>
+    </div>
+    <button class="add-player" onclick="addPlayer()">＋ Add New Player</button>
+  </div>
+</div>
+
+<!-- ═══ LINEUP ═══ -->
+<div class="sec" id="sec-lineup">
+  <div class="setup-card" id="setupCard">
+    <div class="setup-lbl">FORMAT</div>
+    <div class="btn-grp" id="fmtBtns">
+      <button class="sel-btn" onclick="setFormat(7)">7-a-side</button>
+      <button class="sel-btn" onclick="setFormat(9)">9-a-side</button>
+      <button class="sel-btn" onclick="setFormat(11)">11-a-side</button>
+    </div>
+    <div id="formSec" style="display:none;margin-top:10px">
+      <div class="setup-lbl">FORMATION</div>
+      <div class="btn-grp" id="formBtns"></div>
+    </div>
+    <div class="dur-row">
+      <span class="dur-label">Match Duration (min)</span>
+      <input type="number" class="dur-input" id="matchDur" value="60" min="1">
+    </div>
+    <button class="lock-btn" id="lockBtn" style="display:none" onclick="lockLineup()">🔒 Lock In & Build Lineup</button>
+  </div>
+  <div class="half-tabs" id="halfTabs" style="display:none">
+    <button class="half-tab active" onclick="setHalf(1)">1st Half</button>
+    <button class="half-tab" onclick="setHalf(2)">2nd Half</button>
+  </div>
+  <div class="pitch-wrap" id="pitchWrap" style="display:none"><div class="pitch" id="pitch"></div></div>
+  <div class="bench-card" id="benchCard" style="display:none">
+    <div class="bench-title">🪑 Bench / Unassigned</div>
+    <div class="bench-list" id="benchList"></div>
+  </div>
+  <div class="subs-card" id="subsCard" style="display:none">
+    <div class="bench-title">🔄 Substitutions</div>
+    <div id="subsList"></div>
+  </div>
+  <div class="pen-card" id="penCard">
+    <div class="bench-title" style="margin-bottom:2px">🥅 Penalty Shootout</div>
+    <div style="font-size:11px;color:var(--mgrey);margin-bottom:10px">5 takers + 3 backups from 2nd half finishers</div>
+    <div id="penSlots"></div>
+  </div>
+  <button class="reset-btn" id="resetBtn" style="display:none" onclick="resetLineup()">↺ Reset Lineup</button>
+</div>
+
+<!-- ═══ HISTORY ═══ -->
+<div class="sec" id="sec-history">
+  <div class="hist-filter" id="histFilter">
+    <button class="hf-btn active" onclick="setHistFilter('All',this)">All</button>
+    <button class="hf-btn" onclick="setHistFilter('Game',this)">🏆 Games</button>
+    <button class="hf-btn" onclick="setHistFilter('Tournament',this)">🏆 Tournaments</button>
+    <button class="hf-btn" onclick="setHistFilter('Practice',this)">🏃 Practice</button>
+    <button class="hf-btn" onclick="setHistFilter('Fitness Assessment',this)">💪 Fitness</button>
+    <button class="hf-btn" onclick="setHistFilter('Skills Assessment',this)">🎯 Skills</button>
+  </div>
+  <div id="histList"></div>
+</div>
+
+<!-- PICKER MODAL -->
+<div class="overlay" id="overlay" onclick="closeModal()">
+  <div class="modal" onclick="event.stopPropagation()">
+    <div class="modal-hdr">
+      <div class="modal-title" id="modalTitle">Select</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<!-- BOTTOM NAV -->
+<div class="bnav">
+  <div class="ni active" onclick="showTab('attend',0)"><div class="ni-icon">✓</div><div class="ni-lbl">Attend</div></div>
+  <div class="ni" onclick="showTab('players',1)"><div class="ni-icon">👤</div><div class="ni-lbl">Players</div></div>
+  <div class="ni" onclick="showTab('lineup',2)"><div class="ni-icon">⚽</div><div class="ni-lbl">Lineup</div></div>
+  <div class="ni" onclick="showTab('history',3)"><div class="ni-icon">📅</div><div class="ni-lbl">History</div></div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════════════════════
+const K={PL:'gsc2_pl',AT:'gsc2_at',HD:'gsc2_hd',LU:'gsc2_lu',HI:'gsc2_hi',SC:'gsc2_sc',MO:'gsc2_mo',TG:'gsc2_tg'};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const load=(k,fb)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb}catch(e){return fb}};
+
+// ═══════════════════════════════════════════════════════════
+// PRE-LOADED DATA (from Excel)
+// ═══════════════════════════════════════════════════════════
+const PRELOADED_PLAYERS = [
+  {id:"legacy-001",num:1,name:"Cayden Van Den Berg",dob:"2013-11-03",pos:"",parent:"Drohan",phone:"0825525610",notes:"",fitness:[]},
+  {id:"legacy-002",num:2,name:"Ethan Pietersen",dob:"2014-01-29",pos:"",parent:"Neil / Miss B",phone:"0609728226",notes:"",fitness:[
+    {date:"2026-02-07",beep:3.3,burpees:12,situps:13,jsquats:33,agility:"00:37:02",laps:"03:37",notes:"Feb 2026 Assessment"},
+    {date:"2026-05-16",beep:3.6,burpees:16,situps:20,jsquats:25,agility:"00:36:03",laps:"05:31",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-003",num:3,name:"Hlumelo",dob:"2013-02-23",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-02-07",beep:2.4,burpees:15,situps:25,jsquats:45,agility:"00:31:59",laps:"10:00",notes:"Feb 2026 Assessment"},
+    {date:"2026-05-16",beep:4.7,burpees:18,situps:41,jsquats:55,agility:"00:32:08",laps:"10:00",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-004",num:4,name:"Jared Samboer",dob:"2013-09-04",pos:"",parent:"Kelly / Kels",phone:"0605836247",notes:"",fitness:[
+    {date:"2026-05-16",beep:2.1,burpees:17,situps:31,jsquats:45,agility:"00:34:01",laps:"04:31",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-005",num:5,name:"Khayone Kwetana",dob:"2014-04-17",pos:"",parent:"Nelson",phone:"0739868947",notes:"",fitness:[
+    {date:"2026-02-07",beep:6.3,burpees:10,situps:36,jsquats:37,agility:"00:31:02",laps:"10:00",notes:"Feb 2026 Assessment"}
+  ]},
+  {id:"legacy-006",num:6,name:"Olothando",dob:"2014-09-13",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-02-07",beep:2.2,burpees:15,situps:24,jsquats:30,agility:"00:39:42",laps:"08:00",notes:"Feb 2026 Assessment"}
+  ]},
+  {id:"legacy-007",num:7,name:"Robert Curtis",dob:"",pos:"",parent:"Sarah",phone:"",notes:"",fitness:[
+    {date:"2026-02-07",beep:6.2,burpees:15,situps:32,jsquats:44,agility:"00:37:47",laps:"10:00",notes:"Feb 2026 Assessment"}
+  ]},
+  {id:"legacy-008",num:8,name:"Tyler Dunn",dob:"",pos:"",parent:"Martina Dunn",phone:"0732594916",notes:"",fitness:[
+    {date:"2026-02-07",beep:6.3,burpees:15,situps:28,jsquats:48,agility:"00:35:03",laps:"10:00",notes:"Feb 2026 Assessment"}
+  ]},
+  {id:"legacy-009",num:9,name:"Seth Tilley",dob:"2014-04-03",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-02-07",beep:5.6,burpees:13,situps:23,jsquats:39,agility:"00:34:01",laps:"10:00",notes:"Feb 2026 Assessment"},
+    {date:"2026-05-16",beep:5.7,burpees:15,situps:35,jsquats:45,agility:"00:30:03",laps:"10:00",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-010",num:10,name:"Vhuthu Kwinda",dob:"",pos:"",parent:"Pheliswa",phone:"0795435451",notes:"",fitness:[
+    {date:"2026-05-16",beep:4.3,burpees:17,situps:31,jsquats:46,agility:"00:33:08",laps:"08:06",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-011",num:11,name:"Wade Potts",dob:"2014-06-25",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:3.6,burpees:18,situps:27,jsquats:45,agility:"00:34:13",laps:"06:02",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-012",num:12,name:"Lina",dob:"2014-01-01",pos:"",parent:"",phone:"",notes:"",fitness:[]},
+  {id:"legacy-013",num:13,name:"Elokhanyo",dob:"2012-09-15",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:7.1,burpees:null,situps:null,jsquats:null,agility:"00:32:51",laps:null,notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-014",num:14,name:"Onele",dob:"2013-09-22",pos:"",parent:"",phone:"",notes:"",fitness:[]},
+  {id:"legacy-015",num:15,name:"Limise Nkamane",dob:"2012-06-07",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:1.4,burpees:20,situps:38,jsquats:47,agility:"00:45:01",laps:"03:35",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-016",num:16,name:"Armand",dob:"2012-12-12",pos:"",parent:"",phone:"",notes:"",fitness:[]},
+  {id:"legacy-017",num:17,name:"Nqobile",dob:"",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:7.1,burpees:null,situps:null,jsquats:null,agility:"00:32:04",laps:null,notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-018",num:18,name:"Yosimela Jaftha",dob:"2012-06-12",pos:"",parent:"Zandi",phone:"0676556017",notes:"",fitness:[
+    {date:"2026-02-07",beep:4.8,burpees:14,situps:42,jsquats:47,agility:"00:34:53",laps:"10:00",notes:"Feb 2026 Assessment"},
+    {date:"2026-05-16",beep:7.1,burpees:18,situps:41,jsquats:50,agility:"00:31:04",laps:"10:00",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-019",num:19,name:"Imnophele Hans",dob:"2012-09-08",pos:"",parent:"Mama Sis",phone:"0695718652",notes:"",fitness:[]},
+  {id:"legacy-020",num:20,name:"Luniko",dob:"",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:7.1,burpees:20,situps:41,jsquats:56,agility:"00:37:00",laps:"03:19",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-021",num:21,name:"Simtha",dob:"",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:3.6,burpees:15,situps:38,jsquats:55,agility:"00:33:08",laps:"10:00",notes:"May 2026 Assessment"}
+  ]},
+  {id:"legacy-022",num:22,name:"Gift Phiri",dob:"2012-12-12",pos:"",parent:"",phone:"",notes:"",fitness:[
+    {date:"2026-05-16",beep:5.7,burpees:21,situps:39,jsquats:60,agility:"00:36:57",laps:"10:00",notes:"May 2026 Assessment"}
+  ]},
+];
+
+const PRELOADED_HISTORY = [
+  {id:"legacy-2026-02-21-Game",date:"2026-02-21",type:"Game",opp:"Rooi Rivier Rif",present:[{id:"legacy-001",name:"Cayden Van Den Berg"},{id:"legacy-002",name:"Ethan Pietersen"},{id:"legacy-003",name:"Hlumelo"},{id:"legacy-004",name:"Jared Samboer"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-006",name:"Olothando"},{id:"legacy-007",name:"Robert Curtis"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-010",name:"Vhuthu Kwinda"},{id:"legacy-011",name:"Wade Potts"}],injured:[],late:[],absent:[{id:"legacy-009",name:"Seth Tilley"},{id:"legacy-012",name:"Lina"},{id:"legacy-013",name:"Elokhanyo"},{id:"legacy-014",name:"Onele"},{id:"legacy-015",name:"Limise Nkamane"},{id:"legacy-016",name:"Armand"},{id:"legacy-017",name:"Nqobile"},{id:"legacy-018",name:"Yosimela Jaftha"},{id:"legacy-019",name:"Imnophele Hans"},{id:"legacy-020",name:"Luniko"},{id:"legacy-021",name:"Simtha"},{id:"legacy-022",name:"Gift Phiri"}],scorers:[{name:"Vhuthu",goals:1},{name:"Limise",goals:1}],motm:null,notes:"Lost 2-3",tags:[],score:{gf:2,ga:3},result:"Loss",competition:"",venue:"Rooi Rivier",kickoff:""},
+  {id:"legacy-2026-02-05-Game",date:"2026-02-05",type:"Game",opp:"Shimba",present:[{id:"legacy-003",name:"Hlumelo"},{id:"legacy-004",name:"Jared Samboer"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-010",name:"Vhuthu Kwinda"},{id:"legacy-018",name:"Yosimela Jaftha"},{id:"legacy-020",name:"Luniko"}],injured:[],late:[],absent:[],scorers:[{name:"Vhuthu",goals:1},{name:"Yosimela",goals:1}],motm:"Luniko",notes:"Penalty win",tags:[],score:{gf:3,ga:3},result:"Win",competition:"",venue:"GSC Home",kickoff:""},
+  {id:"legacy-2026-02-28-Practice",date:"2026-02-28",type:"Practice",opp:"",present:[{id:"legacy-001",name:"Cayden Van Den Berg"},{id:"legacy-004",name:"Jared Samboer"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-010",name:"Vhuthu Kwinda"},{id:"legacy-011",name:"Wade Potts"},{id:"legacy-012",name:"Lina"},{id:"legacy-013",name:"Elokhanyo"},{id:"legacy-014",name:"Onele"},{id:"legacy-018",name:"Yosimela Jaftha"}],injured:[],late:[],absent:[],scorers:[],motm:null,notes:"",tags:[],score:null,result:null,competition:"",venue:"",kickoff:""},
+  {id:"legacy-2026-03-21-Practice",date:"2026-03-21",type:"Practice",opp:"",present:[{id:"legacy-002",name:"Ethan Pietersen"},{id:"legacy-003",name:"Hlumelo"},{id:"legacy-004",name:"Jared Samboer"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-013",name:"Elokhanyo"},{id:"legacy-015",name:"Limise Nkamane"},{id:"legacy-016",name:"Armand"},{id:"legacy-017",name:"Nqobile"},{id:"legacy-018",name:"Yosimela Jaftha"},{id:"legacy-019",name:"Imnophele Hans"}],injured:[],late:[],absent:[],scorers:[],motm:null,notes:"",tags:[],score:null,result:null,competition:"",venue:"",kickoff:""},
+  {id:"legacy-2026-03-28-Practice",date:"2026-03-28",type:"Practice",opp:"",present:[{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-011",name:"Wade Potts"},{id:"legacy-017",name:"Nqobile"},{id:"legacy-018",name:"Yosimela Jaftha"},{id:"legacy-019",name:"Imnophele Hans"}],injured:[],late:[],absent:[],scorers:[],motm:null,notes:"",tags:[],score:null,result:null,competition:"",venue:"",kickoff:""},
+  {id:"legacy-2026-04-18-Practice",date:"2026-04-18",type:"Practice",opp:"",present:[{id:"legacy-003",name:"Hlumelo"},{id:"legacy-004",name:"Jared Samboer"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-006",name:"Olothando"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-010",name:"Vhuthu Kwinda"},{id:"legacy-011",name:"Wade Potts"},{id:"legacy-012",name:"Lina"},{id:"legacy-013",name:"Elokhanyo"},{id:"legacy-015",name:"Limise Nkamane"},{id:"legacy-017",name:"Nqobile"},{id:"legacy-018",name:"Yosimela Jaftha"},{id:"legacy-019",name:"Imnophele Hans"},{id:"legacy-020",name:"Luniko"},{id:"legacy-021",name:"Simtha"}],injured:[],late:[],absent:[],scorers:[],motm:null,notes:"",tags:[],score:null,result:null,competition:"",venue:"",kickoff:""},
+  {id:"legacy-2026-02-07-FitnessAssessment",date:"2026-02-07",type:"Fitness Assessment",opp:"",present:[{id:"legacy-001",name:"Cayden Van Den Berg"},{id:"legacy-002",name:"Ethan Pietersen"},{id:"legacy-003",name:"Hlumelo"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-006",name:"Olothando"},{id:"legacy-007",name:"Robert Curtis"},{id:"legacy-008",name:"Tyler Dunn"},{id:"legacy-009",name:"Seth Tilley"},{id:"legacy-018",name:"Yosimela Jaftha"}],injured:[],late:[],absent:[],scorers:[],motm:null,notes:"Feb 2026 Fitness Assessment",tags:["Fitness"],score:null,result:null,competition:"",venue:"",kickoff:""},
+  {id:"legacy-2026-05-16-FitnessAssessment",date:"2026-05-16",type:"Fitness Assessment",opp:"",present:[{id:"legacy-002",name:"Ethan Pietersen"},{id:"legacy-003",name:"Hlumelo"},{id:"legacy-004",name:"Jared Samboer"},{id:"legacy-005",name:"Khayone Kwetana"},{id:"legacy-009",name:"Seth Tilley"},{id:"legacy-010",name:"Vhuthu Kwinda"},{id:"legacy-011",name:"Wade Potts"},{id:"legacy-013",name:"Elokhanyo"},{id:"legacy-015",name:"Limise Nkamane"},{id:"legacy-017",name:"Nqobile"},{id:"legacy-018",name:"Yosimela Jaftha"},{id:"legacy-020",name:"Luniko"},{id:"legacy-021",name:"Simtha"},{id:"legacy-022",name:"Gift Phiri"}],injured:[],late:[],absent:[],scorers:[],motm:null,notes:"May 2026 Fitness Assessment",tags:["Fitness"],score:null,result:null,competition:"",venue:"",kickoff:""},
+];
+
+// ═══════════════════════════════════════════════════════════
+// FORMATIONS
+// ═══════════════════════════════════════════════════════════
+const FORMS={
+  7:{'2-3-1':[{id:'gk',label:'GK',role:'gk',x:50,y:90},{id:'lb',label:'LB',role:'def',x:25,y:73},{id:'rb',label:'RB',role:'def',x:75,y:73},{id:'lm',label:'LM',role:'mid',x:20,y:52},{id:'cm',label:'CM',role:'mid',x:50,y:50},{id:'rm',label:'RM',role:'mid',x:80,y:52},{id:'st',label:'ST',role:'fwd',x:50,y:22}],'3-2-1':[{id:'gk',label:'GK',role:'gk',x:50,y:90},{id:'lb',label:'LB',role:'def',x:18,y:73},{id:'cb',label:'CB',role:'def',x:50,y:75},{id:'rb',label:'RB',role:'def',x:82,y:73},{id:'lm',label:'LM',role:'mid',x:30,y:50},{id:'rm',label:'RM',role:'mid',x:70,y:50},{id:'st',label:'ST',role:'fwd',x:50,y:22}],'2-2-2':[{id:'gk',label:'GK',role:'gk',x:50,y:90},{id:'lb',label:'LB',role:'def',x:25,y:73},{id:'rb',label:'RB',role:'def',x:75,y:73},{id:'lm',label:'LM',role:'mid',x:25,y:50},{id:'rm',label:'RM',role:'mid',x:75,y:50},{id:'ls',label:'LS',role:'fwd',x:30,y:22},{id:'rs',label:'RS',role:'fwd',x:70,y:22}]},
+  9:{'3-2-3':[{id:'gk',label:'GK',role:'gk',x:50,y:90},{id:'lb',label:'LB',role:'def',x:18,y:74},{id:'cb',label:'CB',role:'def',x:50,y:76},{id:'rb',label:'RB',role:'def',x:82,y:74},{id:'lm',label:'LM',role:'mid',x:28,y:52},{id:'rm',label:'RM',role:'mid',x:72,y:52},{id:'lw',label:'LW',role:'fwd',x:18,y:26},{id:'st',label:'ST',role:'fwd',x:50,y:22},{id:'rw',label:'RW',role:'fwd',x:82,y:26}],'3-3-2':[{id:'gk',label:'GK',role:'gk',x:50,y:90},{id:'lb',label:'LB',role:'def',x:18,y:74},{id:'cb',label:'CB',role:'def',x:50,y:76},{id:'rb',label:'RB',role:'def',x:82,y:74},{id:'lm',label:'LM',role:'mid',x:20,y:52},{id:'cm',label:'CM',role:'mid',x:50,y:50},{id:'rm',label:'RM',role:'mid',x:80,y:52},{id:'ls',label:'LS',role:'fwd',x:32,y:24},{id:'rs',label:'RS',role:'fwd',x:68,y:24}],'4-2-2':[{id:'gk',label:'GK',role:'gk',x:50,y:90},{id:'lb',label:'LB',role:'def',x:14,y:74},{id:'cb1',label:'CB',role:'def',x:36,y:76},{id:'cb2',label:'CB',role:'def',x:64,y:76},{id:'rb',label:'RB',role:'def',x:86,y:74},{id:'lm',label:'LM',role:'mid',x:28,y:52},{id:'rm',label:'RM',role:'mid',x:72,y:52},{id:'ls',label:'LS',role:'fwd',x:32,y:24},{id:'rs',label:'RS',role:'fwd',x:68,y:24}]},
+  11:{'4-3-3':[{id:'gk',label:'GK',role:'gk',x:50,y:92},{id:'lb',label:'LB',role:'def',x:14,y:74},{id:'cb1',label:'CB',role:'def',x:36,y:76},{id:'cb2',label:'CB',role:'def',x:64,y:76},{id:'rb',label:'RB',role:'def',x:86,y:74},{id:'cm1',label:'CM',role:'mid',x:24,y:54},{id:'cm2',label:'CM',role:'mid',x:50,y:52},{id:'cm3',label:'CM',role:'mid',x:76,y:54},{id:'lw',label:'LW',role:'fwd',x:14,y:26},{id:'st',label:'ST',role:'fwd',x:50,y:20},{id:'rw',label:'RW',role:'fwd',x:86,y:26}],'4-2-3-1':[{id:'gk',label:'GK',role:'gk',x:50,y:92},{id:'lb',label:'LB',role:'def',x:14,y:74},{id:'cb1',label:'CB',role:'def',x:36,y:76},{id:'cb2',label:'CB',role:'def',x:64,y:76},{id:'rb',label:'RB',role:'def',x:86,y:74},{id:'cdm1',label:'CDM',role:'mid',x:34,y:58},{id:'cdm2',label:'CDM',role:'mid',x:66,y:58},{id:'lam',label:'LAM',role:'mid',x:18,y:38},{id:'cam',label:'CAM',role:'mid',x:50,y:36},{id:'ram',label:'RAM',role:'mid',x:82,y:38},{id:'st',label:'ST',role:'fwd',x:50,y:20}],'4-4-2':[{id:'gk',label:'GK',role:'gk',x:50,y:92},{id:'lb',label:'LB',role:'def',x:14,y:74},{id:'cb1',label:'CB',role:'def',x:36,y:76},{id:'cb2',label:'CB',role:'def',x:64,y:76},{id:'rb',label:'RB',role:'def',x:86,y:74},{id:'lm',label:'LM',role:'mid',x:14,y:52},{id:'cm1',label:'CM',role:'mid',x:38,y:50},{id:'cm2',label:'CM',role:'mid',x:62,y:50},{id:'rm',label:'RM',role:'mid',x:86,y:52},{id:'ls',label:'LS',role:'fwd',x:34,y:22},{id:'rs',label:'RS',role:'fwd',x:66,y:22}],'3-5-2':[{id:'gk',label:'GK',role:'gk',x:50,y:92},{id:'cb1',label:'CB',role:'def',x:24,y:76},{id:'cb2',label:'CB',role:'def',x:50,y:78},{id:'cb3',label:'CB',role:'def',x:76,y:76},{id:'lwb',label:'LWB',role:'mid',x:10,y:54},{id:'cm1',label:'CM',role:'mid',x:30,y:52},{id:'cm2',label:'CM',role:'mid',x:50,y:50},{id:'cm3',label:'CM',role:'mid',x:70,y:52},{id:'rwb',label:'RWB',role:'mid',x:90,y:54},{id:'ls',label:'LS',role:'fwd',x:34,y:22},{id:'rs',label:'RS',role:'fwd',x:66,y:22}]}
+};
+
+// ═══════════════════════════════════════════════════════════
+// STATE — load from localStorage or use preloaded defaults
+// ═══════════════════════════════════════════════════════════
+let players  = load(K.PL, null);
+let history  = load(K.HI, null);
+
+// First launch: inject preloaded data
+if(!players){ players=JSON.parse(JSON.stringify(PRELOADED_PLAYERS)); save(K.PL,players); }
+if(!history){ history=JSON.parse(JSON.stringify(PRELOADED_HISTORY)); save(K.HI,history); }
+
+// Migrate: ensure all players have an id
+players.forEach(p=>{
+  if(!p.id) p.id = (typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():`uid-${Date.now()}-${p.num}`;
+  if(!p.fitness) p.fitness=[];
+});
+save(K.PL,players);
+
+let att     = load(K.AT,{});
+let scorers = load(K.SC,[]);
+let motm    = load(K.MO,null); // {id, name}
+let tags    = load(K.TG,[]);
+let lu      = load(K.LU,{format:null,formation:null,locked:false,h1:{},h2:{},subs:[],pen:Array(8).fill(null)});
+let curHalf = 1;
+let histFilter = 'All';
+
+// Ensure attendance entries exist for all players
+players.forEach(p=>{ if(!(p.id in att)) att[p.id]=null; });
+
+// ═══════════════════════════════════════════════════════════
+// HEADER
+// ═══════════════════════════════════════════════════════════
+function loadHdr(){
+  const h=load(K.HD,{});
+  document.getElementById('sDate').value = h.date||new Date().toISOString().split('T')[0];
+  if(h.type) document.getElementById('sType').value=h.type;
+  if(h.opp)  document.getElementById('sOpp').value=h.opp;
+  if(h.notes)document.getElementById('sNotes').value=h.notes;
+  if(h.comp) document.getElementById('gComp').value=h.comp;
+  if(h.venue)document.getElementById('gVenue').value=h.venue;
+  if(h.kickoff)document.getElementById('gKickoff').value=h.kickoff;
+  if(h.gf!==undefined)document.getElementById('gGF').value=h.gf;
+  if(h.ga!==undefined)document.getElementById('gGA').value=h.ga;
+  updateBadge(); toggleGameFields();
+}
+function saveHdr(){
+  save(K.HD,{
+    date:document.getElementById('sDate').value,
+    type:document.getElementById('sType').value,
+    opp:document.getElementById('sOpp').value,
+    notes:document.getElementById('sNotes').value,
+    comp:document.getElementById('gComp').value,
+    venue:document.getElementById('gVenue').value,
+    kickoff:document.getElementById('gKickoff').value,
+    gf:document.getElementById('gGF').value,
+    ga:document.getElementById('gGA').value,
+  });
+}
+function onTypeChange(){ updateBadge(); saveHdr(); toggleGameFields(); }
+function updateBadge(){ document.getElementById('badge').textContent=document.getElementById('sType').value; }
+function toggleGameFields(){
+  const t=document.getElementById('sType').value;
+  const isGame=t==='Game'||t==='Tournament';
+  const isFitness=t==='Fitness Assessment'||t==='Skills Assessment';
+  document.getElementById('oppWrap').style.display=isGame?'block':'none';
+  document.getElementById('scorersWrap').style.display=isGame?'block':'none';
+  document.getElementById('gameDetails').style.display=isGame?'block':'none';
+  document.getElementById('tagsSection').style.display=isGame?'none':'block';
+  document.getElementById('faSection').style.display=isFitness?'block':'none';
+  if(isFitness) renderFaCapture();
+}
+
+// ═══════════════════════════════════════════════════════════
+// ATTEND
+// ═══════════════════════════════════════════════════════════
+function renderAttend(){
+  const list=document.getElementById('attList');
+  list.innerHTML='';
+  if(!players.length){
+    list.innerHTML='<div style="padding:20px;text-align:center;color:var(--mgrey);font-size:13px">No players — add in Players tab</div>';
+    updateStats(); return;
+  }
+  players.forEach(p=>{
+    const a=att[p.id];
+    const row=document.createElement('div');
+    row.className='att-row';
+    row.innerHTML=`
+      <div class="att-num">${p.num}</div>
+      <div class="att-info">
+        <div class="att-name">${p.name}</div>
+        <div class="att-pos">${p.pos||'No position set'}</div>
+      </div>
+      <div class="att-btns">
+        <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
+        <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
+        <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
+        <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
+      </div>`;
+    list.appendChild(row);
+  });
+  updateStats(); renderScorers(); renderMotm();
+}
+
+function setAtt(id,val){
+  att[id]=att[id]===val?null:val;
+  save(K.AT,att);
+  // remove from scorers if no longer present/late
+  if(att[id]!=='x'&&att[id]!=='L'){
+    const p=players.find(x=>x.id===id);
+    if(p){ scorers=scorers.filter(s=>s.id!==id); save(K.SC,scorers); }
+    if(motm&&motm.id===id){ motm=null; save(K.MO,null); }
+  }
+  renderAttend();
+}
+
+function updateStats(){
+  const p=Object.values(att).filter(v=>v==='x').length;
+  const l=Object.values(att).filter(v=>v==='L').length;
+  const i=Object.values(att).filter(v=>v==='I').length;
+  const a=players.length-p-l-i;
+  document.getElementById('cP').textContent=p;
+  document.getElementById('cL').textContent=l;
+  document.getElementById('cI').textContent=i;
+  document.getElementById('cA').textContent=Math.max(0,a);
+}
+
+// ═══════════════════════════════════════════════════════════
+// MOTM
+// ═══════════════════════════════════════════════════════════
+function renderMotm(){
+  const nm=document.getElementById('motmName');
+  const cb=document.getElementById('motmClearBtn');
+  if(motm){ nm.textContent='🏆 '+motm.name; nm.style.fontStyle='normal'; nm.style.fontWeight='700'; nm.style.color='var(--navy)'; cb.style.display='block'; }
+  else { nm.textContent='Not selected yet'; nm.style.fontStyle='italic'; nm.style.fontWeight='400'; nm.style.color='var(--mgrey)'; cb.style.display='none'; }
+}
+function openMotmPicker(){
+  const avail=players.filter(p=>att[p.id]==='x'||att[p.id]==='L');
+  if(!avail.length){showToast('Mark players present first');return;}
+  openModal('Player of the Session',(p)=>{ motm={id:p.id,name:p.name}; save(K.MO,motm); renderMotm(); closeModal(); showToast(`🏆 ${p.name}`); },{list:avail});
+}
+function clearMotm(){ motm=null; save(K.MO,null); renderMotm(); }
+
+// ═══════════════════════════════════════════════════════════
+// TRAINING TAGS
+// ═══════════════════════════════════════════════════════════
+function toggleTag(tag){
+  const idx=tags.indexOf(tag);
+  if(idx>=0) tags.splice(idx,1); else tags.push(tag);
+  save(K.TG,tags);
+  document.querySelectorAll('.tag-chip').forEach(el=>{
+    el.classList.toggle('active', tags.includes(el.textContent));
+  });
+}
+function restoreTags(){ document.querySelectorAll('.tag-chip').forEach(el=>{ el.classList.toggle('active', tags.includes(el.textContent)); }); }
+
+// ═══════════════════════════════════════════════════════════
+// SCORERS
+// ═══════════════════════════════════════════════════════════
+function renderScorers(){
+  const list=document.getElementById('scorersList');
+  if(!scorers.length){list.innerHTML='<div class="no-scorers">No scorers yet — tap + Add Scorer</div>';return;}
+  list.innerHTML=scorers.map((s,i)=>`
+    <div class="scorer-row">
+      <div class="scorer-name">${s.name}</div>
+      <div class="goal-btns">
+        <button class="gbtn rem" onclick="adjGoal(${i},-1)">−</button>
+        <div class="goal-count">${s.goals}</div>
+        <button class="gbtn add" onclick="adjGoal(${i},1)">+</button>
+      </div>
+      <button class="scorer-del" onclick="delScorer(${i})">🗑</button>
+    </div>`).join('');
+}
+function adjGoal(i,d){ scorers[i].goals=Math.max(1,scorers[i].goals+d); save(K.SC,scorers); renderScorers(); }
+function delScorer(i){ scorers.splice(i,1); save(K.SC,scorers); renderScorers(); }
+function openScorerPicker(){
+  const pres=players.filter(p=>att[p.id]==='x'||att[p.id]==='L');
+  if(!pres.length){showToast('Mark players present first');return;}
+  openModal('Select Goal Scorer',(p)=>{
+    const ex=scorers.find(s=>s.id===p.id);
+    if(ex) ex.goals++; else scorers.push({id:p.id,name:p.name,goals:1});
+    save(K.SC,scorers); renderScorers(); closeModal();
+    showToast(`${p.name.split(' ')[0]} — goal!`);
+  },{list:pres});
+}
+
+// ═══════════════════════════════════════════════════════════
+// COMPUTE PLAYER STATS FROM HISTORY
+// ═══════════════════════════════════════════════════════════
+function computeStats(playerId){
+  const hist=load(K.HI,[]);
+  let appearances=0,trainingSessions=0,gamesPlayed=0,goals=0,motmCount=0,starts=0,subApps=0,minPlayed=0;
+  hist.forEach(s=>{
+    const wasPresent=s.present.some(p=>p.id===playerId)||s.late?.some(p=>p.id===playerId);
+    if(!wasPresent) return;
+    appearances++;
+    if(s.type==='Practice'||s.type==='Training Camp'||s.type==='Skills Assessment') trainingSessions++;
+    if(s.type==='Game'||s.type==='Tournament') gamesPlayed++;
+    // Goals
+    if(s.scorers) s.scorers.filter(sc=>sc.id===playerId).forEach(sc=>goals+=sc.goals||1);
+    // MOTM
+    if(s.motm&&typeof s.motm==='object'&&s.motm.id===playerId) motmCount++;
+    else if(s.motm&&typeof s.motm==='string'&&s.motm===playerId) motmCount++;
+    // Lineup starts / subs
+    if(s.lineup){
+      const inH1=Object.values(s.lineup.h1||{}).includes(playerId);
+      const inH2=Object.values(s.lineup.h2||{}).includes(playerId);
+      const wasSub=s.lineup.subs?.some(sub=>sub.onId===playerId);
+      if(inH1) starts++;
+      else if(wasSub||inH2) subApps++;
+    }
+  });
+  const attRate=hist.length>0?Math.round(appearances/hist.length*100):0;
+  return {appearances,trainingSessions,gamesPlayed,goals,motmCount,starts,subApps,attRate};
+}
+
+// ═══════════════════════════════════════════════════════════
+// SAVE SESSION
+// ═══════════════════════════════════════════════════════════
+function saveSession(){
+  const date=document.getElementById('sDate').value;
+  const type=document.getElementById('sType').value;
+  const opp =document.getElementById('sOpp').value.trim();
+  const notes=document.getElementById('attNotes').value;
+  const isGame=type==='Game'||type==='Tournament';
+  if(!date){showToast('Set a date first');return;}
+  if(isGame&&!opp){showToast('Enter opponent name');return;}
+
+  const pres=players.filter(p=>att[p.id]==='x');
+  const late=players.filter(p=>att[p.id]==='L');
+  const inj =players.filter(p=>att[p.id]==='I');
+  const abs =players.filter(p=>!att[p.id]||att[p.id]==='A');
+  if(!pres.length&&!late.length&&!inj.length){showToast('Mark at least one player');return;}
+
+  // Compute score and result
+  const gf=parseInt(document.getElementById('gGF').value)||0;
+  const ga=parseInt(document.getElementById('gGA').value)||0;
+  const result=isGame?(gf>ga?'Win':gf===ga?'Draw':'Loss'):null;
+
+  const session={
+    id:(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():`sess-${Date.now()}`,
+    date,type,opp,notes,tags:[...tags],
+    present:pres.map(p=>({id:p.id,name:p.name})),
+    late:late.map(p=>({id:p.id,name:p.name})),
+    injured:inj.map(p=>({id:p.id,name:p.name})),
+    absent:abs.map(p=>({id:p.id,name:p.name})),
+    scorers:[...scorers],
+    motm:motm?{...motm}:null,
+    score:isGame?{gf,ga}:null,
+    result,
+    competition:document.getElementById('gComp').value,
+    venue:document.getElementById('gVenue').value,
+    kickoff:document.getElementById('gKickoff').value,
+    lineup:{...lu},
+  };
+
+  // Embed fitness data if this is a fitness/skills assessment
+  const isFitnessSession = type==='Fitness Assessment'||type==='Skills Assessment';
+  if(isFitnessSession) embedFitnessIntoSession(session);
+
+  const hist=load(K.HI,[]);
+  const key=`${date}|${type}|${opp}`;
+  const idx=hist.findIndex(s=>`${s.date}|${s.type}|${s.opp}`===key);
+  if(idx>=0){
+    if(!confirm('Session already saved for this date, type & opponent. Overwrite?'))return;
+    hist[idx]=session;
+  }else{hist.unshift(session);}
+  save(K.HI,hist);
+
+  // Reset
+  players.forEach(p=>att[p.id]=null);
+  scorers=[];motm=null;tags=[];
+  if(isFitnessSession) resetFaData();
+  save(K.AT,att);save(K.SC,scorers);save(K.MO,null);save(K.TG,[]);
+  document.getElementById('attNotes').value='';
+  document.getElementById('gGF').value='';document.getElementById('gGA').value='';
+  renderAttend();renderScorers();renderMotm();restoreTags();
+  if(isFitnessSession) renderFaCapture();
+  showToast('Session saved ✓');
+  setTimeout(()=>showTab('history',3),800);
+}
+
+// ═══════════════════════════════════════════════════════════
+// PLAYERS TAB
+// ═══════════════════════════════════════════════════════════
+function renderPlayers(){
+  const list=document.getElementById('playersList');
+  list.innerHTML='';
+  // Squad averages for fitness
+  renderSquadAverages();
+  players.forEach(p=>{
+    const stats=computeStats(p.id);
+    const card=document.createElement('div');
+    card.className='pc';card.id=`pc-${p.id}`;
+    const sub=[p.pos||null,p.dob?fmtDob(p.dob):null].filter(Boolean).join(' · ')||'Tap to add details';
+    card.innerHTML=`
+      <div class="pc-hdr" onclick="togglePc('${p.id}')">
+        <div class="pc-num">${p.num}</div>
+        <div class="pc-info">
+          <div class="pc-name">${p.name}</div>
+          <div class="pc-sub">${sub}</div>
+          <div class="pc-stats-row">
+            <span class="pstat ${stats.attRate>=70?'green':''}">${stats.attRate}% Att</span>
+            <span class="pstat">${stats.gamesPlayed} Games</span>
+            <span class="pstat">${stats.goals} ⚽</span>
+            ${stats.motmCount?`<span class="pstat green">🏆 ${stats.motmCount}</span>`:''}
+          </div>
+        </div>
+        <div class="pc-arr" id="arr-${p.id}">▾</div>
+      </div>
+      <div class="pc-body" id="pcb-${p.id}">
+        <div class="pc-tabs">
+          <div class="pc-tab active" onclick="switchPcTab('${p.id}','details',this)">Details</div>
+          <div class="pc-tab" onclick="switchPcTab('${p.id}','stats',this)">Stats</div>
+          <div class="pc-tab" onclick="switchPcTab('${p.id}','fitness',this)">Fitness</div>
+        </div>
+        <div class="pc-panel active" id="pp-details-${p.id}">
+          ${renderDetailsPanel(p)}
+        </div>
+        <div class="pc-panel" id="pp-stats-${p.id}">
+          ${renderStatsPanel(p,stats)}
+        </div>
+        <div class="pc-panel" id="pp-fitness-${p.id}">
+          ${renderFitnessPanel(p)}
+        </div>
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function renderDetailsPanel(p){
+  const phoneActions=p.phone?`
+    <div class="phone-actions">
+      <button class="phone-btn call" onclick="event.stopPropagation();window.location.href='tel:${p.phone}'">📞 Call</button>
+      <button class="phone-btn wa" onclick="event.stopPropagation();window.open('https://wa.me/27${p.phone.replace(/^0/,'')}','_blank')">💬 WhatsApp</button>
+    </div>`:'';
+  return `
+    <div class="fg">
+      <div class="ff"><label class="fl">Full Name</label><input class="fi" type="text" value="${esc(p.name)}" id="fn-${p.id}" placeholder="Full name"></div>
+      <div><label class="fl">Date of Birth</label><input class="fi" type="date" value="${p.dob}" id="fd-${p.id}"></div>
+      <div><label class="fl">Position</label>
+        <select class="fi" id="fp-${p.id}">
+          <option value="" ${!p.pos?'selected':''}>Not set</option>
+          <option value="GK" ${p.pos==='GK'?'selected':''}>GK — Goalkeeper</option>
+          <option value="DEF" ${p.pos==='DEF'?'selected':''}>DEF — Defender</option>
+          <option value="MID" ${p.pos==='MID'?'selected':''}>MID — Midfielder</option>
+          <option value="FWD" ${p.pos==='FWD'?'selected':''}>FWD — Forward</option>
+        </select>
+      </div>
+      <div><label class="fl">Parent / Guardian</label><input class="fi" type="text" value="${esc(p.parent)}" id="fg-${p.id}" placeholder="Parent name"></div>
+      <div class="ff"><label class="fl">Contact Number</label><input class="fi" type="tel" value="${esc(p.phone)}" id="fph-${p.id}" placeholder="0XX XXX XXXX">
+        ${phoneActions}
+      </div>
+      <div class="ff"><label class="fl">Notes</label><input class="fi" type="text" value="${esc(p.notes)}" id="fno-${p.id}" placeholder="Any notes…"></div>
+    </div>
+    <button class="save-player-btn" onclick="savePlayer('${p.id}')">💾 Save Player Details</button>
+    <button class="rm-btn" onclick="removePlayer('${p.id}')">🗑 Remove from squad</button>`;
+}
+
+function renderStatsPanel(p,stats){
+  return `
+    <div class="stats-grid">
+      <div class="stat-box"><div class="sv">${stats.attRate}%</div><div class="sk">Attendance</div></div>
+      <div class="stat-box"><div class="sv">${stats.appearances}</div><div class="sk">Total Sessions</div></div>
+      <div class="stat-box"><div class="sv">${stats.gamesPlayed}</div><div class="sk">Games Played</div></div>
+      <div class="stat-box"><div class="sv">${stats.trainingSessions}</div><div class="sk">Training Sessions</div></div>
+      <div class="stat-box"><div class="sv">${stats.goals}</div><div class="sk">Goals Scored</div></div>
+      <div class="stat-box"><div class="sv">${stats.motmCount}</div><div class="sk">Player of Session</div></div>
+      <div class="stat-box"><div class="sv">${stats.starts}</div><div class="sk">Starts</div></div>
+      <div class="stat-box"><div class="sv">${stats.subApps}</div><div class="sk">Sub Appearances</div></div>
+    </div>`;
+}
+
+function renderFitnessPanel(p){
+  let html='';
+  if(!p.fitness||!p.fitness.length){
+    html='<div style="text-align:center;padding:16px;color:var(--mgrey);font-size:12px;font-style:italic">No fitness assessments yet</div>';
+  } else {
+    const sorted=[...p.fitness].sort((a,b)=>new Date(b.date)-new Date(a.date));
+    sorted.forEach((f,i)=>{
+      const prev=sorted[i+1];
+      const arrow=(curr,prevVal,higherIsBetter=true)=>{
+        if(!curr||!prevVal) return '';
+        const up=higherIsBetter?curr>prevVal:curr<prevVal;
+        const down=higherIsBetter?curr<prevVal:curr>prevVal;
+        return `<span class="fa ${up?'up':down?'down':'same'}">${up?'↑':down?'↓':'→'}</span>`;
+      };
+      html+=`<div class="fitness-entry">
+        <div class="fitness-date">${fmtDate(f.date)} ${f.notes?'· '+f.notes:''}</div>
+        <div class="fitness-metrics">
+          <div class="fm"><div class="fv">${f.beep||'—'}</div>${arrow(f.beep,prev?.beep)}<div class="fk">Beep</div></div>
+          <div class="fm"><div class="fv">${f.burpees||'—'}</div>${arrow(f.burpees,prev?.burpees)}<div class="fk">Burpees</div></div>
+          <div class="fm"><div class="fv">${f.situps||'—'}</div>${arrow(f.situps,prev?.situps)}<div class="fk">Sit-ups</div></div>
+          <div class="fm"><div class="fv">${f.jsquats||'—'}</div>${arrow(f.jsquats,prev?.jsquats)}<div class="fk">J.Squats</div></div>
+          <div class="fm"><div class="fv">${f.agility||'—'}</div>${arrow(f.agility,prev?.agility,false)}<div class="fk">Agility</div></div>
+          <div class="fm"><div class="fv">${f.laps||'—'}</div>${arrow(f.laps,prev?.laps)}<div class="fk">Laps</div></div>
+        </div>
+      </div>`;
+    });
+  }
+  // Add fitness form
+  html+=`<div class="fitness-form" id="ff-${p.id}">
+    <div style="font-size:11px;font-weight:700;color:var(--mgrey);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">New Assessment</div>
+    <div class="fitness-fg">
+      <div><label class="fl">Date</label><input class="fi" type="date" id="ffa-date-${p.id}"></div>
+      <div><label class="fl">Beep Test</label><input class="fi" type="number" step="0.1" placeholder="e.g. 7.2" id="ffa-beep-${p.id}"></div>
+      <div><label class="fl">Burpees</label><input class="fi" type="number" placeholder="0" id="ffa-burp-${p.id}"></div>
+      <div><label class="fl">Sit-ups</label><input class="fi" type="number" placeholder="0" id="ffa-sit-${p.id}"></div>
+      <div><label class="fl">Jump Squats</label><input class="fi" type="number" placeholder="0" id="ffa-jsq-${p.id}"></div>
+      <div><label class="fl">Agility (time)</label><input class="fi" type="text" placeholder="00:34:00" id="ffa-agl-${p.id}"></div>
+      <div><label class="fl">Laps</label><input class="fi" type="text" placeholder="10:00" id="ffa-lap-${p.id}"></div>
+      <div><label class="fl">Notes</label><input class="fi" type="text" placeholder="Optional" id="ffa-note-${p.id}"></div>
+    </div>
+    <button class="fitness-save" onclick="saveFitnessEntry('${p.id}')">Save Assessment</button>
+  </div>
+  <button class="add-fitness-btn" onclick="toggleFitnessForm('${p.id}')">+ Add Assessment</button>`;
+  return html;
+}
+
+function renderSquadAverages(){
+  // Calculate averages from most recent fitness entry per player
+  const metrics={beep:[],burpees:[],situps:[],jsquats:[]};
+  players.forEach(p=>{
+    if(p.fitness&&p.fitness.length){
+      const latest=[...p.fitness].sort((a,b)=>new Date(b.date)-new Date(a.date))[0];
+      if(latest.beep) metrics.beep.push(latest.beep);
+      if(latest.burpees) metrics.burpees.push(latest.burpees);
+      if(latest.situps) metrics.situps.push(latest.situps);
+      if(latest.jsquats) metrics.jsquats.push(latest.jsquats);
+    }
+  });
+  const avg=arr=>arr.length?+(arr.reduce((a,b)=>a+b,0)/arr.length).toFixed(1):'-';
+  const existing=document.getElementById('squadAvg');
+  const html=`<div class="squad-avg" id="squadAvg">
+    <div class="squad-avg-title">📊 Squad Averages (Latest Assessment)</div>
+    <div class="squad-avg-grid">
+      <div class="avg-box"><div class="av">${avg(metrics.beep)}</div><div class="ak">Beep Test</div></div>
+      <div class="avg-box"><div class="av">${avg(metrics.burpees)}</div><div class="ak">Burpees</div></div>
+      <div class="avg-box"><div class="av">${avg(metrics.situps)}</div><div class="ak">Sit-ups</div></div>
+      <div class="avg-box"><div class="av">${avg(metrics.jsquats)}</div><div class="ak">Jump Squats</div></div>
+      <div class="avg-box"><div class="av">${metrics.beep.length}</div><div class="ak">Players Assessed</div></div>
+      <div class="avg-box"><div class="av">${players.length}</div><div class="ak">Total Squad</div></div>
+    </div>
+  </div>`;
+  const list=document.getElementById('playersList');
+  if(existing) existing.outerHTML=html;
+  else list.insertAdjacentHTML('beforebegin',html);
+}
+
+function togglePc(id){
+  const b=document.getElementById(`pcb-${id}`);
+  const a=document.getElementById(`arr-${id}`);
+  b.classList.toggle('open');a.classList.toggle('open');
+}
+function switchPcTab(playerId,tab,el){
+  const body=document.getElementById(`pcb-${playerId}`);
+  body.querySelectorAll('.pc-tab').forEach(t=>t.classList.remove('active'));
+  body.querySelectorAll('.pc-panel').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById(`pp-${tab}-${playerId}`).classList.add('active');
+}
+function savePlayer(id){
+  const p=players.find(x=>x.id===id);
+  if(!p) return;
+  p.name    = document.getElementById(`fn-${id}`).value.trim()||p.name;
+  p.dob     = document.getElementById(`fd-${id}`).value;
+  p.pos     = document.getElementById(`fp-${id}`).value;
+  p.parent  = document.getElementById(`fg-${id}`).value;
+  p.phone   = document.getElementById(`fph-${id}`).value;
+  p.notes   = document.getElementById(`fno-${id}`).value;
+  save(K.PL,players);
+  renderPlayers();renderAttend();
+  showToast(`${p.name} saved ✓`);
+}
+function addPlayer(){
+  const id=(typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():`uid-${Date.now()}`;
+  const num=players.length+1;
+  players.push({id,num,name:`New Player ${num}`,dob:'',pos:'',parent:'',phone:'',notes:'',fitness:[]});
+  att[id]=null;
+  save(K.PL,players);save(K.AT,att);
+  renderPlayers();renderAttend();
+  setTimeout(()=>{
+    const c=document.getElementById(`pc-${id}`);
+    if(c){c.scrollIntoView({behavior:'smooth',block:'center'});togglePc(id);}
+  },100);
+}
+function removePlayer(id){
+  const p=players.find(x=>x.id===id);
+  if(!confirm(`Remove ${p.name}?`))return;
+  const name=p.name;
+  players=players.filter(x=>x.id!==id);
+  delete att[id];
+  // Renumber
+  players.forEach((pl,i)=>pl.num=i+1);
+  save(K.PL,players);save(K.AT,att);
+  renderPlayers();renderAttend();
+  showToast(`${name} removed`);
+}
+function toggleFitnessForm(id){
+  const f=document.getElementById(`ff-${id}`);
+  f.classList.toggle('open');
+  const d=document.getElementById(`ffa-date-${id}`);
+  if(f.classList.contains('open')&&d) d.value=new Date().toISOString().split('T')[0];
+}
+function saveFitnessEntry(id){
+  const p=players.find(x=>x.id===id);
+  if(!p) return;
+  const entry={
+    date:document.getElementById(`ffa-date-${id}`).value||new Date().toISOString().split('T')[0],
+    beep:parseFloat(document.getElementById(`ffa-beep-${id}`).value)||null,
+    burpees:parseInt(document.getElementById(`ffa-burp-${id}`).value)||null,
+    situps:parseInt(document.getElementById(`ffa-sit-${id}`).value)||null,
+    jsquats:parseInt(document.getElementById(`ffa-jsq-${id}`).value)||null,
+    agility:document.getElementById(`ffa-agl-${id}`).value||null,
+    laps:document.getElementById(`ffa-lap-${id}`).value||null,
+    notes:document.getElementById(`ffa-note-${id}`).value||'',
+  };
+  if(!p.fitness) p.fitness=[];
+  p.fitness.push(entry);
+  save(K.PL,players);
+  renderPlayers();
+  showToast('Assessment saved ✓');
+}
+
+// ═══════════════════════════════════════════════════════════
+// LINEUP
+// ═══════════════════════════════════════════════════════════
+function renderLineup(){
+  const locked=lu.locked;
+  document.getElementById('setupCard').style.display=locked?'none':'block';
+  document.getElementById('halfTabs').style.display=locked?'flex':'none';
+  document.getElementById('pitchWrap').style.display=locked?'block':'none';
+  document.getElementById('benchCard').style.display=locked?'block':'none';
+  document.getElementById('resetBtn').style.display=locked?'block':'none';
+  if(!locked){renderSetup();return;}
+  document.querySelectorAll('.half-tab').forEach((t,i)=>t.classList.toggle('active',i===curHalf-1));
+  renderPitch();renderBench();
+  const isGame=['Game','Tournament'].includes(document.getElementById('sType').value);
+  document.getElementById('subsCard').style.display=curHalf===2?'block':'none';
+  if(curHalf===2) renderSubsLog();
+  document.getElementById('penCard').style.display=(locked&&isGame)?'block':'none';
+  if(locked&&isGame) renderPenSlots();
+}
+function renderSetup(){
+  document.querySelectorAll('#fmtBtns .sel-btn').forEach((b,i)=>{ b.classList.toggle('active',[7,9,11][i]===lu.format); });
+  const hasFmt=lu.format!=null;
+  document.getElementById('formSec').style.display=hasFmt?'block':'none';
+  if(hasFmt){
+    const fb=document.getElementById('formBtns');
+    fb.innerHTML='';
+    Object.keys(FORMS[lu.format]).forEach(name=>{
+      const b=document.createElement('button');
+      b.className='sel-btn'+(name===lu.formation?' active':'');
+      b.textContent=name;b.onclick=()=>setFormation(name);
+      fb.appendChild(b);
+    });
+  }
+  document.getElementById('lockBtn').style.display=(lu.format&&lu.formation)?'block':'none';
+}
+function setFormat(f){ if(lu.locked)return; lu.format=f;lu.formation=null;save(K.LU,lu);renderSetup(); }
+function setFormation(n){ if(lu.locked)return; lu.formation=n;save(K.LU,lu);renderSetup(); }
+function lockLineup(){
+  if(!lu.format||!lu.formation){showToast('Select format and formation first');return;}
+  lu.locked=true;save(K.LU,lu);curHalf=1;renderLineup();showToast('Lineup locked!');
+}
+function resetLineup(){
+  if(!confirm('Reset lineup?'))return;
+  lu={format:null,formation:null,locked:false,h1:{},h2:{},subs:[],pen:Array(8).fill(null)};
+  save(K.LU,lu);curHalf=1;renderLineup();
+}
+function setHalf(h){
+  curHalf=h;
+  if(h===2&&!Object.keys(lu.h2).length){ lu.h2={...lu.h1};save(K.LU,lu); }
+  renderLineup();
+}
+function renderPitch(){
+  const pitch=document.getElementById('pitch');
+  pitch.innerHTML='';
+  const positions=FORMS[lu.format][lu.formation];
+  const hd=curHalf===1?lu.h1:lu.h2;
+  positions.forEach(pos=>{
+    const pid=hd[pos.id];
+    const player=pid?players.find(p=>p.id===pid):null;
+    const fn=player?player.name.split(' ')[0]:null;
+    const spot=document.createElement('div');
+    spot.className=`pos-spot ${player?'filled '+pos.role:''}`;
+    spot.style.left=pos.x+'%';spot.style.top=pos.y+'%';
+    spot.onclick=()=>openPosPicker(pos);
+    spot.innerHTML=`<div class="pos-circle">${player?`<span>${fn}</span>`:pos.label}</div><div class="pos-lbl">${pos.label}</div>`;
+    pitch.appendChild(spot);
+  });
+}
+function renderBench(){
+  const bench=document.getElementById('benchList');
+  const hd=curHalf===1?lu.h1:lu.h2;
+  const assigned=Object.values(hd).filter(Boolean);
+  const subs=players.filter(p=>(att[p.id]==='x'||att[p.id]==='L')&&!assigned.includes(p.id));
+  bench.innerHTML=subs.length?subs.map(p=>`<span class="bench-chip">${p.num}. ${p.name.split(' ')[0]}</span>`).join('')
+    :'<span style="font-size:12px;color:var(--mgrey);font-style:italic">All present players assigned</span>';
+}
+function renderSubsLog(){
+  const list=document.getElementById('subsList');
+  if(!lu.subs||!lu.subs.length){
+    list.innerHTML='<div style="font-size:12px;color:var(--mgrey);font-style:italic">No substitutions yet</div>';return;
+  }
+  list.innerHTML=lu.subs.map(s=>`
+    <div class="sub-row">
+      <span class="on-badge">ON</span><span style="font-weight:600">${s.onName}</span>
+      <span style="color:var(--mgrey)">for</span>
+      <span class="off-badge">OFF</span><span style="font-weight:600">${s.offName}</span>
+      ${s.min?`<span style="color:var(--mgrey);margin-left:auto">${s.min}'</span>`:''}
+    </div>`).join('');
+}
+function openPosPicker(pos){
+  const hd=curHalf===1?lu.h1:lu.h2;
+  const present=players.filter(p=>att[p.id]==='x'||att[p.id]==='L');
+  const posMap={gk:'GK',def:'DEF',mid:'MID',fwd:'FWD'};
+  const target=posMap[pos.role]||'';
+  const matching=present.filter(p=>p.pos===target);
+  const others=present.filter(p=>p.pos!==target);
+  openModal(`Assign ${pos.label}`,(p)=>{
+    if(curHalf===2){
+      const prev=lu.h1[pos.id];
+      if(prev&&prev!==p.id){
+        const pp=players.find(x=>x.id===prev);
+        lu.subs.push({onName:p.name,onId:p.id,offName:pp?pp.name:'Unknown',pos:pos.label,min:null});
+      }
+    }
+    Object.keys(hd).forEach(pid=>{ if(hd[pid]===p.id)delete hd[pid]; });
+    hd[pos.id]=p.id;
+    save(K.LU,lu);closeModal();
+    renderPitch();renderBench();
+    if(curHalf===2)renderSubsLog();
+    showToast(`${p.name.split(' ')[0]} → ${pos.label}`);
+  },{matching,others,currentId:hd[pos.id],pos});
+}
+function renderPenSlots(){
+  const slots=document.getElementById('penSlots');
+  if(!lu.pen||lu.pen.length<8) lu.pen=Array(8).fill(null);
+  slots.innerHTML='';
+  const mk=(idx,lbl)=>{
+    const pid=lu.pen[idx];
+    const pl=pid?players.find(p=>p.id===pid):null;
+    const d=document.createElement('div');d.className='pen-slot';
+    d.innerHTML=`<div class="pen-num">${lbl}</div><div class="pen-name">${pl?pl.name:'—'}</div>
+      ${pl?`<button class="pen-clear" onclick="clearPen(${idx})">✕</button>`:`<button class="pen-pick" onclick="openPenPicker(${idx})">Pick</button>`}`;
+    return d;
+  };
+  const t1=document.createElement('div');t1.className='pen-sec-lbl';t1.textContent='Penalty Takers';slots.appendChild(t1);
+  for(let i=0;i<5;i++) slots.appendChild(mk(i,`${i+1}.`));
+  const t2=document.createElement('div');t2.className='pen-sec-lbl';t2.textContent='Backup Takers';slots.appendChild(t2);
+  for(let i=5;i<8;i++) slots.appendChild(mk(i,`B${i-4}.`));
+}
+function openPenPicker(idx){
+  const hd=Object.keys(lu.h2).length?lu.h2:lu.h1;
+  const finishers=Object.values(hd).filter(Boolean).map(n=>players.find(p=>p.id===n)).filter(Boolean);
+  if(!finishers.length){showToast('Assign 2nd half lineup first');return;}
+  openModal(`Penalty Taker ${idx<5?idx+1:'Backup '+(idx-4)}`,(p)=>{ lu.pen[idx]=p.id;save(K.LU,lu);renderPenSlots();closeModal(); },{list:finishers});
+}
+function clearPen(idx){ lu.pen[idx]=null;save(K.LU,lu);renderPenSlots(); }
+
+// ═══════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════
+function openModal(title,cb,opts={}){
+  document.getElementById('modalTitle').textContent=title;
+  const body=document.getElementById('modalBody');
+  body.innerHTML='';
+  const addGroup=(lbl,group,isMatch)=>{
+    if(!group||!group.length)return;
+    if(lbl){const d=document.createElement('div');d.className='modal-sec';d.textContent=lbl;body.appendChild(d);}
+    group.forEach(p=>{
+      const hd=opts.pos?(curHalf===1?lu.h1:lu.h2):null;
+      const inPosId=hd?Object.entries(hd).find(([pid,n])=>n===p.id&&pid!==(opts.pos?opts.pos.id:null)):null;
+      const inPosLabel=inPosId&&opts.pos?FORMS[lu.format][lu.formation].find(x=>x.id===inPosId[0])?.label:'';
+      const item=document.createElement('div');item.className='pi';
+      item.innerHTML=`<div class="pi-num">${p.num}</div><div class="pi-name">${p.name}</div>
+        ${p.pos?`<span class="pi-tag ${isMatch?'match':''}">${p.pos}</span>`:''}
+        ${inPosLabel?`<span style="font-size:11px;color:var(--mgrey)">(${inPosLabel})</span>`:''}`;
+      item.onclick=()=>cb(p);
+      body.appendChild(item);
+    });
+  };
+  if(opts.matching){ addGroup('⭐ Best Position Match',opts.matching,true); addGroup('All Available Players',opts.others||[],false); }
+  else { addGroup('',opts.list||[],false); }
+  if(opts.pos&&opts.currentId){
+    const btn=document.createElement('button');btn.className='modal-remove';btn.textContent='✕ Remove from position';
+    btn.onclick=()=>{ const hd=curHalf===1?lu.h1:lu.h2;delete hd[opts.pos.id];save(K.LU,lu);closeModal();renderPitch();renderBench(); };
+    body.appendChild(btn);
+  }
+  document.getElementById('overlay').classList.add('open');
+}
+function closeModal(){ document.getElementById('overlay').classList.remove('open'); }
+
+// ═══════════════════════════════════════════════════════════
+// HISTORY
+// ═══════════════════════════════════════════════════════════
+function setHistFilter(f,el){
+  histFilter=f;
+  document.querySelectorAll('.hf-btn').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');
+  renderHistory();
+}
+function renderHistory(){
+  const hist=load(K.HI,[]);
+  const list=document.getElementById('histList');
+  const filtered=histFilter==='All'?hist:hist.filter(s=>s.type===histFilter);
+  if(!filtered.length){
+    list.innerHTML=`<div class="h-empty"><div class="big">📅</div><strong>No sessions yet</strong><br>Save a session from the Attend tab</div>`;
+    return;
+  }
+  list.innerHTML=filtered.map(s=>{
+    const pNames=(s.present||[]).map(p=>p.name).join(', ')||'None';
+    const lNames=(s.late||[]).map(p=>p.name).join(', ')||null;
+    const iNames=(s.injured||[]).length?(s.injured).map(p=>p.name).join(', '):null;
+    const aNames=(s.absent||[]).map(p=>p.name).join(', ')||'None';
+    const scText=s.scorers&&s.scorers.length?s.scorers.map(sc=>`${sc.name} (${sc.goals})`).join(', '):null;
+    const resultClass=s.result==='Win'?'win':s.result==='Draw'?'draw':s.result==='Loss'?'loss':'';
+    const scoreText=s.score?`${s.score.gf}–${s.score.ga}`:'';
+    const tagHtml=s.tags&&s.tags.length?`<div class="hc-tags">${s.tags.map(t=>`<span class="htag">${t}</span>`).join('')}</div>`:'';
+    return `<div class="hc">
+      <div class="hc-hdr">
+        <div class="hc-date">${fmtDate(s.date)}</div>
+        <div class="hc-type">${s.type}</div>
+        ${s.opp?`<div class="hc-opp">vs ${s.opp}</div>`:''}
+        ${s.result?`<div class="hc-result ${resultClass}">${scoreText} ${s.result.toUpperCase()}</div>`:''}
+      </div>
+      <div class="hc-stats">
+        <div class="hs hp"><div class="hn">${(s.present||[]).length}</div><div class="hl">Present</div></div>
+        <div class="hs hlt"><div class="hn">${(s.late||[]).length}</div><div class="hl">Late</div></div>
+        <div class="hs hi"><div class="hn">${(s.injured||[]).length}</div><div class="hl">Injured</div></div>
+        <div class="hs ha"><div class="hn">${(s.absent||[]).length}</div><div class="hl">Absent</div></div>
+      </div>
+      ${tagHtml}
+      <div class="hc-body">
+        <strong>✅ Present</strong><br>${pNames}
+        ${lNames?`<br><br><strong>⏰ Late</strong><br>${lNames}`:''}
+        ${iNames?`<br><br><strong>🤕 Injured</strong><br>${iNames}`:''}
+        <br><br><strong>❌ Absent</strong><br>${aNames}
+        ${scText?`<br><br><strong>⚽ Scorers</strong><br>${scText}`:''}
+        ${s.motm&&s.motm.name?`<br><br><strong>🏆 Player of Session</strong><br>${s.motm.name}`:''}
+        ${s.competition?`<br><br><strong>🏅 Competition</strong><br>${s.competition}`:''}
+        ${s.venue?`<br><br><strong>📍 Venue</strong><br>${s.venue}`:''}
+        ${s.notes?`<br><br><strong>📝 Notes</strong><br>${s.notes}`:''}
+        ${(s.type==='Fitness Assessment'||s.type==='Skills Assessment')&&s.fitnessData&&s.fitnessData.length?renderHistFitnessData(s):''}
+      </div>
+      <div class="hc-acts">
+        <button class="hc-btn share" onclick="shareHist('${s.id}')">💬 Share</button>
+        ${(s.type==='Fitness Assessment'||s.type==='Skills Assessment')?`<button class="hc-btn" style="background:var(--navy2);color:#fff" onclick="editFitnessSession('${s.id}')">✏️ Edit</button>`:''}
+        <button class="hc-btn del" onclick="delHist('${s.id}')">🗑 Delete</button>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+
+// Render fitness data inside a history card
+function renderHistFitnessData(s){
+  if(!s.fitnessData||!s.fitnessData.length) return '';
+  const rows = s.fitnessData.map(d=>{
+    const metrics = [
+      d.beep?`Beep: ${d.beep}`:'',
+      d.burpees?`Burpees: ${d.burpees}`:'',
+      d.situps?`Sit-ups: ${d.situps}`:'',
+      d.jsquats?`J.Squats: ${d.jsquats}`:'',
+      d.agility?`Agility: ${d.agility}`:'',
+      d.laps?`Laps: ${d.laps}`:'',
+    ].filter(Boolean);
+    return `<div class="hfg-row">
+      <div class="hfg-name">${d.playerName}</div>
+      <div class="hfg-metrics">${metrics.map(m=>`<span class="hfg-m">${m}</span>`).join('')}</div>
+    </div>`;
+  }).join('');
+  return `<br><br><strong>💪 Assessment Results</strong><div class="hist-fitness-grid" style="margin-top:8px">${rows}</div>`;
+}
+
+// Edit a fitness session — load its data into FA capture and switch to Attend tab
+function editFitnessSession(sessionId){
+  const hist = load(K.HI,[]);
+  const s = hist.find(x=>x.id===sessionId);
+  if(!s) return;
+
+  // Load session header
+  document.getElementById('sDate').value = s.date;
+  document.getElementById('sType').value = s.type;
+  save(K.HD,{date:s.date, type:s.type, opp:'', notes:s.notes||''});
+  updateBadge(); toggleGameFields();
+
+  // Load attendance
+  players.forEach(p=>att[p.id]=null);
+  (s.present||[]).forEach(p=>{ att[p.id]='x'; });
+  (s.late||[]).forEach(p=>{ att[p.id]='L'; });
+  (s.injured||[]).forEach(p=>{ att[p.id]='I'; });
+  save(K.AT,att);
+
+  // Load fitness data into faData
+  faData = {};
+  if(s.fitnessData){
+    s.fitnessData.forEach(d=>{
+      faData[d.playerId] = {
+        beep:d.beep, burpees:d.burpees, situps:d.situps,
+        jsquats:d.jsquats, agility:d.agility, laps:d.laps, notes:d.notes,
+      };
+    });
+  }
+
+  renderAttend();
+  renderFaCapture();
+  showTab('attend',0);
+  showToast('Session loaded for editing');
+}
+
+function shareHist(id){
+  const hist=load(K.HI,[]);
+  const s=hist.find(x=>x.id===id);if(!s)return;
+  let txt=`GSC U13 — ${s.type}\n${fmtDate(s.date)}${s.opp?' vs '+s.opp:''}\n`;
+  if(s.result) txt+=`Result: ${s.score.gf}–${s.score.ga} ${s.result}\n`;
+  txt+=`${'─'.repeat(28)}\n`;
+  txt+=`✅ PRESENT (${(s.present||[]).length}): ${(s.present||[]).map(p=>p.name).join(', ')||'None'}\n`;
+  if(s.late&&s.late.length) txt+=`⏰ LATE: ${s.late.map(p=>p.name).join(', ')}\n`;
+  if(s.injured&&s.injured.length) txt+=`🤕 INJURED: ${s.injured.map(p=>p.name).join(', ')}\n`;
+  txt+=`❌ ABSENT (${(s.absent||[]).length}): ${(s.absent||[]).map(p=>p.name).join(', ')||'None'}\n`;
+  if(s.scorers&&s.scorers.length) txt+=`⚽ SCORERS: ${s.scorers.map(sc=>`${sc.name} (${sc.goals})`).join(', ')}\n`;
+  if(s.motm&&s.motm.name) txt+=`🏆 PLAYER OF SESSION: ${s.motm.name}\n`;
+  txt+=`${'─'.repeat(28)}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(txt)}`,'_blank');
+}
+function delHist(id){
+  if(!confirm('Delete this session?'))return;
+  const hist=load(K.HI,[]).filter(s=>s.id!==id);
+  save(K.HI,hist);renderHistory();showToast('Deleted');
+}
+
+// ═══════════════════════════════════════════════════════════
+// BACKUP & RESTORE
+// ═══════════════════════════════════════════════════════════
+function exportData(){
+  const data={version:2,exportedAt:new Date().toISOString(),players:load(K.PL,[]),history:load(K.HI,[]),scorers:load(K.SC,[]),lineup:load(K.LU,{}),session:load(K.HD,{}),attend:load(K.AT,{})};
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:'application/json'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;a.download=`GSC_U13_Backup_${new Date().toISOString().split('T')[0]}.json`;a.click();
+  URL.revokeObjectURL(url);
+  document.getElementById('backupInfo').textContent=`✓ Exported ${new Date().toLocaleDateString()}`;
+  showToast('Backup saved!');
+}
+function importData(event){
+  const file=event.target.files[0];if(!file)return;
+  const reader=new FileReader();
+  reader.onload=(e)=>{
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.version||!data.players){showToast('Invalid backup file');return;}
+      if(!confirm(`Restore backup from ${data.exportedAt?data.exportedAt.split('T')[0]:'unknown'}?\nThis replaces current data.`))return;
+      if(data.players) save(K.PL,data.players);
+      if(data.history) save(K.HI,data.history);
+      if(data.scorers) save(K.SC,data.scorers);
+      if(data.lineup)  save(K.LU,data.lineup);
+      if(data.session) save(K.HD,data.session);
+      if(data.attend)  save(K.AT,data.attend);
+      players=load(K.PL,PRELOADED_PLAYERS);
+      scorers=load(K.SC,[]);att=load(K.AT,{});
+      lu=load(K.LU,{format:null,formation:null,locked:false,h1:{},h2:{},subs:[],pen:Array(8).fill(null)});
+      players.forEach(p=>{if(!(p.id in att))att[p.id]=null;});
+      renderPlayers();renderAttend();
+      document.getElementById('backupInfo').textContent='✓ Restored successfully';
+      showToast('Backup restored!');
+    }catch(err){showToast('Could not read file');}
+    event.target.value='';
+  };
+  reader.readAsText(file);
+}
+
+// ═══════════════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════════════
+function showTab(name,idx){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById(`sec-${name}`).classList.add('active');
+  document.querySelectorAll('.tab')[idx].classList.add('active');
+  document.querySelectorAll('.ni')[idx].classList.add('active');
+  if(name==='history') renderHistory();
+  if(name==='lineup')  renderLineup();
+  if(name==='players') renderPlayers();
+  window.scrollTo(0,0);
+}
+
+// ═══════════════════════════════════════════════════════════
+// UTILS
+// ═══════════════════════════════════════════════════════════
+function showToast(msg){ const t=document.getElementById('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200); }
+function fmtDob(d){ if(!d)return '';const dt=new Date(d);return dt.toLocaleDateString('en-ZA',{day:'2-digit',month:'short',year:'numeric'}); }
+function fmtDate(d){ if(!d)return '—';const dt=new Date(d);return dt.toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short',year:'numeric'}); }
+function esc(s){ return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/'/g,'&#39;').replace(/</g,'&lt;'); }
+
+
+// ═══════════════════════════════════════════════════════════
+// FITNESS ASSESSMENT CAPTURE
+// ═══════════════════════════════════════════════════════════
+
+// In-progress fitness data: {playerId: {beep, burpees, situps, jsquats, agility, laps, notes}}
+let faData = {};
+
+function renderFaCapture(){
+  const list = document.getElementById('faPlayerList');
+  list.innerHTML = '';
+  // Only show present + late players (those marked today)
+  const available = players.filter(p => att[p.id]==='x' || att[p.id]==='L' || att[p.id]===null);
+  // Actually show all players — coach marks present AND enters data
+  players.forEach(p => {
+    const d = faData[p.id] || {};
+    const hasDone = d.beep || d.burpees || d.situps || d.jsquats || d.agility || d.laps;
+    const row = document.createElement('div');
+    row.className = 'fa-player-row';
+    row.innerHTML = `
+      <div class="fa-player-hdr" onclick="toggleFaPlayer('${p.id}')">
+        <div class="fa-pnum">${p.num}</div>
+        <div class="fa-pname">${p.name}</div>
+        ${hasDone ? `<div class="fa-status done">✓ Done</div>` : `<div class="fa-status pending">Pending</div>`}
+        <div class="fa-parr" id="faarr-${p.id}">▾</div>
+      </div>
+      <div class="fa-fields" id="fafields-${p.id}">
+        <div class="fa-grid">
+          <div class="fa-field"><label>Beep Test</label><input type="number" step="0.1" placeholder="e.g. 7.2" value="${d.beep||''}" id="fa-beep-${p.id}" oninput="saveFaField('${p.id}','beep',this.value)"></div>
+          <div class="fa-field"><label>Burpees</label><input type="number" placeholder="0" value="${d.burpees||''}" id="fa-burp-${p.id}" oninput="saveFaField('${p.id}','burpees',this.value)"></div>
+          <div class="fa-field"><label>Sit-ups</label><input type="number" placeholder="0" value="${d.situps||''}" id="fa-sit-${p.id}" oninput="saveFaField('${p.id}','situps',this.value)"></div>
+          <div class="fa-field"><label>Jump Squats</label><input type="number" placeholder="0" value="${d.jsquats||''}" id="fa-jsq-${p.id}" oninput="saveFaField('${p.id}','jsquats',this.value)"></div>
+          <div class="fa-field"><label>Agility (time)</label><input type="text" placeholder="00:34:00" value="${d.agility||''}" id="fa-agl-${p.id}" oninput="saveFaField('${p.id}','agility',this.value)"></div>
+          <div class="fa-field"><label>Laps</label><input type="text" placeholder="10:00" value="${d.laps||''}" id="fa-lap-${p.id}" oninput="saveFaField('${p.id}','laps',this.value)"></div>
+          <div class="fa-field full"><label>Notes</label><input type="text" placeholder="Any notes…" value="${d.notes||''}" id="fa-note-${p.id}" oninput="saveFaField('${p.id}','notes',this.value)"></div>
+        </div>
+        <div class="fa-save-row">
+          <button class="fa-save-btn" onclick="confirmFaPlayer('${p.id}')">✓ Done — Next Player</button>
+          <button class="fa-clear-btn" onclick="clearFaPlayer('${p.id}')">Clear</button>
+        </div>
+      </div>`;
+    list.appendChild(row);
+  });
+  updateFaProgress();
+}
+
+function toggleFaPlayer(id){
+  const fields = document.getElementById(`fafields-${id}`);
+  const arr    = document.getElementById(`faarr-${id}`);
+  const open   = fields.classList.toggle('open');
+  arr.classList.toggle('open', open);
+}
+
+function saveFaField(id, field, value){
+  if(!faData[id]) faData[id] = {};
+  if(field==='beep') faData[id][field] = parseFloat(value)||null;
+  else if(['burpees','situps','jsquats'].includes(field)) faData[id][field] = parseInt(value)||null;
+  else faData[id][field] = value||null;
+}
+
+function confirmFaPlayer(id){
+  const d = faData[id]||{};
+  const hasDone = d.beep||d.burpees||d.situps||d.jsquats||d.agility||d.laps;
+  if(!hasDone){ showToast('Enter at least one metric first'); return; }
+  // Mark as present if not already
+  if(!att[id]) { att[id]='x'; save(K.AT,att); }
+  // Close this row and open next
+  const fields = document.getElementById(`fafields-${id}`);
+  const arr    = document.getElementById(`faarr-${id}`);
+  fields.classList.remove('open'); arr.classList.remove('open');
+  updateFaProgress();
+  renderFaCapture();
+  // Scroll to next pending
+  const allRows = document.querySelectorAll('.fa-player-row');
+  const currentIdx = players.findIndex(p=>p.id===id);
+  for(let i=currentIdx+1;i<players.length;i++){
+    const next = players[i];
+    const nd = faData[next.id]||{};
+    const hasDoneNext = nd.beep||nd.burpees||nd.situps||nd.jsquats||nd.agility||nd.laps;
+    if(!hasDoneNext){
+      toggleFaPlayer(next.id);
+      setTimeout(()=>{ const el=document.getElementById(`fafields-${next.id}`); if(el)el.scrollIntoView({behavior:'smooth',block:'center'}); },100);
+      break;
+    }
+  }
+  showToast('Saved — next player ↓');
+}
+
+function clearFaPlayer(id){
+  faData[id] = {};
+  renderFaCapture();
+}
+
+function updateFaProgress(){
+  const total = players.length;
+  const done  = players.filter(p=>{ const d=faData[p.id]||{}; return d.beep||d.burpees||d.situps||d.jsquats||d.agility||d.laps; }).length;
+  document.getElementById('faProgress').textContent = `${done}/${total}`;
+}
+
+// Called from saveSession — embeds fitness data into the session and syncs to player profiles
+function embedFitnessIntoSession(session){
+  const date = session.date;
+  const fitnessEntries = [];
+  players.forEach(p=>{
+    const d = faData[p.id];
+    if(!d) return;
+    const hasData = d.beep||d.burpees||d.situps||d.jsquats||d.agility||d.laps;
+    if(!hasData) return;
+    const entry = {
+      playerId: p.id,
+      playerName: p.name,
+      beep: d.beep||null,
+      burpees: d.burpees||null,
+      situps: d.situps||null,
+      jsquats: d.jsquats||null,
+      agility: d.agility||null,
+      laps: d.laps||null,
+      notes: d.notes||'',
+    };
+    fitnessEntries.push(entry);
+    // Sync to player fitness profile
+    const player = players.find(x=>x.id===p.id);
+    if(player){
+      if(!player.fitness) player.fitness=[];
+      // Remove existing entry for same date to avoid duplicates
+      player.fitness = player.fitness.filter(f=>f.date!==date);
+      player.fitness.push({date, beep:d.beep||null, burpees:d.burpees||null, situps:d.situps||null, jsquats:d.jsquats||null, agility:d.agility||null, laps:d.laps||null, notes:d.notes||''});
+    }
+  });
+  save(K.PL, players);
+  session.fitnessData = fitnessEntries;
+  return session;
+}
+
+// Reset FA data after session saved
+function resetFaData(){
+  faData = {};
+}
+
+// ═══════════════════════════════════════════════════════════
+// BOOT
+// ═══════════════════════════════════════════════════════════
+loadHdr();
+document.getElementById('sDate').addEventListener('change',saveHdr);
+document.getElementById('sType').addEventListener('change',onTypeChange);
+restoreTags();
+renderAttend();
+</script>
+</body>
+</html>
