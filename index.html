@@ -641,7 +641,8 @@ const FORMS={
 // ═══════════════════════════════════════════════════════════
 let players  = load(K.PL, null);
 let history  = load(K.HI, null);
-
+  
+let activeSessionId = null;
 // First launch: inject preloaded data
 if(!players){ players=JSON.parse(JSON.stringify(PRELOADED_PLAYERS)); save(K.PL,players); }
 if(!history){ history=JSON.parse(JSON.stringify(PRELOADED_HISTORY)); save(K.HI,history); }
@@ -903,11 +904,8 @@ function saveSession(){
   }else{hist.unshift(session);}
   save(K.HI,hist);
 
-  // Reset
-  players.forEach(p=>att[p.id]=null);
-  scorers=[];motm=null;tags=[];
-  if(isFitnessSession) resetFaData();
-  save(K.AT,att);save(K.SC,scorers);save(K.MO,null);save(K.TG,[]);
+ // Reset
+ // Keep session data — do not reset
   document.getElementById('attNotes').value='';
   document.getElementById('gGF').value='';document.getElementById('gGA').value='';
   renderAttend();renderScorers();renderMotm();restoreTags();
@@ -1382,7 +1380,9 @@ function renderHistory(){
       </div>
       <div class="hc-acts">
         <button class="hc-btn share" onclick="shareHist('${s.id}')">💬 Share</button>
-        ${(s.type==='Fitness Assessment'||s.type==='Skills Assessment')?`<button class="hc-btn" style="background:var(--navy2);color:#fff" onclick="editFitnessSession('${s.id}')">✏️ Edit</button>`:''}
+        <button class="hc-btn" style="background:var(--navy2);color:#fff" onclick="loadSessionForEdit('${s.id}')">
+  ✏️ Edit
+</button>
         <button class="hc-btn del" onclick="delHist('${s.id}')">🗑 Delete</button>
       </div>
     </div>`;
@@ -1678,6 +1678,51 @@ document.getElementById('sDate').addEventListener('change',saveHdr);
 document.getElementById('sType').addEventListener('change',onTypeChange);
 restoreTags();
 renderAttend();
+  loadHdr();
+document.getElementById('sDate').addEventListener('change',saveHdr);
+document.getElementById('sType').addEventListener('change',onTypeChange);
+restoreTags();
+renderAttend();
+
+function loadSessionForEdit(sessionId){
+    const hist = load(K.HI, []);
+    const s = hist.find(x => x.id === sessionId);
+    if(!s) return;
+
+    activeSessionId = s.id;
+
+    // Header
+    document.getElementById('sDate').value = s.date;
+    document.getElementById('sType').value = s.type;
+
+    // Attendance
+    players.forEach(p => att[p.id] = null);
+
+    (s.present || []).forEach(p => att[p.id] = 'x');
+    (s.late || []).forEach(p => att[p.id] = 'L');
+    (s.injured || []).forEach(p => att[p.id] = 'I');
+    (s.absent || []).forEach(p => att[p.id] = 'A');
+
+    // Restore scorers & MOTM
+    scorers = s.scorers || [];
+    motm = s.motm || null;
+
+    save(K.AT, att);
+    save(K.SC, scorers);
+    save(K.MO, motm);
+
+    renderAttend();
+    renderScorers();
+    renderMotm();
+
+    showTab('attend',0);
+    showToast('Editing session');
+}
+
+</script>
+</body>
+</html>
+``
 </script>
 </body>
 </html>
