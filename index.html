@@ -370,14 +370,55 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="showTab('attend',0)">✓ Attend</div>
-  <div class="tab" onclick="showTab('players',1)">👤 Players</div>
-  <div class="tab" onclick="showTab('lineup',2)">⚽ Lineup</div>
-  <div class="tab" onclick="showTab('history',3)">📅 History</div>
+<div class="tab active" onclick="showTab('home',0)">🏠 Home</div>
+<div class="tab" onclick="showTab('attend',1)">✓ Attend</div>
+<div class="tab" onclick="showTab('players',2)">👤 Players</div>
+<div class="tab" onclick="showTab('lineup',3)">⚽ Lineup</div>
+<div class="tab" onclick="showTab('history',4)">📅 History</div>
 </div>
+<!-- ═══ HOME ═══ -->
+<div class="sec active" id="sec-home">
 
+  <div class="card" style="padding:16px">
+
+    <div style="font-size:18px;font-weight:700;margin-bottom:10px">
+      Welcome Coach 👋
+    </div>
+
+    <div style="font-size:13px;color:var(--mgrey);margin-bottom:14px">
+      Start a new session or jump back into your work
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+
+      <button class="save-btn" onclick="quickStart('Practice')" style="background:var(--navy)">
+        🏃 Practice
+      </button>
+
+      <button class="save-btn" onclick="quickStart('Game')" style="background:var(--green)">
+        ⚽ Game
+      </button>
+
+      <button class="save-btn" onclick="quickStart('Fitness Assessment')" style="background:#2E86C1">
+        💪 Fitness
+      </button>
+
+      <button class="save-btn" onclick="quickStart('Tournament')" style="background:var(--gold);color:#000">
+        🏆 Tournament
+      </button>
+
+    </div>
+
+    <div style="margin-top:16px;display:flex;gap:8px">
+      <button class="hc-btn" onclick="showTab('players',2)">👤 Squad</button>
+      <button class="hc-btn" onclick="showTab('history',4)">📅 History</button>
+    </div>
+
+  </div>
+
+</div>
 <!-- ═══ ATTEND ═══ -->
-<div class="sec active" id="sec-attend">
+<div class="sec" id="sec-attend">
   <div class="card" id="attList"></div>
 
   <!-- MOTM / Player of Session -->
