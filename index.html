@@ -370,14 +370,41 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- TABS -->
 <div class="tabs">
-  <div class="tab active" onclick="showTab('attend',0)">✓ Attend</div>
-  <div class="tab" onclick="showTab('players',1)">👤 Players</div>
-  <div class="tab" onclick="showTab('lineup',2)">⚽ Lineup</div>
-  <div class="tab" onclick="showTab('history',3)">📅 History</div>
+  <div class="tab active" onclick="showTab('home',0)">🏠 Home</div>
+  <div class="tab" onclick="showTab('attend',1)">✓ Attend</div>
+  <div class="tab" onclick="showTab('players',2)">👥 Squad</div>
+  <div class="tab" onclick="showTab('lineup',3)">⚽ Lineup</div>
+  <div class="tab" onclick="showTab('history',4)">📅 History</div>
 </div>
+<!-- ═══ HOME ═══ -->
+<div class="sec active" id="sec-home">
 
+  <div class="card" style="padding:16px">
+    <div style="font-size:12px;color:var(--mgrey);margin-bottom:4px">Team</div>
+    <div style="font-size:18px;font-weight:700;color:var(--navy)">
+      George Soccer Club U13
+    </div>
+  </div>
+
+  <div class="card" style="padding:16px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:10px">Start Session</div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+      <div class="home-tile" onclick="quickStart('Practice')">🏃 Practice</div>
+      <div class="home-tile" onclick="quickStart('Game')">🏆 Game</div>
+      <div class="home-tile" onclick="quickStart('Tournament')">🥇 Tournament</div>
+      <div class="home-tile" onclick="quickStart('Fitness Assessment')">💪 Fitness</div>
+    </div>
+  </div>
+
+  <div class="card" style="padding:16px">
+    <div style="font-size:13px;font-weight:700;margin-bottom:6px">Last Session</div>
+    <div id="lastSessionText" style="color:var(--mgrey)">No sessions yet</div>
+  </div>
+
+</div>
 <!-- ═══ ATTEND ═══ -->
-<div class="sec active" id="sec-attend">
+<div class="sec" id="sec-attend">
   <div class="card" id="attList"></div>
 
   <!-- MOTM / Player of Session -->
