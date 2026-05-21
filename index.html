@@ -1762,7 +1762,11 @@ loadHdr();
 document.getElementById('sDate').addEventListener('change',saveHdr);
 document.getElementById('sType').addEventListener('change',onTypeChange);
 restoreTags();
+
 renderAttend();
+renderPlayers();
+
+showTab('attend', 1);
 
 function loadSessionForEdit(sessionId){
     const hist = load(K.HI, []);
