@@ -1820,15 +1820,15 @@ updateLastSession();
 function quickStart(type){
 
   // ✅ Ask before clearing session
-const hasData =
-  Object.values(att).some(v => v) ||   // attendance
-  scorers.length ||                   // goals
-  motm ||                              // MOTM selected
-  tags.length;                         // session tags
+  const hasData =
+    Object.values(att).some(v => v) ||
+    scorers.length ||
+    motm ||
+    tags.length;
 
-if(hasData){
-  if(!confirm("Start new session? Current data will be cleared.")) return;
-}
+  if(hasData){
+    if(!confirm("Start new session? Current data will be cleared.")) return;
+  }
 
   // ✅ Set session type
   document.getElementById('sType').value = type;
@@ -1838,6 +1838,39 @@ if(hasData){
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('sDate').value = today;
 
- </script>
+  // ✅ Reset edit mode
+  activeSessionId = null;
+
+  // ✅ Reset attendance
+  att = {};
+  players.forEach(p => att[p.id] = null);
+  save(K.AT, att);
+
+  // ✅ Reset scorers, MOTM, tags
+  scorers = [];
+  motm = null;
+  tags = [];
+
+  save(K.SC, scorers);
+  save(K.MO, motm);
+  save(K.TG, tags);
+
+  // ✅ Reset fitness data
+  resetFaData();
+
+  // ✅ Refresh UI
+  renderAttend();
+  renderScorers();
+  renderMotm();
+  restoreTags();
+
+  // ✅ Go to Attend tab
+  showTab('attend',1);
+
+  showToast(type + " session started");
+}
+``
+</script>
 </body>
 </html>
+``
