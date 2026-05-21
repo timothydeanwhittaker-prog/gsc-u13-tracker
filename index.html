@@ -395,7 +395,9 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   <div style="font-size:18px;font-weight:800;color:var(--navy)">
     GSC U13
   </div>
-
+<div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px">
+  Last Session: <span id="lastSessionText">-</span>
+</div>
   <div style="font-size:11px;color:var(--mgrey)">
     George Soccer Club
   </div>
@@ -977,6 +979,7 @@ function saveSession(){
   renderAttend();renderScorers();renderMotm();restoreTags();
   if(isFitnessSession) renderFaCapture();
   showToast('Session saved ✓');
+  updateLastSession();
   setTimeout(()=>showTab('history',3),800);
 }
 
@@ -1781,9 +1784,33 @@ function loadSessionForEdit(sessionId){
     renderScorers();
     renderMotm();
 
-    showTab('attend',0);
-    showToast('Editing session');
+  showToast('Editing session');
 }
+
+// ✅ ADD THIS EXACTLY HERE 👇
+function updateLastSession(){
+  const hist = load(K.HI, []);
+
+  if(!hist.length){
+    document.getElementById('lastSessionText').textContent = 'No sessions yet';
+    return;
+  }
+
+  const last = hist[0];
+
+  const date = new Date(last.date);
+  const formattedDate = date.toLocaleDateString('en-ZA', {
+    weekday: 'short',
+    day: 'numeric',
+    month: 'short'
+  });
+
+  document.getElementById('lastSessionText').textContent =
+    `${last.type} • ${formattedDate}`;
+}
+
+// ✅ Run it when app loads
+updateLastSession();
 
 </script>
 </body>
