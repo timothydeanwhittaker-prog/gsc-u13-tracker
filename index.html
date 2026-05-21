@@ -729,7 +729,19 @@ players.forEach(p=>{
 });
 save(K.PL,players);
 
-let att     = load(K.AT,{});
+let att = load(K.AT, {});
+
+// ✅ HARD FIX corrupted storage
+if (!att || typeof att !== 'object' || Array.isArray(att)) {
+  att = {};
+}
+players.forEach(p => {
+  if (!(p.id in att)) {
+    att[p.id] = null;
+  }
+});
+save(K.AT, att);
+
 let scorers = load(K.SC,[]);
 let motm    = load(K.MO,null); // {id, name}
 let tags    = load(K.TG,[]);
