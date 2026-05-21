@@ -966,7 +966,14 @@ function saveSession(){
 
   const hist=load(K.HI,[]);
   const key=`${date}|${type}|${opp}`;
-  const idx=hist.findIndex(s=>`${s.date}|${s.type}|${s.opp}`===key);
+  let idx = -1;
+
+if(activeSessionId){
+  idx = hist.findIndex(s => s.id === activeSessionId);
+} else {
+  const key = `${date}|${type}|${opp}`;
+  idx = hist.findIndex(s => `${s.date}|${s.type}|${s.opp}` === key);
+}
   if(idx>=0){
     if(!confirm('Session already saved for this date, type & opponent. Overwrite?'))return;
     hist[idx]=session;
@@ -982,6 +989,8 @@ function saveSession(){
   showToast('Session saved ✓');
   updateLastSession();
   setTimeout(()=>showTab('history',3),800);
+  
+  activeSessionId = null;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1748,11 +1757,6 @@ document.getElementById('sDate').addEventListener('change',saveHdr);
 document.getElementById('sType').addEventListener('change',onTypeChange);
 restoreTags();
 renderAttend();
-  loadHdr();
-document.getElementById('sDate').addEventListener('change',saveHdr);
-document.getElementById('sType').addEventListener('change',onTypeChange);
-restoreTags();
-renderAttend();
 
 function loadSessionForEdit(sessionId){
     const hist = load(K.HI, []);
@@ -1812,19 +1816,92 @@ function updateLastSession(){
 
 // ✅ Run it when app loads
 updateLastSession();
+
 function quickStart(type){
+
+  // ✅ Ask before clearing session
+const hasData =
+  Object.values(att).some(v => v) ||   // attendance
+  scorers.length ||                   // goals
+  motm ||                              // MOTM selected
+  tags.length;                         // session tags
+
+if(hasData){
+  if(!confirm("Start new session? Current data will be cleared.")) return;
+}
+
+  // ✅ Set session type
   document.getElementById('sType').value = type;
   onTypeChange();
 
+  // ✅ Set today's date
   const today = new Date().toISOString().split('T')[0];
   document.getElementById('sDate').value = today;
 
+  // ✅ Reset edit mode
   activeSessionId = null;
 
+  // ✅ Reset attendance
+  att = {};
+  players.forEach(p => att[p.id] = null);
+  save(K.AT, att);
+
+  // ✅ Reset scorers, MOTM, tags
+  scorers = [];
+  motm = null;
+  tags = [];
+
+  save(K.SC, scorers);
+  save(K.MO, motm);
+  save(K.TG, tags);
+
+  // ✅ Reset fitness capture
+  resetFaData();
+
+  // ✅ Refresh UI
+  renderAttend();
+  renderScorers();
+  renderMotm();
+  restoreTags();
+
+  // ✅ Go to Attend tab
   showTab('attend',1);
 
   showToast(type + " session started");
 }
+
+  // ✅ Reset edit mode
+  activeSessionId = null;
+
+  // ✅ Reset attendance
+  att = {};
+  players.forEach(p => att[p.id] = null);
+  save(K.AT, att);
+
+  // ✅ Reset scorers + MOTM + tags
+  scorers = [];
+  motm = null;
+  tags = [];
+
+  save(K.SC, scorers);
+  save(K.MO, motm);
+  save(K.TG, tags);
+
+  // ✅ Reset fitness data
+  resetFaData();
+
+  // ✅ Update UI
+  renderAttend();
+  renderScorers();
+  renderMotm();
+  restoreTags();
+
+  // ✅ Go to Attend tab
+  showTab('attend',1);
+
+  showToast(type + " session started");
+}
+``
 </script>
 </body>
 </html>
