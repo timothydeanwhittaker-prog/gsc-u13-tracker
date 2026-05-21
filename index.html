@@ -799,56 +799,47 @@ function toggleGameFields(){
 // ATTEND
 // ═══════════════════════════════════════════════════════════
 function renderAttend(){
+  
   const list=document.getElementById('attList');
   list.innerHTML='';
+  
   if(!players.length){
     list.innerHTML='<div style="padding:20px;text-align:center;color:var(--mgrey);font-size:13px">No players — add in Players tab</div>';
-    updateStats(); return;
-  }
-  players.forEach(p=>{
-    const a=att[p.id];
-    const row=document.createElement('div');
-    row.className='att-row';
-    row.innerHTML=`
-      <div class="att-num">${p.num}</div>
-      <div class="att-info">
-        <div class="att-name">${p.name}</div>
-        <div class="att-pos">${p.pos||'No position set'}</div>
-      </div>
-      <div class="att-btns">
-        <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
-        <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
-        <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
-        <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
-      </div>`;
-    list.appendChild(row);
-  });
-  updateStats(); renderScorers(); renderMotm();
-}
+    updateStats(); 
+    return;
+    }
+  
+  players.forEach(p => {
 
-function setAtt(id,val){
-  att[id]=att[id]===val?null:val;
-  save(K.AT,att);
-  // remove from scorers if no longer present/late
-  if(att[id]!=='x'&&att[id]!=='L'){
-    const p=players.find(x=>x.id===id);
-    if(p){ scorers=scorers.filter(s=>s.id!==id); save(K.SC,scorers); }
-    if(motm&&motm.id===id){ motm=null; save(K.MO,null); }
-  }
-  renderAttend();
-}
+  // ✅ PROTECT AGAINST BROKEN PLAYER
+  if (!p || !p.id) return;
 
-function updateStats(){
-  const p=Object.values(att).filter(v=>v==='x').length;
-  const l=Object.values(att).filter(v=>v==='L').length;
-  const i=Object.values(att).filter(v=>v==='I').length;
-  const a=players.length-p-l-i;
-  document.getElementById('cP').textContent=p;
-  document.getElementById('cL').textContent=l;
-  document.getElementById('cI').textContent=i;
-  document.getElementById('cA').textContent=Math.max(0,a);
-}
+  const a = att[p.id];
 
+  const row = document.createElement('div');
+  row.className = 'att-row';
+
+  row.innerHTML = `
+    <div class="att-num">${p.num}</div>
+    <div class="att-info">
+      <div class="att-name">${p.name}</div>
+      <div class="att-pos">${p.pos || 'No position set'}</div>
+    </div>
+    <div class="att-btns">
+      <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
+      <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
+      <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
+      <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
+    </div>
+  `;
+
+  list.appendChild(row);
+});
+
+// ✅ AFTER LOOP
+updateStats();
+renderScorers(); 
+renderMotm();
 // ═══════════════════════════════════════════════════════════
 // MOTM
 // ═══════════════════════════════════════════════════════════
@@ -1794,17 +1785,20 @@ function resetFaData(){
 
 // ═══════════════════════════════════════════════════════════
 // BOOT
-// ═══════════════════════════════════════════════════════════
 loadHdr();
-document.getElementById('sDate').addEventListener('change',saveHdr);
-document.getElementById('sType').addEventListener('change',onTypeChange);
+
+document.getElementById('sDate').addEventListener('change', saveHdr);
+document.getElementById('sType').addEventListener('change', onTypeChange);
+
 restoreTags();
 
+// ✅ render everything properly
 renderAttend();
 renderPlayers();
 
-showTab('attend', 1);
-
+// ✅ show correct tab (index must be 0, not 1)
+showTab('attend', 0);
+``
 function loadSessionForEdit(sessionId){
     const hist = load(K.HI, []);
     const s = hist.find(x => x.id === sessionId);
