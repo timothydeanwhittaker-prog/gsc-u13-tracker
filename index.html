@@ -713,9 +713,16 @@ let history  = load(K.HI, null);
   
 let activeSessionId = null;
 // First launch: inject preloaded data
-if(!players){ players=JSON.parse(JSON.stringify(PRELOADED_PLAYERS)); save(K.PL,players); }
-if(!history){ history=JSON.parse(JSON.stringify(PRELOADED_HISTORY)); save(K.HI,history); }
+if(!players || players.length === 0){
+  players = JSON.parse(JSON.stringify(PRELOADED_PLAYERS));
+  save(K.PL, players);
+}
 
+if(!history || history.length === 0){
+  history = JSON.parse(JSON.stringify(PRELOADED_HISTORY));
+  save(K.HI, history);
+}
+``
 // Migrate: ensure all players have an id
 players.forEach(p=>{
   if(!p.id) p.id = (typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():`uid-${Date.now()}-${p.num}`;
