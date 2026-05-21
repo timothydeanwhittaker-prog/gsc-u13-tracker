@@ -722,7 +722,6 @@ if(!history || history.length === 0){
   history = JSON.parse(JSON.stringify(PRELOADED_HISTORY));
   save(K.HI, history);
 }
-``
 // Migrate: ensure all players have an id
 players.forEach(p=>{
   if(!p.id) p.id = (typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():`uid-${Date.now()}-${p.num}`;
@@ -1880,4 +1879,3 @@ function quickStart(type){
 </script>
 </body>
 </html>
-``
