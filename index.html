@@ -377,77 +377,79 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 <div class="tab" onclick="showTab('history',4)">📅 History</div>
 </div>
 <!-- ═══ HOME ═══ -->
+<!-- ═══ HOME ═══ -->
 <div class="sec active" id="sec-home">
 
-<!-- 🔴 HERO HEADER -->
-<div style="
-  background: linear-gradient(135deg,#9B1B1B,#C0392B);
-  padding:20px 16px;
-  border-radius:0 0 16px 16px;
-  text-align:center;
-">
-   <div style="text-align:center;margin-bottom:12px">
+  <!-- 🔴 HERO HEADER -->
+  <div style="
+    background: linear-gradient(135deg,#9B1B1B,#C0392B);
+    padding:20px 16px;
+    border-radius:0 0 16px 16px;
+    text-align:center;
+  ">
 
-  <img ... >
-
-</div>
-
- <img src="./GSC%20Logo%202.png"
-     alt="GSC Logo" 
-     style="
-       height:100px;
-       object-fit:contain;
-       margin-bottom:8px;
-       filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-     ">
-<div style="font-size:18px;font-weight:800;color:#fff">
-  GSC U13
-</div>
-
-<div style="color:#fff;font-size:11px;margin-top:4px">
-  George Soccer Club
-</div>
-
-<div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px">
-  Last Session: <span id="lastSessionText">-</span>
-</div>
-
-<div style="
-  margin-top:8px;
-  font-size:11px;
-  background:var(--grey);
-  padding:6px 10px;
-  border-radius:8px;
-  display:inline-block;
-  color:var(--mgrey);
-">
-  🏆 Play With Excellence
-</div>
-</div>
-
-<!-- TILES -->
-<div style="padding:16px">
-
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
-
-    <div class="home-tile" onclick="quickStart('Practice')">
-      ⚽
-      <span>Practice</span>
+    <div style="margin-bottom:12px">
+      <img src="./GSC%20Logo%202.png"
+        alt="GSC Logo"
+        style="
+          height:100px;
+          object-fit:contain;
+          margin-bottom:8px;
+          filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
+        ">
     </div>
 
-    <div class="home-tile" onclick="quickStart('Tournament')">
-      🏆
-      <span>Tournament</span>
+    <div style="font-size:18px;font-weight:800;color:#fff">
+      GSC U13
     </div>
 
-    <div class="home-tile" onclick="quickStart('Skills Assessment')">
-      🎯
-      <span>Skills</span>
+    <div style="color:#fff;font-size:11px;margin-top:4px">
+      George Soccer Club
     </div>
 
-    <div class="home-tile" onclick="quickStart('Fitness Assessment')">
-      💪
-      <span>Fitness</span>
+    <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px">
+      Last Session: <span id="lastSessionText">-</span>
+    </div>
+
+    <div style="
+      margin-top:8px;
+      font-size:11px;
+      background:var(--grey);
+      padding:6px 10px;
+      border-radius:8px;
+      display:inline-block;
+      color:var(--mgrey);
+    ">
+      🏆 Play With Excellence
+    </div>
+
+  </div>
+
+  <!-- 🧱 TILES -->
+  <div style="padding:16px">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+
+      <div class="home-tile" onclick="quickStart('Practice')">
+        ⚽
+        <span>Practice</span>
+      </div>
+
+      <div class="home-tile" onclick="quickStart('Tournament')">
+        🏆
+        <span>Tournament</span>
+      </div>
+
+      <div class="home-tile" onclick="quickStart('Skills Assessment')">
+        🎯
+        <span>Skills</span>
+      </div>
+
+      <div class="home-tile" onclick="quickStart('Fitness Assessment')">
+        💪
+        <span>Fitness</span>
+      </div>
+
     </div>
 
   </div>
