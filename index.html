@@ -370,83 +370,14 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- TABS -->
 <div class="tabs">
-<div class="tab active" onclick="showTab('home',0)">🏠 Home</div>
-<div class="tab" onclick="showTab('attend',1)">✓ Attend</div>
-<div class="tab" onclick="showTab('players',2)">👤 Players</div>
-<div class="tab" onclick="showTab('lineup',3)">⚽ Lineup</div>
-<div class="tab" onclick="showTab('history',4)">📅 History</div>
-</div>
-<!-- ═══ HOME ═══ -->
-<!-- ═══ HOME ═══ -->
-<div class="sec active" id="sec-home">
-
-  <!-- 🔴 HERO HEADER -->
-  <div style="
-    background: linear-gradient(135deg,#9B1B1B,#C0392B);
-    padding:20px 16px;
-    border-radius:0 0 16px 16px;
-    text-align:center;
-  ">
-
-    <div style="margin-bottom:12px">
-      <img src="./GSC%20Logo%202.png"
-        alt="GSC Logo"
-        style="
-          height:100px;
-          object-fit:contain;
-          margin-bottom:8px;
-          filter: drop-shadow(0 4px 12px rgba(0,0,0,0.3));
-        ">
-    </div>
-
-    <div style="font-size:18px;font-weight:800;color:#fff">
-      GSC U13
-    </div>
-
-    <div style="color:#fff;font-size:11px;margin-top:4px">
-      George Soccer Club
-    </div>
-
-    <div style="color:rgba(255,255,255,0.7);font-size:11px;margin-top:4px">
-      Last Session: <span id="lastSessionText">-</span>
-    </div>
-
-    <div style="
-      margin-top:8px;
-      font-size:11px;
-      background:var(--grey);
-      padding:6px 10px;
-      border-radius:8px;
-      display:inline-block;
-      color:var(--mgrey);
-    ">
-      🏆 Play With Excellence
-    </div>
-
-  </div>
-
-  <!-- 🧱 TILES -->
-<div class="home-tile" onclick="quickStart('Practice')">
-  ⚽
-  <span>Practice</span>
+  <div class="tab active" onclick="showTab('attend',0)">✓ Attend</div>
+  <div class="tab" onclick="showTab('players',1)">👤 Players</div>
+  <div class="tab" onclick="showTab('lineup',2)">⚽ Lineup</div>
+  <div class="tab" onclick="showTab('history',3)">📅 History</div>
 </div>
 
-<div class="home-tile" onclick="quickStart('Game')">
-  🏟
-  <span>Game</span>
-</div>
-
-<div class="home-tile" onclick="quickStart('Tournament')">
-  🏆
-  <span>Tournament</span>
-</div>
-
-<div class="home-tile" onclick="quickStart('Fitness Assessment')">
-  💪
-  <span>Fitness</span>
-</div>
 <!-- ═══ ATTEND ═══ -->
-<div class="sec" id="sec-attend">
+<div class="sec active" id="sec-attend">
   <div class="card" id="attList"></div>
 
   <!-- MOTM / Player of Session -->
@@ -710,18 +641,11 @@ const FORMS={
 // ═══════════════════════════════════════════════════════════
 let players  = load(K.PL, null);
 let history  = load(K.HI, null);
-  
-let activeSessionId = null;
-// First launch: inject preloaded data
-if(!players || players.length === 0){
-  players = JSON.parse(JSON.stringify(PRELOADED_PLAYERS));
-  save(K.PL, players);
-}
 
-if(!history || history.length === 0){
-  history = JSON.parse(JSON.stringify(PRELOADED_HISTORY));
-  save(K.HI, history);
-}
+// First launch: inject preloaded data
+if(!players){ players=JSON.parse(JSON.stringify(PRELOADED_PLAYERS)); save(K.PL,players); }
+if(!history){ history=JSON.parse(JSON.stringify(PRELOADED_HISTORY)); save(K.HI,history); }
+
 // Migrate: ensure all players have an id
 players.forEach(p=>{
   if(!p.id) p.id = (typeof crypto!=='undefined'&&crypto.randomUUID)?crypto.randomUUID():`uid-${Date.now()}-${p.num}`;
@@ -729,19 +653,7 @@ players.forEach(p=>{
 });
 save(K.PL,players);
 
-let att = load(K.AT, {});
-
-// ✅ HARD FIX corrupted storage
-if (!att || typeof att !== 'object' || Array.isArray(att)) {
-  att = {};
-}
-players.forEach(p => {
-  if (!(p.id in att)) {
-    att[p.id] = null;
-  }
-});
-save(K.AT, att);
-
+let att     = load(K.AT,{});
 let scorers = load(K.SC,[]);
 let motm    = load(K.MO,null); // {id, name}
 let tags    = load(K.TG,[]);
@@ -799,47 +711,56 @@ function toggleGameFields(){
 // ATTEND
 // ═══════════════════════════════════════════════════════════
 function renderAttend(){
-  
   const list=document.getElementById('attList');
   list.innerHTML='';
-  
   if(!players.length){
     list.innerHTML='<div style="padding:20px;text-align:center;color:var(--mgrey);font-size:13px">No players — add in Players tab</div>';
-    updateStats(); 
-    return;
-    }
-  
-  players.forEach(p => {
+    updateStats(); return;
+  }
+  players.forEach(p=>{
+    const a=att[p.id];
+    const row=document.createElement('div');
+    row.className='att-row';
+    row.innerHTML=`
+      <div class="att-num">${p.num}</div>
+      <div class="att-info">
+        <div class="att-name">${p.name}</div>
+        <div class="att-pos">${p.pos||'No position set'}</div>
+      </div>
+      <div class="att-btns">
+        <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
+        <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
+        <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
+        <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
+      </div>`;
+    list.appendChild(row);
+  });
+  updateStats(); renderScorers(); renderMotm();
+}
 
-  // ✅ PROTECT AGAINST BROKEN PLAYER
-  if (!p || !p.id) return;
+function setAtt(id,val){
+  att[id]=att[id]===val?null:val;
+  save(K.AT,att);
+  // remove from scorers if no longer present/late
+  if(att[id]!=='x'&&att[id]!=='L'){
+    const p=players.find(x=>x.id===id);
+    if(p){ scorers=scorers.filter(s=>s.id!==id); save(K.SC,scorers); }
+    if(motm&&motm.id===id){ motm=null; save(K.MO,null); }
+  }
+  renderAttend();
+}
 
-  const a = att[p.id];
+function updateStats(){
+  const p=Object.values(att).filter(v=>v==='x').length;
+  const l=Object.values(att).filter(v=>v==='L').length;
+  const i=Object.values(att).filter(v=>v==='I').length;
+  const a=players.length-p-l-i;
+  document.getElementById('cP').textContent=p;
+  document.getElementById('cL').textContent=l;
+  document.getElementById('cI').textContent=i;
+  document.getElementById('cA').textContent=Math.max(0,a);
+}
 
-  const row = document.createElement('div');
-  row.className = 'att-row';
-
-  row.innerHTML = `
-    <div class="att-num">${p.num}</div>
-    <div class="att-info">
-      <div class="att-name">${p.name}</div>
-      <div class="att-pos">${p.pos || 'No position set'}</div>
-    </div>
-    <div class="att-btns">
-      <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
-      <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
-      <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
-      <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
-    </div>
-  `;
-
-  list.appendChild(row);
-});
-
-// ✅ AFTER LOOP
-updateStats();
-renderScorers(); 
-renderMotm();
 // ═══════════════════════════════════════════════════════════
 // MOTM
 // ═══════════════════════════════════════════════════════════
@@ -975,31 +896,24 @@ function saveSession(){
 
   const hist=load(K.HI,[]);
   const key=`${date}|${type}|${opp}`;
-  let idx = -1;
-
-if(activeSessionId){
-  idx = hist.findIndex(s => s.id === activeSessionId);
-} else {
-  const key = `${date}|${type}|${opp}`;
-  idx = hist.findIndex(s => `${s.date}|${s.type}|${s.opp}` === key);
-}
+  const idx=hist.findIndex(s=>`${s.date}|${s.type}|${s.opp}`===key);
   if(idx>=0){
     if(!confirm('Session already saved for this date, type & opponent. Overwrite?'))return;
     hist[idx]=session;
   }else{hist.unshift(session);}
   save(K.HI,hist);
 
- // Reset
- // Keep session data — do not reset
+  // Reset
+  players.forEach(p=>att[p.id]=null);
+  scorers=[];motm=null;tags=[];
+  if(isFitnessSession) resetFaData();
+  save(K.AT,att);save(K.SC,scorers);save(K.MO,null);save(K.TG,[]);
   document.getElementById('attNotes').value='';
   document.getElementById('gGF').value='';document.getElementById('gGA').value='';
   renderAttend();renderScorers();renderMotm();restoreTags();
   if(isFitnessSession) renderFaCapture();
   showToast('Session saved ✓');
-  updateLastSession();
   setTimeout(()=>showTab('history',3),800);
-  
-  activeSessionId = null;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -1010,35 +924,10 @@ function renderPlayers(){
   list.innerHTML='';
   // Squad averages for fitness
   renderSquadAverages();
-  players.forEach(p => {
-
-  // ✅ protect against broken player objects
-  if (!p || !p.id) {
-    console.warn("Skipping bad player:", p);
-    return;
-  }
-
-  const a = att[p.id];
-
-  const row = document.createElement('div');
-  row.className = 'att-row';
-
-  row.innerHTML = `
-    <div class="att-num">${p.num}</div>
-    <div class="att-info">
-      <div class="att-name">${p.name}</div>
-      <div class="att-pos">${p.pos || 'No position set'}</div>
-    </div>
-    <div class="att-btns">
-      <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
-      <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
-      <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
-      <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
-    </div>
-  `;
-
-  list.appendChild(row);
-});
+  players.forEach(p=>{
+    const stats=computeStats(p.id);
+    const card=document.createElement('div');
+    card.className='pc';card.id=`pc-${p.id}`;
     const sub=[p.pos||null,p.dob?fmtDob(p.dob):null].filter(Boolean).join(' · ')||'Tap to add details';
     card.innerHTML=`
       <div class="pc-hdr" onclick="togglePc('${p.id}')">
@@ -1493,9 +1382,7 @@ function renderHistory(){
       </div>
       <div class="hc-acts">
         <button class="hc-btn share" onclick="shareHist('${s.id}')">💬 Share</button>
-        <button class="hc-btn" style="background:var(--navy2);color:#fff" onclick="loadSessionForEdit('${s.id}')">
-  ✏️ Edit
-</button>
+        ${(s.type==='Fitness Assessment'||s.type==='Skills Assessment')?`<button class="hc-btn" style="background:var(--navy2);color:#fff" onclick="editFitnessSession('${s.id}')">✏️ Edit</button>`:''}
         <button class="hc-btn del" onclick="delHist('${s.id}')">🗑 Delete</button>
       </div>
     </div>`;
@@ -1785,132 +1672,12 @@ function resetFaData(){
 
 // ═══════════════════════════════════════════════════════════
 // BOOT
+// ═══════════════════════════════════════════════════════════
 loadHdr();
-
-document.getElementById('sDate').addEventListener('change', saveHdr);
-document.getElementById('sType').addEventListener('change', onTypeChange);
-
+document.getElementById('sDate').addEventListener('change',saveHdr);
+document.getElementById('sType').addEventListener('change',onTypeChange);
 restoreTags();
-
-// ✅ render everything properly
 renderAttend();
-renderPlayers();
-
-// ✅ show correct tab (index must be 0, not 1)
-showTab('attend', 0);
-``
-function loadSessionForEdit(sessionId){
-    const hist = load(K.HI, []);
-    const s = hist.find(x => x.id === sessionId);
-    if(!s) return;
-
-    activeSessionId = s.id;
-
-    // Header
-    document.getElementById('sDate').value = s.date;
-    document.getElementById('sType').value = s.type;
-
-    // Attendance
-    players.forEach(p => att[p.id] = null);
-
-    (s.present || []).forEach(p => att[p.id] = 'x');
-    (s.late || []).forEach(p => att[p.id] = 'L');
-    (s.injured || []).forEach(p => att[p.id] = 'I');
-    (s.absent || []).forEach(p => att[p.id] = 'A');
-
-    // Restore scorers & MOTM
-    scorers = s.scorers || [];
-    motm = s.motm || null;
-
-    save(K.AT, att);
-    save(K.SC, scorers);
-    save(K.MO, motm);
-
-    renderAttend();
-    renderScorers();
-    renderMotm();
-
-  showToast('Editing session');
-}
-
-// ✅ ADD THIS EXACTLY HERE 👇
-function updateLastSession(){
-  const hist = load(K.HI, []);
-
-  if(!hist.length){
-    document.getElementById('lastSessionText').textContent = 'No sessions yet';
-    return;
-  }
-
-  const last = hist[0];
-
-  const date = new Date(last.date);
-  const formattedDate = date.toLocaleDateString('en-ZA', {
-    weekday: 'short',
-    day: 'numeric',
-    month: 'short'
-  });
-
-  document.getElementById('lastSessionText').textContent =
-    `${last.type} • ${formattedDate}`;
-}
-
-// ✅ Run it when app loads
-updateLastSession();
-
-function quickStart(type){
-
-  // ✅ Ask before clearing session
-  const hasData =
-    Object.values(att).some(v => v) ||
-    scorers.length ||
-    motm ||
-    tags.length;
-
-  if(hasData){
-    if(!confirm("Start new session? Current data will be cleared.")) return;
-  }
-
-  // ✅ Set session type
-  document.getElementById('sType').value = type;
-  onTypeChange();
-
-  // ✅ Set today's date
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('sDate').value = today;
-
-  // ✅ Reset edit mode
-  activeSessionId = null;
-
-  // ✅ Reset attendance
-  att = {};
-  players.forEach(p => att[p.id] = null);
-  save(K.AT, att);
-
-  // ✅ Reset scorers, MOTM, tags
-  scorers = [];
-  motm = null;
-  tags = [];
-
-  save(K.SC, scorers);
-  save(K.MO, motm);
-  save(K.TG, tags);
-
-  // ✅ Reset fitness data
-  resetFaData();
-
-  // ✅ Refresh UI
-  renderAttend();
-  renderScorers();
-  renderMotm();
-  restoreTags();
-
-  // ✅ Go to Attend tab
-  showTab('attend',1);
-
-  showToast(type + " session started");
-}
-``
 </script>
 </body>
 </html>
