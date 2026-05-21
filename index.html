@@ -426,34 +426,24 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
   </div>
 
   <!-- 🧱 TILES -->
-  <div style="padding:16px">
+<div class="home-tile" onclick="quickStart('Practice')">
+  ⚽
+  <span>Practice</span>
+</div>
 
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+<div class="home-tile" onclick="quickStart('Game')">
+  🏟
+  <span>Game</span>
+</div>
 
-      <div class="home-tile" onclick="quickStart('Practice')">
-        ⚽
-        <span>Practice</span>
-      </div>
+<div class="home-tile" onclick="quickStart('Tournament')">
+  🏆
+  <span>Tournament</span>
+</div>
 
-      <div class="home-tile" onclick="quickStart('Tournament')">
-        🏆
-        <span>Tournament</span>
-      </div>
-
-      <div class="home-tile" onclick="quickStart('Skills Assessment')">
-        🎯
-        <span>Skills</span>
-      </div>
-
-      <div class="home-tile" onclick="quickStart('Fitness Assessment')">
-        💪
-        <span>Fitness</span>
-      </div>
-
-    </div>
-
-  </div>
-
+<div class="home-tile" onclick="quickStart('Fitness Assessment')">
+  💪
+  <span>Fitness</span>
 </div>
 <!-- ═══ ATTEND ═══ -->
 <div class="sec" id="sec-attend">
