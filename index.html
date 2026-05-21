@@ -1812,7 +1812,19 @@ function updateLastSession(){
 
 // ✅ Run it when app loads
 updateLastSession();
+function quickStart(type){
+  document.getElementById('sType').value = type;
+  onTypeChange();
 
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('sDate').value = today;
+
+  activeSessionId = null;
+
+  showTab('attend',1);
+
+  showToast(type + " session started");
+}
 </script>
 </body>
 </html>
