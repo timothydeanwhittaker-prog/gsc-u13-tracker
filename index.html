@@ -1019,10 +1019,35 @@ function renderPlayers(){
   list.innerHTML='';
   // Squad averages for fitness
   renderSquadAverages();
-  players.forEach(p=>{
-    const stats=computeStats(p.id);
-    const card=document.createElement('div');
-    card.className='pc';card.id=`pc-${p.id}`;
+  players.forEach(p => {
+
+  // ✅ protect against broken player objects
+  if (!p || !p.id) {
+    console.warn("Skipping bad player:", p);
+    return;
+  }
+
+  const a = att[p.id];
+
+  const row = document.createElement('div');
+  row.className = 'att-row';
+
+  row.innerHTML = `
+    <div class="att-num">${p.num}</div>
+    <div class="att-info">
+      <div class="att-name">${p.name}</div>
+      <div class="att-pos">${p.pos || 'No position set'}</div>
+    </div>
+    <div class="att-btns">
+      <button class="att-btn ${a==='x'?'pres':''}" onclick="setAtt('${p.id}','x')">✓</button>
+      <button class="att-btn ${a==='L'?'late':''}" onclick="setAtt('${p.id}','L')">⏰</button>
+      <button class="att-btn ${a==='I'?'inj':''}" onclick="setAtt('${p.id}','I')">🤕</button>
+      <button class="att-btn ${a==='A'?'abs':''}" onclick="setAtt('${p.id}','A')">✕</button>
+    </div>
+  `;
+
+  list.appendChild(row);
+});
     const sub=[p.pos||null,p.dob?fmtDob(p.dob):null].filter(Boolean).join(' · ')||'Tap to add details';
     card.innerHTML=`
       <div class="pc-hdr" onclick="togglePc('${p.id}')">
