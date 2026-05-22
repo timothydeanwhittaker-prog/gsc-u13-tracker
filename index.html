@@ -429,16 +429,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
         <div class="hsc-label">Fitness</div>
         <div class="hsc-sub">Physical assessment</div>
       </div>
-      <div class="hsc skills" onclick="homeStartSession('Skills Assessment')">
-        <div class="hsc-icon">🎯</div>
-        <div class="hsc-label">Skills</div>
-        <div class="hsc-sub">Technical assessment</div>
-      </div>
-      <div class="hsc practice" onclick="homeStartSession('Training Camp')">
-        <div class="hsc-icon">⛺</div>
-        <div class="hsc-label">Training Camp</div>
-        <div class="hsc-sub">Camp session</div>
-      </div>
+
+
     </div>
     <div class="home-nav-row">
       <div class="hnr" onclick="homeGoTo('history')">
@@ -448,10 +440,6 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div class="hnr" onclick="homeGoTo('players')">
         <div class="hnr-icon">👤</div>
         <div class="hnr-label">Squad</div>
-      </div>
-      <div class="hnr" onclick="homeGoTo('lineup')">
-        <div class="hnr-icon">⚽</div>
-        <div class="hnr-label">Lineup</div>
       </div>
     </div>
     <div class="home-record" id="homeRecord">
@@ -487,8 +475,8 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sf"><label>Date</label><input type="date" id="sDate"></div>
     <div class="sf"><label>Session Type</label>
       <select id="sType" onchange="onTypeChange()">
-        <option>Practice</option><option>Game</option><option>Skills Assessment</option>
-        <option>Fitness Assessment</option><option>Tournament</option><option>Training Camp</option>
+        <option>Practice</option><option>Game</option>
+        <option>Fitness Assessment</option><option>Tournament</option>
       </select>
     </div>
     <div class="sf" id="oppWrap" style="display:none"><label>Opponent</label><input type="text" id="sOpp" placeholder="e.g. Shimba FC" oninput="saveHdr()"></div>
@@ -652,7 +640,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <button class="hf-btn" onclick="setHistFilter('Tournament',this)">🏆 Tournaments</button>
     <button class="hf-btn" onclick="setHistFilter('Practice',this)">🏃 Practice</button>
     <button class="hf-btn" onclick="setHistFilter('Fitness Assessment',this)">💪 Fitness</button>
-    <button class="hf-btn" onclick="setHistFilter('Skills Assessment',this)">🎯 Skills</button>
+    <button class="hf-btn" onclick="setHistFilter('Fitness Assessment',this)">🎯 Skills</button>
   </div>
   <div id="histList"></div>
 </div>
@@ -672,10 +660,11 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 
 <!-- BOTTOM NAV -->
 <div class="bnav" id="appNav" style="display:none">
-  <div class="ni active" onclick="showTab('attend',0)"><div class="ni-icon">✓</div><div class="ni-lbl">Attend</div></div>
-  <div class="ni" onclick="showTab('players',1)"><div class="ni-icon">👤</div><div class="ni-lbl">Players</div></div>
-  <div class="ni" onclick="showTab('lineup',2)"><div class="ni-icon">⚽</div><div class="ni-lbl">Lineup</div></div>
-  <div class="ni" onclick="showTab('history',3)"><div class="ni-icon">📅</div><div class="ni-lbl">History</div></div>
+  <div class="ni" id="ni-home" onclick="showHome()"><div class="ni-icon">🏠</div><div class="ni-lbl">Home</div></div>
+  <div class="ni active" id="ni-attend" onclick="showTab('attend',1)"><div class="ni-icon">✓</div><div class="ni-lbl">Attend</div></div>
+  <div class="ni" id="ni-players" onclick="showTab('players',2)"><div class="ni-icon">👤</div><div class="ni-lbl">Squad</div></div>
+  <div class="ni" id="ni-lineup" onclick="showTab('lineup',3)"><div class="ni-icon">⚽</div><div class="ni-lbl">Lineup</div></div>
+  <div class="ni" id="ni-history" onclick="showTab('history',4)"><div class="ni-icon">📅</div><div class="ni-lbl">History</div></div>
 </div>
 
 <script>
@@ -1654,7 +1643,7 @@ function importData(event){
 // NAVIGATION
 // ═══════════════════════════════════════════════════════════
 function showTab(name,idx){
-  // Show app shell
+  // Show app shell, hide home
   document.getElementById('homePage').style.display='none';
   document.getElementById('appHdr').style.display='block';
   document.getElementById('appStatsBar').style.display='flex';
@@ -1663,9 +1652,18 @@ function showTab(name,idx){
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  document.getElementById(`sec-${name}`).classList.add('active');
-  document.querySelectorAll('.tab')[idx].classList.add('active');
-  document.querySelectorAll('.ni')[idx].classList.add('active');
+  const sec=document.getElementById(`sec-${name}`);
+  if(sec) sec.classList.add('active');
+  // Tab index (tabs start at 0: attend=0,players=1,lineup=2,history=3)
+  const tabMap={attend:0,players:1,lineup:2,history:3};
+  const tabs=document.querySelectorAll('.tab');
+  if(tabs[tabMap[name]!==undefined?tabMap[name]:0])
+    tabs[tabMap[name]!==undefined?tabMap[name]:0].classList.add('active');
+  // Nav index (nav: home=0,attend=1,players=2,lineup=3,history=4)
+  const navMap={attend:1,players:2,lineup:3,history:4};
+  const navItems=document.querySelectorAll('.ni');
+  if(navItems[navMap[name]!==undefined?navMap[name]:1])
+    navItems[navMap[name]!==undefined?navMap[name]:1].classList.add('active');
   if(name==='history') renderHistory();
   if(name==='lineup')  renderLineup();
   if(name==='players') renderPlayers();
@@ -1853,12 +1851,23 @@ function initHome(){
 
 function showHome(){
   document.getElementById('homePage').style.display='flex';
-  // hide all app sections
+  document.getElementById('appHdr').style.display='none';
+  document.getElementById('appStatsBar').style.display='none';
+  document.getElementById('appTabs').style.display='none';
+  document.getElementById('appNav').style.display='flex';
   document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  // Highlight Home nav item
+  const homeNi=document.getElementById('ni-home');
+  if(homeNi) homeNi.classList.add('active');
   activeSessionId = null;
   initHome();
+  // Keep bottom nav always visible
+  document.getElementById('appNav').style.display='flex';
+  // Highlight home on boot
+  const hn=document.getElementById('ni-home');
+  if(hn) hn.classList.add('active');
   window.scrollTo(0,0);
 }
 
@@ -1874,8 +1883,7 @@ function homeStartSession(type){
 
 function homeGoTo(tab){
   document.getElementById('homePage').style.display='none';
-  const idxMap={attend:0,players:1,lineup:2,history:3};
-  showTab(tab, idxMap[tab]||0);
+  showTab(tab, 0); // idx handled inside showTab via maps
 }
 
 // ═══════════════════════════════════════════════════════════
