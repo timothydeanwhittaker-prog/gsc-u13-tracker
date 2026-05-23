@@ -641,7 +641,8 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
             <div class="team-hdr-count" id="redCount">0 players</div>
           </div>
           <div class="team-list" id="redTeamList"></div>
-          <button class="team-add-btn" onclick="openTeamPicker('red')">＋ Add Player</button>
+          <button class="team-add-btn" onclick="openTeamPicker('red')">＋ Add from Squad</button>
+          <button class="team-add-btn" onclick="addWalkOn('red')" style="margin-top:4px;border-color:var(--red);color:var(--red)">＋ Add Walk-on by Name</button>
         </div>
         <div class="team-card">
           <div class="team-hdr blue">
@@ -649,7 +650,8 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
             <div class="team-hdr-count" id="blueCount">0 players</div>
           </div>
           <div class="team-list" id="blueTeamList"></div>
-          <button class="team-add-btn" onclick="openTeamPicker('blue')">＋ Add Player</button>
+          <button class="team-add-btn" onclick="openTeamPicker('blue')">＋ Add from Squad</button>
+          <button class="team-add-btn" onclick="addWalkOn('blue')" style="margin-top:4px;border-color:#1A4FA8;color:#1A4FA8">＋ Add Walk-on by Name</button>
         </div>
       </div>
       <!-- Scorers -->
@@ -883,7 +885,7 @@ players.forEach(p=>{ if(!(p.id in att)) att[p.id]=null; });
 // ═══════════════════════════════════════════════════════════
 function loadHdr(){
   const h=load(K.HD,{});
-  document.getElementById('sDate').value = h.date||new Date().toISOString().split('T')[0];
+  document.getElementById('sDate').value = h.date||'';
   if(h.type) document.getElementById('sType').value=h.type;
   if(h.opp)  document.getElementById('sOpp').value=h.opp;
   if(h.notes)document.getElementById('sNotes').value=h.notes;
@@ -2189,11 +2191,11 @@ function renderScrimmageTeams(){
 }
 
 function openTeamPicker(team){
-  const present = players.filter(p=>att[p.id]==='x'||att[p.id]==='L');
+  // Show ALL players (full squad) — allows walk-ons / seniors to be added
   const assigned = [...scrimmageData.red, ...scrimmageData.blue].map(p=>p.id);
-  const available = present.filter(p=>!assigned.includes(p.id));
-  if(!available.length){ showToast('All present players assigned'); return; }
-  openModal(`Add to Team ${team==='red'?'🔴 Red':'🔵 Blue'}`, (p)=>{
+  const available = players.filter(p=>!assigned.includes(p.id));
+  if(!available.length){ showToast('All squad players assigned'); return; }
+  openModal(`Add to Team ${team==='red'?'🔴 Red':'🔵 Blue'} (all squad + walk-ons)`, (p)=>{
     scrimmageData[team].push({id:p.id, name:p.name});
     renderScrimmageTeams();
     closeModal();
@@ -2238,6 +2240,16 @@ function renderScrimmageScorers(){
 
 function adjScrimmageGoal(i,d){ scrimmageData.scorers[i].goals=Math.max(1,scrimmageData.scorers[i].goals+d); renderScrimmageScorers(); }
 function removeScrimmageScorer(i){ scrimmageData.scorers.splice(i,1); renderScrimmageScorers(); }
+
+
+function addWalkOn(team){
+  const name = prompt('Enter player name:');
+  if(!name||!name.trim()) return;
+  const walkOnPlayer = {id:'walkon-'+Date.now(), name:name.trim()};
+  scrimmageData[team].push(walkOnPlayer);
+  renderScrimmageTeams();
+  showToast(name.trim()+' added to Team '+(team==='red'?'Red':'Blue'));
+}
 
 function resetScrimmage(){
   scrimmageData = { red:[], blue:[], scorers:[], redGoals:0, blueGoals:0 };
