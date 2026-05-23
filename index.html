@@ -391,6 +391,47 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
 .edit-save-btn{width:100%;padding:13px;background:var(--green);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;cursor:pointer;margin-top:4px}
 .hc-btn.edit-btn{background:var(--navy2);color:#fff}
 
+
+/* ── SCRIMMAGE ── */
+.scrimmage-toggle{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);padding:12px 14px;display:none}
+.scrimmage-toggle-row{display:flex;align-items:center;justify-content:space-between}
+.scrimmage-label{font-size:13px;font-weight:700;color:var(--navy)}
+.scrimmage-sub{font-size:11px;color:var(--mgrey);margin-top:2px}
+.toggle-switch{position:relative;width:44px;height:24px;flex-shrink:0}
+.toggle-switch input{opacity:0;width:0;height:0}
+.toggle-slider{position:absolute;cursor:pointer;inset:0;background:var(--border);border-radius:24px;transition:.3s}
+.toggle-slider:before{position:absolute;content:"";height:18px;width:18px;left:3px;bottom:3px;background:white;border-radius:50%;transition:.3s}
+input:checked+.toggle-slider{background:var(--red)}
+input:checked+.toggle-slider:before{transform:translateX(20px)}
+.scrimmage-board{display:none;margin-top:12px;border-top:1px solid var(--border);padding-top:12px}
+.scrimmage-board.open{display:block}
+.scrimmage-teams{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.team-card{border-radius:12px;overflow:hidden;box-shadow:var(--shadow)}
+.team-hdr{padding:10px 12px;display:flex;align-items:center;justify-content:space-between}
+.team-hdr.red{background:#9B1B1B}
+.team-hdr.blue{background:#1A4FA8}
+.team-hdr-name{font-family:'Bebas Neue',sans-serif;font-size:15px;color:#fff;letter-spacing:1px}
+.team-hdr-count{font-size:11px;color:rgba(255,255,255,0.7)}
+.team-list{background:#fff;padding:8px;min-height:80px}
+.team-player{display:flex;align-items:center;justify-content:space-between;padding:5px 6px;border-radius:8px;font-size:12px;font-weight:600;margin-bottom:4px;cursor:pointer}
+.team-player.red-pl{background:#FEE2E2;color:#9B1B1B}
+.team-player.blue-pl{background:#DBEAFE;color:#1A4FA8}
+.team-add-btn{width:100%;padding:7px;background:var(--grey);border:1.5px dashed var(--border);border-radius:8px;font-size:11px;font-weight:700;color:var(--mgrey);cursor:pointer;margin-top:4px;display:flex;align-items:center;justify-content:center;gap:4px}
+.scrimmage-score{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:12px}
+.scrimmage-score-lbl{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mgrey);width:60px;text-align:center}
+.scrimmage-score-lbl.red{color:#9B1B1B}
+.scrimmage-score-lbl.blue{color:#1A4FA8}
+.scrimmage-inp{width:52px;height:52px;border:2px solid var(--border);border-radius:10px;text-align:center;font-size:22px;font-weight:700;font-family:'Bebas Neue',sans-serif;color:var(--navy);background:var(--grey);outline:none}
+.scrimmage-inp:focus{border-color:var(--navy);background:#fff}
+.scrimmage-scorers-title{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--mgrey);margin-bottom:8px}
+.scrimmage-scorer-row{display:flex;align-items:center;gap:8px;padding:7px 0;border-bottom:1px solid var(--border);font-size:13px}
+.scrimmage-scorer-row:last-child{border-bottom:none}
+.scrimmage-scorer-name{flex:1;font-weight:600}
+.scrimmage-team-badge{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px}
+.scrimmage-team-badge.red{background:#FEE2E2;color:#9B1B1B}
+.scrimmage-team-badge.blue{background:#DBEAFE;color:#1A4FA8}
+.add-scrimmage-scorer{width:100%;padding:9px;background:var(--grey);border:1.5px dashed var(--border);border-radius:8px;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;margin-top:6px}
+
 </style>
 </head>
 <body>
@@ -475,6 +516,7 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
     <div class="sf"><label>Date</label><input type="date" id="sDate"></div>
     <div class="sf"><label>Session Type</label>
       <select id="sType" onchange="onTypeChange()">
+        <option value="" disabled selected>Select type…</option>
         <option>Practice</option><option>Game</option>
         <option>Fitness Assessment</option><option>Tournament</option>
       </select>
@@ -568,6 +610,53 @@ select.fi{appearance:none;-webkit-appearance:none;background-image:url("data:ima
       <div id="faProgress" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff">0/0</div>
     </div>
     <div id="faPlayerList"></div>
+  </div>
+
+  <!-- SCRIMMAGE TOGGLE (Practice only) -->
+  <div class="scrimmage-toggle" id="scrimmageToggle">
+    <div class="scrimmage-toggle-row">
+      <div>
+        <div class="scrimmage-label">⚽ Include Scrimmage?</div>
+        <div class="scrimmage-sub">Team Red vs Team Blue mini game</div>
+      </div>
+      <label class="toggle-switch">
+        <input type="checkbox" id="scrimmageCheck" onchange="toggleScrimmage()">
+        <span class="toggle-slider"></span>
+      </label>
+    </div>
+    <div class="scrimmage-board" id="scrimmageBoard">
+      <!-- Score -->
+      <div class="scrimmage-score">
+        <div class="scrimmage-score-lbl red">🔴 Red</div>
+        <input class="scrimmage-inp" type="number" id="scrRedGoals" min="0" placeholder="0">
+        <span style="font-size:20px;font-weight:700;color:var(--mgrey)">–</span>
+        <input class="scrimmage-inp" type="number" id="scrBlueGoals" min="0" placeholder="0">
+        <div class="scrimmage-score-lbl blue">🔵 Blue</div>
+      </div>
+      <!-- Teams -->
+      <div class="scrimmage-teams">
+        <div class="team-card">
+          <div class="team-hdr red">
+            <div class="team-hdr-name">🔴 Team Red</div>
+            <div class="team-hdr-count" id="redCount">0 players</div>
+          </div>
+          <div class="team-list" id="redTeamList"></div>
+          <button class="team-add-btn" onclick="openTeamPicker('red')">＋ Add Player</button>
+        </div>
+        <div class="team-card">
+          <div class="team-hdr blue">
+            <div class="team-hdr-name">🔵 Team Blue</div>
+            <div class="team-hdr-count" id="blueCount">0 players</div>
+          </div>
+          <div class="team-list" id="blueTeamList"></div>
+          <button class="team-add-btn" onclick="openTeamPicker('blue')">＋ Add Player</button>
+        </div>
+      </div>
+      <!-- Scorers -->
+      <div class="scrimmage-scorers-title">⚽ Scrimmage Scorers</div>
+      <div id="scrimmageScorers"><div style="font-size:12px;color:var(--mgrey);font-style:italic">No scorers yet</div></div>
+      <button class="add-scrimmage-scorer" onclick="openScrimmageScorer()">＋ Add Scorer</button>
+    </div>
   </div>
 
   <textarea class="notes-input" id="attNotes" rows="2" placeholder="Session notes…"></textarea>
@@ -823,11 +912,23 @@ function updateBadge(){ document.getElementById('badge').textContent=document.ge
 function toggleGameFields(){
   const t=document.getElementById('sType').value;
   const isGame=t==='Game'||t==='Tournament';
-  const isFitness=t==='Fitness Assessment'||t==='Skills Assessment';
+  const isPractice=t==='Practice';
+  const isFitness=t==='Fitness Assessment';
+  // Opponent + game details + scorers = Game/Tournament only
   document.getElementById('oppWrap').style.display=isGame?'block':'none';
   document.getElementById('scorersWrap').style.display=isGame?'block':'none';
   document.getElementById('gameDetails').style.display=isGame?'block':'none';
-  document.getElementById('tagsSection').style.display=isGame?'none':'block';
+  // Tags = Practice only
+  document.getElementById('tagsSection').style.display=isPractice?'block':'none';
+  // Scrimmage toggle = Practice only
+  document.getElementById('scrimmageToggle').style.display=isPractice?'block':'none';
+  if(!isPractice){
+    // Reset scrimmage when switching away
+    const chk=document.getElementById('scrimmageCheck');
+    if(chk) chk.checked=false;
+    document.getElementById('scrimmageBoard').classList.remove('open');
+  }
+  // Fitness capture = Fitness Assessment only
   document.getElementById('faSection').style.display=isFitness?'block':'none';
   if(isFitness) renderFaCapture();
 }
@@ -1032,15 +1133,24 @@ function saveSession(){
     hist.unshift(session);
     activeSessionId = session.id;
   }
+  // Add scrimmage data if practice scrimmage is on
+  if(type==='Practice' && document.getElementById('scrimmageCheck')?.checked){
+    const redG=parseInt(document.getElementById('scrRedGoals').value)||0;
+    const blueG=parseInt(document.getElementById('scrBlueGoals').value)||0;
+    session.scrimmage={
+      redGoals:redG, blueGoals:blueG,
+      redTeam:[...scrimmageData.red],
+      blueTeam:[...scrimmageData.blue],
+      scorers:[...scrimmageData.scorers],
+      result:redG>blueG?'Red Win':redG===blueG?'Draw':'Blue Win'
+    };
+    session.tags=[...session.tags,'Scrimmage'];
+  }
+
   save(K.HI, hist);
-  // ✅ IMPORTANT: NO RESET
-  document.getElementById('attNotes').value='';
-  document.getElementById('gGF').value='';document.getElementById('gGA').value='';
-  renderAttend();
-  renderScorers();
-  renderMotm();
   showToast('Session saved ✓');
-  setTimeout(()=>showTab('history',3),800);
+  fullSessionReset();
+  setTimeout(()=>showTab('history',4),800);
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -2046,6 +2156,143 @@ function saveEditedSession(){
   showToast('Session updated ✓');
 }
 
+
+
+// ═══════════════════════════════════════════════════════════
+// SCRIMMAGE
+// ═══════════════════════════════════════════════════════════
+let scrimmageData = { red:[], blue:[], scorers:[], redGoals:0, blueGoals:0 };
+
+function toggleScrimmage(){
+  const on = document.getElementById('scrimmageCheck').checked;
+  const board = document.getElementById('scrimmageBoard');
+  board.classList.toggle('open', on);
+  if(on) renderScrimmageTeams();
+}
+
+function renderScrimmageTeams(){
+  const redList = document.getElementById('redTeamList');
+  const blueList = document.getElementById('blueTeamList');
+  redList.innerHTML = scrimmageData.red.map(p=>`
+    <div class="team-player red-pl">
+      <span>${p.name}</span>
+      <span onclick="removeFromTeam('red','${p.id}')" style="cursor:pointer;font-size:14px;color:#9B1B1B">✕</span>
+    </div>`).join('') || '<div style="font-size:11px;color:var(--mgrey);padding:4px;font-style:italic">No players yet</div>';
+  blueList.innerHTML = scrimmageData.blue.map(p=>`
+    <div class="team-player blue-pl">
+      <span>${p.name}</span>
+      <span onclick="removeFromTeam('blue','${p.id}')" style="cursor:pointer;font-size:14px;color:#1A4FA8">✕</span>
+    </div>`).join('') || '<div style="font-size:11px;color:var(--mgrey);padding:4px;font-style:italic">No players yet</div>';
+  document.getElementById('redCount').textContent = scrimmageData.red.length+' players';
+  document.getElementById('blueCount').textContent = scrimmageData.blue.length+' players';
+  renderScrimmageScorers();
+}
+
+function openTeamPicker(team){
+  const present = players.filter(p=>att[p.id]==='x'||att[p.id]==='L');
+  const assigned = [...scrimmageData.red, ...scrimmageData.blue].map(p=>p.id);
+  const available = present.filter(p=>!assigned.includes(p.id));
+  if(!available.length){ showToast('All present players assigned'); return; }
+  openModal(`Add to Team ${team==='red'?'🔴 Red':'🔵 Blue'}`, (p)=>{
+    scrimmageData[team].push({id:p.id, name:p.name});
+    renderScrimmageTeams();
+    closeModal();
+  }, {list:available});
+}
+
+function removeFromTeam(team, id){
+  scrimmageData[team] = scrimmageData[team].filter(p=>p.id!==id);
+  // Also remove from scorers
+  scrimmageData.scorers = scrimmageData.scorers.filter(s=>s.id!==id);
+  renderScrimmageTeams();
+}
+
+function openScrimmageScorer(){
+  const all = [...scrimmageData.red.map(p=>({...p,team:'red'})), ...scrimmageData.blue.map(p=>({...p,team:'blue'}))];
+  if(!all.length){ showToast('Add players to teams first'); return; }
+  openModal('Select Scorer', (p)=>{
+    const existing = scrimmageData.scorers.find(s=>s.id===p.id);
+    if(existing) existing.goals++;
+    else scrimmageData.scorers.push({id:p.id, name:p.name, team:p.team, goals:1});
+    renderScrimmageScorers();
+    closeModal();
+  }, {list:all});
+}
+
+function renderScrimmageScorers(){
+  const div = document.getElementById('scrimmageScorers');
+  if(!scrimmageData.scorers.length){
+    div.innerHTML='<div style="font-size:12px;color:var(--mgrey);font-style:italic">No scorers yet</div>';
+    return;
+  }
+  div.innerHTML = scrimmageData.scorers.map((s,i)=>`
+    <div class="scrimmage-scorer-row">
+      <span class="scrimmage-scorer-name">${s.name}</span>
+      <span class="scrimmage-team-badge ${s.team}">${s.team==='red'?'🔴 Red':'🔵 Blue'}</span>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy);margin:0 6px">${s.goals}</span>
+      <button onclick="adjScrimmageGoal(${i},1)" style="background:#DCFCE7;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:13px;color:var(--green)">+</button>
+      <button onclick="adjScrimmageGoal(${i},-1)" style="background:#FEE2E2;border:none;border-radius:50%;width:24px;height:24px;cursor:pointer;font-size:13px;color:#DC2626">−</button>
+      <button onclick="removeScrimmageScorer(${i})" style="background:none;border:none;color:var(--mgrey);cursor:pointer;font-size:14px">🗑</button>
+    </div>`).join('');
+}
+
+function adjScrimmageGoal(i,d){ scrimmageData.scorers[i].goals=Math.max(1,scrimmageData.scorers[i].goals+d); renderScrimmageScorers(); }
+function removeScrimmageScorer(i){ scrimmageData.scorers.splice(i,1); renderScrimmageScorers(); }
+
+function resetScrimmage(){
+  scrimmageData = { red:[], blue:[], scorers:[], redGoals:0, blueGoals:0 };
+  const chk = document.getElementById('scrimmageCheck');
+  if(chk) chk.checked = false;
+  document.getElementById('scrimmageBoard').classList.remove('open');
+  document.getElementById('scrRedGoals').value='';
+  document.getElementById('scrBlueGoals').value='';
+}
+
+
+// ═══════════════════════════════════════════════════════════
+// FULL SESSION RESET (after save)
+// ═══════════════════════════════════════════════════════════
+function fullSessionReset(){
+  // Clear session type to blank
+  document.getElementById('sType').value='';
+  document.getElementById('badge').textContent='Session';
+  // Clear date
+  document.getElementById('sDate').value='';
+  // Clear notes
+  document.getElementById('attNotes').value='';
+  // Clear opponent / game fields
+  document.getElementById('sOpp').value='';
+  document.getElementById('gComp').value='';
+  document.getElementById('gVenue').value='';
+  document.getElementById('gKickoff').value='';
+  document.getElementById('gGF').value='';
+  document.getElementById('gGA').value='';
+  // Clear attendance
+  players.forEach(p=>att[p.id]=null);
+  save(K.AT,att);
+  // Clear scorers
+  scorers=[];save(K.SC,scorers);
+  // Clear MOTM
+  motm=null;save(K.MO,null);
+  // Clear tags
+  tags=[];save(K.TG,[]);
+  document.querySelectorAll('.tag-chip').forEach(el=>el.classList.remove('active'));
+  // Clear scrimmage
+  resetScrimmage();
+  // Clear activeSessionId
+  activeSessionId=null;
+  // Hide all conditional sections
+  document.getElementById('oppWrap').style.display='none';
+  document.getElementById('scorersWrap').style.display='none';
+  document.getElementById('gameDetails').style.display='none';
+  document.getElementById('tagsSection').style.display='none';
+  document.getElementById('scrimmageToggle').style.display='none';
+  document.getElementById('faSection').style.display='none';
+  // Re-render
+  renderAttend();
+  renderScorers();
+  renderMotm();
+}
 
 // ═══════════════════════════════════════════════════════════
 // BOOT
