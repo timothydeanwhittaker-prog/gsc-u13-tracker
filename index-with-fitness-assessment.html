@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>GSC U13 - Fitness Assessment Ready</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+:root{
+  --red:#9B1B1B;--red2:#C0392B;--navy:#1A2744;--navy2:#243460;
+  --gold:#F0A500;--grey:#F4F5F7;--dgrey:#2C2C2C;--mgrey:#8A8F9C;
+  --border:#E2E5EC;--green:#1A7A3C;--orange:#D97706;
+  --shadow:0 2px 12px rgba(26,39,68,0.10);
+}
+
+/* ── FITNESS ASSESSMENT STYLES ── */
+.fa-metrics-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;padding:10px 14px;background:var(--grey);border-radius:10px;margin-bottom:10px}
+.fa-metric-tile{background:#fff;border:2.5px solid var(--border);border-radius:12px;padding:16px 12px;display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer;transition:all 0.25s ease;text-align:center;min-height:100px;justify-content:center;position:relative}
+.fa-metric-tile:active{transform:scale(0.96)}
+.fa-metric-tile:hover{border-color:var(--navy);box-shadow:0 2px 8px rgba(26,39,68,0.15)}
+.fa-metric-tile.active{background:linear-gradient(135deg,var(--navy),var(--navy2));border-color:var(--navy);color:#fff;box-shadow:0 4px 16px rgba(26,39,68,0.25)}
+.fa-metric-tile.done{background:linear-gradient(135deg,var(--green),#145A32);border-color:var(--green);color:#fff;box-shadow:0 4px 12px rgba(26,122,60,0.2)}
+.fa-tile-icon{font-size:32px;line-height:1}
+.fa-tile-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--dgrey)}
+.fa-metric-tile.active .fa-tile-label{color:#fff}
+.fa-metric-tile.done .fa-tile-label{color:#fff}
+.fa-tile-status{font-size:20px;font-weight:700;min-height:20px;color:var(--green)}
+.fa-active-panel{background:#fff;border-top:2px solid var(--border);padding:14px;border-radius:0 0 10px 10px;margin-bottom:10px;box-shadow:0 -2px 8px rgba(0,0,0,0.08)}
+.fa-panel-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:2px solid var(--border)}
+.fa-metric-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--navy);letter-spacing:1px;flex:1}
+.fa-panel-progress{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--red);min-width:50px;text-align:right}
+.fa-player-scores{display:flex;flex-direction:column;gap:10px;margin-bottom:14px;max-height:350px;overflow-y:auto}
+.fa-score-row{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,var(--grey),rgba(240,165,0,0.05));padding:12px 10px;border-radius:10px;border-left:3px solid var(--navy)}
+.fa-score-row.filled{border-left-color:var(--green)}
+.fa-score-player{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+.fa-pnum{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--navy);min-width:26px;text-align:center;font-weight:700}
+.fa-pname{font-size:13px;font-weight:600;color:var(--dgrey);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fa-score-input{width:70px;padding:8px 10px;border:2px solid var(--border);border-radius:8px;font-size:14px;font-weight:700;text-align:center;background:#fff;outline:none;transition:all 0.15s}
+.fa-score-input:focus{border-color:var(--navy);background:#f9fbff;box-shadow:0 0 0 3px rgba(26,39,68,0.1)}
+.fa-score-input::placeholder{color:#BEC3CC}
+.fa-panel-actions{display:flex;gap:8px}
+.fa-save-btn,.fa-cancel-btn{flex:1;padding:11px 12px;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all 0.2s}
+.fa-save-btn{background:linear-gradient(135deg,var(--green),#145A32);color:#fff;box-shadow:0 2px 8px rgba(26,122,60,0.15)}
+.fa-save-btn:active{transform:scale(0.98);opacity:0.9}
+.fa-cancel-btn{background:#FEE2E2;color:#DC2626;border:1.5px solid #FECACA}
+.fa-cancel-btn:active{transform:scale(0.98)}
+.fa-progress-badge{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;background:var(--red);padding:6px 12px;border-radius:8px;min-width:50px;text-align:center}
+.fa-player-scores::-webkit-scrollbar{width:6px}
+.fa-player-scores::-webkit-scrollbar-track{background:transparent}
+.fa-player-scores::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+.fa-player-scores::-webkit-scrollbar-thumb:hover{background:var(--mgrey)}
+</style>
+</head>
+<body>
+
+<!-- FITNESS ASSESSMENT SECTION (Updated HTML) -->
+<div class="fa-section" id="faSection" style="display:none;background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden">
+  <div class="fa-hdr" style="background:linear-gradient(135deg,#1A5276,#2E86C1);padding:10px 14px;display:flex;align-items:center;justify-content:space-between">
+    <div>
+      <div class="fa-title" style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:#fff;letter-spacing:1px">💪 Fitness Assessment</div>
+      <div class="fa-subtitle" style="font-size:10px;color:rgba(255,255,255,0.7);margin-top:1px">Select metric tiles below</div>
+    </div>
+    <div id="faProgress" class="fa-progress-badge">0/6</div>
+  </div>
+  <div class="fa-metrics-grid" id="faMetricsGrid"></div>
+  <div class="fa-active-panel" id="faActivePanel" style="display:none">
+    <div class="fa-panel-hdr">
+      <div class="fa-metric-title" id="faPanelTitle">Beep Test</div>
+      <div class="fa-panel-progress" id="faPanelProgress">0/6</div>
+    </div>
+    <div class="fa-player-scores" id="faPlayerScores"></div>
+    <div class="fa-panel-actions">
+      <button class="fa-save-btn" onclick="saveMetricScores()">💾 Save</button>
+      <button class="fa-cancel-btn" onclick="cancelMetric()">✕ Cancel</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// FITNESS ASSESSMENT CODE (Ready to integrate)
+// ═══════════════════════════════════════════════════════════
+const FA_METRICS = ['beep', 'burpees', 'situps', 'jsquats', 'agility', 'laps'];
+const FA_KEY = 'gsc2_fa';
+const FA_LABELS = {beep:'Beep Test',burpees:'Burpees',situps:'Sit-Ups',jsquats:'Jump Squats',agility:'Speed/Agility',laps:'Laps'};
+const FA_ICONS = {beep:'🔊',burpees:'⬆️',situps:'📤',jsquats:'🦵',agility:'⚡',laps:'🏃'};
+let currentMetric = null;
+
+// Import from your existing code - these should already exist
+const K={PL:'gsc2_pl',AT:'gsc2_at',HD:'gsc2_hd',LU:'gsc2_lu',HI:'gsc2_hi',SC:'gsc2_sc',MO:'gsc2_mo',TG:'gsc2_tg'};
+const save=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const load=(k,fb)=>{try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb}catch(e){return fb}};
+
+let players = load(K.PL, []);
+let history = load(K.HI, []);
+let att = load(K.AT, {});
+let motm = load(K.MO, null);
+
+// INITIALIZE FITNESS ASSESSMENT
+function initFitnessAssessment(){
+  const type=document.getElementById('sType').value;
+  if(type!=='Fitness Assessment')return;
+  const presentIds=Object.keys(att).filter(id=>att[id]==='x');
+  const presentPlayers=players.filter(p=>presentIds.includes(p.id));
+  const faSession={date:document.getElementById('sDate').value,presentPlayers:presentPlayers.map(p=>({id:p.id,num:p.num,name:p.name})),metrics:{},playerOfSession:null};
+  FA_METRICS.forEach(metric=>{faSession.metrics[metric]={done:false,scores:{}};presentPlayers.forEach(p=>{faSession.metrics[metric].scores[p.id]=null;});});
+  save(FA_KEY,faSession);
+  renderFitnessMetrics();
+}
+
+// RENDER 6 METRIC TILES
+function renderFitnessMetrics(){
+  const container=document.getElementById('faMetricsGrid');
+  if(!container)return;
+  container.innerHTML='';
+  const fa=load(FA_KEY,{});
+  FA_METRICS.forEach(metric=>{
+    const tile=document.createElement('div');
+    tile.className='fa-metric-tile';
+    tile.dataset.metric=metric;
+    tile.onclick=()=>activateMetric(metric);
+    if(fa.metrics?.[metric]?.done)tile.classList.add('done');
+    tile.innerHTML=`<div class="fa-tile-icon">${FA_ICONS[metric]}</div><div class="fa-tile-label">${FA_LABELS[metric]}</div><div class="fa-tile-status">${fa.metrics?.[metric]?.done?'✓':''}</div>`;
+    container.appendChild(tile);
+  });
+  updateFitnessProgress();
+}
+
+// ACTIVATE METRIC - Show player inputs
+function activateMetric(metric){
+  currentMetric=metric;
+  const fa=load(FA_KEY,{});
+  const panel=document.getElementById('faActivePanel');
+  if(!panel)return;
+  panel.style.display='block';
+  document.getElementById('faPanelTitle').textContent=FA_LABELS[metric];
+  const playerScoresDiv=document.getElementById('faPlayerScores');
+  if(!playerScoresDiv)return;
+  playerScoresDiv.innerHTML='';
+  fa.presentPlayers?.forEach(player=>{
+    const currentScore=fa.metrics?.[metric]?.scores?.[player.id]??null;
+    const row=document.createElement('div');
+    row.className='fa-score-row';
+    if(currentScore!==null&&currentScore!=='')row.classList.add('filled');
+    row.innerHTML=`<div class="fa-score-player"><span class="fa-pnum">${player.num}</span><span class="fa-pname">${player.name}</span></div><input type="number" class="fa-score-input" data-player-id="${player.id}" value="${currentScore!==null?currentScore:''}" placeholder="0" step="0.1" min="0" oninput="updateMetricProgress()" />`;
+    playerScoresDiv.appendChild(row);
+  });
+  updateMetricProgress();
+}
+
+// UPDATE PROGRESS - Live counter
+function updateMetricProgress(){
+  const inputs=document.querySelectorAll('.fa-score-input');
+  const filled=Array.from(inputs).filter(i=>i.value.trim()!=='').length;
+  const total=inputs.length;
+  const progressDiv=document.getElementById('faPanelProgress');
+  if(progressDiv)progressDiv.textContent=`${filled}/${total}`;
+  inputs.forEach(input=>{const row=input.closest('.fa-score-row');if(row){if(input.value.trim()!=='')row.classList.add('filled');else row.classList.remove('filled');}});
+}
+
+// SAVE METRIC SCORES - To localStorage & player profiles
+function saveMetricScores(){
+  const fa=load(FA_KEY,{});
+  const inputs=document.querySelectorAll('.fa-score-input');
+  inputs.forEach(input=>{const playerId=input.dataset.playerId;const score=input.value?parseFloat(input.value):null;fa.metrics[currentMetric].scores[playerId]=score;});
+  fa.metrics[currentMetric].done=true;
+  save(FA_KEY,fa);
+  const today=document.getElementById('sDate').value;
+  fa.presentPlayers?.forEach(player=>{const playerObj=players.find(p=>p.id===player.id);if(playerObj){let entry=playerObj.fitness.find(f=>f.date===today);if(!entry){entry={date:today,beep:null,burpees:null,situps:null,jsquats:null,agility:null,laps:null,notes:'Fitness Assessment'};playerObj.fitness.push(entry);}const score=fa.metrics[currentMetric].scores[player.id];entry[currentMetric]=score;}});
+  save(K.PL,players);
+  document.getElementById('faActivePanel').style.display='none';
+  const savedMetric=currentMetric;
+  currentMetric=null;
+  renderFitnessMetrics();
+  console.log(`✓ ${FA_LABELS[savedMetric]} scores saved`);
+  checkFitnessComplete();
+}
+
+// CANCEL METRIC
+function cancelMetric(){
+  document.getElementById('faActivePanel').style.display='none';
+  currentMetric=null;
+}
+
+// UPDATE HEADER PROGRESS
+function updateFitnessProgress(){
+  const fa=load(FA_KEY,{});
+  const completed=FA_METRICS.filter(m=>fa.metrics?.[m]?.done).length;
+  const progressDiv=document.getElementById('faProgress');
+  if(progressDiv)progressDiv.textContent=`${completed}/6`;
+}
+
+// CHECK IF COMPLETE
+function checkFitnessComplete(){
+  const fa=load(FA_KEY,{});
+  if(FA_METRICS.every(m=>fa.metrics?.[m]?.done)){
+    console.log('🎉 All metrics complete! Select Player of Session');
+    const motmSection=document.getElementById('motmSection');
+    if(motmSection)setTimeout(()=>{motmSection.scrollIntoView({behavior:'smooth'});},500);
+  }
+}
+
+// SAVE FINAL FITNESS SESSION
+function saveFitnessSession(){
+  const fa=load(FA_KEY,{});
+  if(!FA_METRICS.every(m=>fa.metrics?.[m]?.done)){
+    alert('⚠️ Complete all 6 metrics first');
+    return;
+  }
+  const historyEntry={
+    id:`${Date.now()}-FA`,
+    date:fa.date||document.getElementById('sDate').value,
+    type:'Fitness Assessment',
+    opp:'',
+    present:fa.presentPlayers,
+    absent:[],late:[],injured:[],
+    motm:motm||null,
+    fitness:fa.metrics,
+    tags:[],
+    notes:document.getElementById('attNotes')?.value||'',
+    timestamp:new Date().toISOString()
+  };
+  history.push(historyEntry);
+  save(K.HI,history);
+  localStorage.removeItem(FA_KEY);
+  att={};
+  motm=null;
+  alert('✓ Fitness Assessment saved!');
+}
+
+// Wire up to your existing toggleGameFields() function
+// Add this line after: document.getElementById('faSection').style.display=isFitness?'block':'none';
+// if(isFitness) initFitnessAssessment();
+
+</script>
+
+</body>
+</html>
