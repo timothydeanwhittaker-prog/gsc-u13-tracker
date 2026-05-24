@@ -432,6 +432,37 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
 .scrimmage-team-badge.blue{background:#DBEAFE;color:#1A4FA8}
 .add-scrimmage-scorer{width:100%;padding:9px;background:var(--grey);border:1.5px dashed var(--border);border-radius:8px;font-size:12px;font-weight:700;color:var(--navy);cursor:pointer;margin-top:6px}
 
+
+/* ── FITNESS ASSESSMENT ── */
+.fa-section{background:#fff;border-radius:14px;margin-bottom:10px;box-shadow:var(--shadow);overflow:hidden;display:none}
+.fa-hdr{background:linear-gradient(135deg,#1A2744,#2E5B9A);padding:12px 14px;display:flex;align-items:center;justify-content:space-between}
+.fa-title{font-family:'Bebas Neue',sans-serif;font-size:17px;color:#fff;letter-spacing:1px}
+.fa-subtitle{font-size:11px;color:rgba(255,255,255,0.7);margin-top:2px}
+.fa-metric-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:12px 14px}
+.fa-metric-tile{background:var(--grey);border:2px solid var(--border);border-radius:12px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;transition:all 0.15s;position:relative;text-align:center}
+.fa-metric-tile:active{transform:scale(0.96)}
+.fa-metric-tile.active{background:var(--navy);border-color:var(--navy)}
+.fa-metric-tile.done{background:#DCFCE7;border-color:var(--green)}
+.fa-tile-icon{font-size:24px;line-height:1}
+.fa-tile-label{font-size:12px;font-weight:700;color:var(--dgrey)}
+.fa-metric-tile.active .fa-tile-label{color:#fff}
+.fa-metric-tile.done .fa-tile-label{color:var(--green)}
+.fa-tile-check{font-size:12px;color:var(--green);font-weight:700;min-height:16px}
+.fa-capture-panel{border-top:1px solid var(--border)}
+.fa-capture-hdr{background:var(--navy);padding:10px 14px;display:flex;align-items:center;justify-content:space-between}
+.fa-capture-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--gold);letter-spacing:1px}
+.fa-capture-sub{font-size:11px;color:rgba(255,255,255,0.6);margin-top:1px}
+.fa-capture-save{background:var(--green);color:#fff;border:none;border-radius:8px;padding:8px 16px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer}
+.fa-capture-save:active{opacity:0.85}
+.fa-player-input-row{display:flex;align-items:center;padding:10px 14px;border-bottom:1px solid var(--border);gap:10px}
+.fa-player-input-row:last-child{border-bottom:none}
+.fa-pi-num{font-family:'Bebas Neue',sans-serif;font-size:17px;color:var(--navy);min-width:24px;text-align:center}
+.fa-pi-name{flex:1;font-size:13px;font-weight:600;color:var(--dgrey)}
+.fa-pi-input{width:90px;border:1.5px solid var(--border);border-radius:8px;padding:8px 10px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;text-align:center;color:var(--dgrey);background:var(--grey);outline:none}
+.fa-pi-input:focus{border-color:var(--navy);background:#fff}
+.fa-pi-input::placeholder{color:#BEC3CC;font-size:12px}
+.fa-pi-input.filled{background:#EEF6FF;border-color:var(--navy)}
+
 </style>
 </head>
 <body>
@@ -600,16 +631,59 @@ input:checked+.toggle-slider:before{transform:translateX(20px)}
   </div>
 
 
-  <!-- FITNESS ASSESSMENT CAPTURE — shown only for Fitness/Skills Assessment -->
+  <!-- FITNESS ASSESSMENT CAPTURE -->
   <div class="fa-section" id="faSection">
     <div class="fa-hdr">
       <div>
         <div class="fa-title">💪 Fitness Assessment</div>
-        <div class="fa-subtitle">Tap each player to enter their scores</div>
+        <div class="fa-subtitle">Pick a metric to capture</div>
       </div>
-      <div id="faProgress" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff">0/0</div>
+      <div id="faProgress" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:#fff">0/6</div>
     </div>
-    <div id="faPlayerList"></div>
+    <!-- Metric tiles grid -->
+    <div class="fa-metric-grid" id="faMetricGrid">
+      <div class="fa-metric-tile" id="tile-beep" onclick="selectMetric('beep')">
+        <div class="fa-tile-icon">🏃</div>
+        <div class="fa-tile-label">Beep Test</div>
+        <div class="fa-tile-check" id="check-beep"></div>
+      </div>
+      <div class="fa-metric-tile" id="tile-burpees" onclick="selectMetric('burpees')">
+        <div class="fa-tile-icon">💪</div>
+        <div class="fa-tile-label">Burpees</div>
+        <div class="fa-tile-check" id="check-burpees"></div>
+      </div>
+      <div class="fa-metric-tile" id="tile-situps" onclick="selectMetric('situps')">
+        <div class="fa-tile-icon">🔄</div>
+        <div class="fa-tile-label">Sit-Ups</div>
+        <div class="fa-tile-check" id="check-situps"></div>
+      </div>
+      <div class="fa-metric-tile" id="tile-jsquats" onclick="selectMetric('jsquats')">
+        <div class="fa-tile-icon">⬆️</div>
+        <div class="fa-tile-label">J.Squats</div>
+        <div class="fa-tile-check" id="check-jsquats"></div>
+      </div>
+      <div class="fa-metric-tile" id="tile-agility" onclick="selectMetric('agility')">
+        <div class="fa-tile-icon">⚡</div>
+        <div class="fa-tile-label">Speed/Agility</div>
+        <div class="fa-tile-check" id="check-agility"></div>
+      </div>
+      <div class="fa-metric-tile" id="tile-laps" onclick="selectMetric('laps')">
+        <div class="fa-tile-icon">🔁</div>
+        <div class="fa-tile-label">Laps</div>
+        <div class="fa-tile-check" id="check-laps"></div>
+      </div>
+    </div>
+    <!-- Capture panel — appears below grid when metric selected -->
+    <div class="fa-capture-panel" id="faCapturePanel" style="display:none">
+      <div class="fa-capture-hdr">
+        <div>
+          <div class="fa-capture-title" id="faCaptureTitle">Beep Test</div>
+          <div class="fa-capture-sub" id="faCaptureSub">0/0 done</div>
+        </div>
+        <button class="fa-capture-save" onclick="saveCurrentMetric()">💾 Save</button>
+      </div>
+      <div id="faPlayerInputs"></div>
+    </div>
   </div>
 
   <!-- SCRIMMAGE TOGGLE (Practice only) -->
@@ -1118,8 +1192,8 @@ function saveSession(){
     lineup:{...lu},
   };
 
-  // Embed fitness data if this is a fitness/skills assessment
-  const isFitnessSession = type==='Fitness Assessment'||type==='Skills Assessment';
+  // Embed fitness data if this is a fitness assessment
+  const isFitnessSession = type==='Fitness Assessment';
   if(isFitnessSession) embedFitnessIntoSession(session);
 
   let hist = load(K.HI, []);
@@ -1622,6 +1696,7 @@ function renderHistory(){
         ${s.competition?`<br><br><strong>🏅 Competition</strong><br>${s.competition}`:''}
         ${s.venue?`<br><br><strong>📍 Venue</strong><br>${s.venue}`:''}
         ${s.notes?`<br><br><strong>📝 Notes</strong><br>${s.notes}`:''}
+        ${s.fitnessData&&s.fitnessData.length?renderHistFitnessData(s):''}
         ${(s.type==='Fitness Assessment'||s.type==='Skills Assessment')&&s.fitnessData&&s.fitnessData.length?renderHistFitnessData(s):''}
       </div>
       <div class="hc-acts">
@@ -1792,373 +1867,198 @@ function esc(s){ return(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').repl
 
 
 // ═══════════════════════════════════════════════════════════
-// FITNESS ASSESSMENT CAPTURE
 // ═══════════════════════════════════════════════════════════
+// FITNESS ASSESSMENT — METRIC BY METRIC
+// ═══════════════════════════════════════════════════════════
+const FA_METRICS = [
+  {key:'beep',    label:'Beep Test',    icon:'🏃', placeholder:'e.g. 7.2', type:'decimal'},
+  {key:'burpees', label:'Burpees',      icon:'💪', placeholder:'e.g. 20',  type:'integer'},
+  {key:'situps',  label:'Sit-Ups',      icon:'🔄', placeholder:'e.g. 30',  type:'integer'},
+  {key:'jsquats', label:'J.Squats',     icon:'⬆️', placeholder:'e.g. 40',  type:'integer'},
+  {key:'agility', label:'Speed/Agility',icon:'⚡', placeholder:'e.g. 00:34:00', type:'text'},
+  {key:'laps',    label:'Laps',         icon:'🔁', placeholder:'e.g. 10:00',    type:'text'},
+];
 
-// In-progress fitness data: {playerId: {beep, burpees, situps, jsquats, agility, laps, notes}}
-let faData = {};
+// faMetricData: { metricKey: { playerId: value } }
+let faMetricData = {};
+let faActiveMetric = null;
 
 function renderFaCapture(){
-  const list = document.getElementById('faPlayerList');
-  list.innerHTML = '';
-  // Only show present + late players (those marked today)
-  const available = players.filter(p => att[p.id]==='x' || att[p.id]==='L' || att[p.id]===null);
-  // Actually show all players — coach marks present AND enters data
-  players.forEach(p => {
-    const d = faData[p.id] || {};
-    const hasDone = d.beep || d.burpees || d.situps || d.jsquats || d.agility || d.laps;
-    const row = document.createElement('div');
-    row.className = 'fa-player-row';
-    row.innerHTML = `
-      <div class="fa-player-hdr" onclick="toggleFaPlayer('${p.id}')">
-        <div class="fa-pnum">${p.num}</div>
-        <div class="fa-pname">${p.name}</div>
-        ${hasDone ? `<div class="fa-status done">✓ Done</div>` : `<div class="fa-status pending">Pending</div>`}
-        <div class="fa-parr" id="faarr-${p.id}">▾</div>
-      </div>
-      <div class="fa-fields" id="fafields-${p.id}">
-        <div class="fa-grid">
-          <div class="fa-field"><label>Beep Test</label><input type="number" step="0.1" placeholder="e.g. 7.2" value="${d.beep||''}" id="fa-beep-${p.id}" oninput="saveFaField('${p.id}','beep',this.value)"></div>
-          <div class="fa-field"><label>Burpees</label><input type="number" placeholder="0" value="${d.burpees||''}" id="fa-burp-${p.id}" oninput="saveFaField('${p.id}','burpees',this.value)"></div>
-          <div class="fa-field"><label>Sit-ups</label><input type="number" placeholder="0" value="${d.situps||''}" id="fa-sit-${p.id}" oninput="saveFaField('${p.id}','situps',this.value)"></div>
-          <div class="fa-field"><label>Jump Squats</label><input type="number" placeholder="0" value="${d.jsquats||''}" id="fa-jsq-${p.id}" oninput="saveFaField('${p.id}','jsquats',this.value)"></div>
-          <div class="fa-field"><label>Agility (time)</label><input type="text" placeholder="00:34:00" value="${d.agility||''}" id="fa-agl-${p.id}" oninput="saveFaField('${p.id}','agility',this.value)"></div>
-          <div class="fa-field"><label>Laps</label><input type="text" placeholder="10:00" value="${d.laps||''}" id="fa-lap-${p.id}" oninput="saveFaField('${p.id}','laps',this.value)"></div>
-          <div class="fa-field full"><label>Notes</label><input type="text" placeholder="Any notes…" value="${d.notes||''}" id="fa-note-${p.id}" oninput="saveFaField('${p.id}','notes',this.value)"></div>
-        </div>
-        <div class="fa-save-row">
-          <button class="fa-save-btn" onclick="confirmFaPlayer('${p.id}')">✓ Done — Next Player</button>
-          <button class="fa-clear-btn" onclick="clearFaPlayer('${p.id}')">Clear</button>
-        </div>
-      </div>`;
-    list.appendChild(row);
+  // Update metric tiles to show done/not done
+  let doneCount = 0;
+  FA_METRICS.forEach(m => {
+    const tile  = document.getElementById('tile-'+m.key);
+    const check = document.getElementById('check-'+m.key);
+    if(!tile) return;
+    const data = faMetricData[m.key] || {};
+    const presentPlayers = players.filter(p => att[p.id]==='x' || att[p.id]==='L');
+    const filled = presentPlayers.filter(p => data[p.id] !== undefined && data[p.id] !== null && data[p.id] !== '').length;
+    const isDone = filled > 0 && filled === presentPlayers.length;
+    const hasAny = filled > 0;
+    tile.classList.toggle('done', isDone);
+    tile.classList.toggle('active', faActiveMetric === m.key && !isDone);
+    if(isDone){ check.textContent = '✓ Done'; doneCount++; }
+    else if(hasAny){ check.textContent = filled+'/'+presentPlayers.length+' done'; }
+    else { check.textContent = ''; }
   });
-  updateFaProgress();
+  const total = FA_METRICS.length;
+  const prog = document.getElementById('faProgress');
+  if(prog) prog.textContent = doneCount+'/'+total;
 }
 
-function toggleFaPlayer(id){
-  const fields = document.getElementById(`fafields-${id}`);
-  const arr    = document.getElementById(`faarr-${id}`);
-  const open   = fields.classList.toggle('open');
-  arr.classList.toggle('open', open);
-}
+function selectMetric(key){
+  faActiveMetric = key;
+  const metric = FA_METRICS.find(m => m.key === key);
+  const presentPlayers = players.filter(p => att[p.id]==='x' || att[p.id]==='L');
 
-function saveFaField(id, field, value){
-  if(!faData[id]) faData[id] = {};
-  if(field==='beep') faData[id][field] = parseFloat(value)||null;
-  else if(['burpees','situps','jsquats'].includes(field)) faData[id][field] = parseInt(value)||null;
-  else faData[id][field] = value||null;
-}
-
-function confirmFaPlayer(id){
-  const d = faData[id]||{};
-  const hasDone = d.beep||d.burpees||d.situps||d.jsquats||d.agility||d.laps;
-  if(!hasDone){ showToast('Enter at least one metric first'); return; }
-  // Mark as present if not already
-  if(!att[id]) { att[id]='x'; save(K.AT,att); }
-  // Close this row and open next
-  const fields = document.getElementById(`fafields-${id}`);
-  const arr    = document.getElementById(`faarr-${id}`);
-  fields.classList.remove('open'); arr.classList.remove('open');
-  updateFaProgress();
-  renderFaCapture();
-  // Scroll to next pending
-  const allRows = document.querySelectorAll('.fa-player-row');
-  const currentIdx = players.findIndex(p=>p.id===id);
-  for(let i=currentIdx+1;i<players.length;i++){
-    const next = players[i];
-    const nd = faData[next.id]||{};
-    const hasDoneNext = nd.beep||nd.burpees||nd.situps||nd.jsquats||nd.agility||nd.laps;
-    if(!hasDoneNext){
-      toggleFaPlayer(next.id);
-      setTimeout(()=>{ const el=document.getElementById(`fafields-${next.id}`); if(el)el.scrollIntoView({behavior:'smooth',block:'center'}); },100);
-      break;
-    }
+  if(!presentPlayers.length){
+    showToast('Mark players present first');
+    return;
   }
-  showToast('Saved — next player ↓');
+
+  // Update tile styles
+  FA_METRICS.forEach(m => {
+    const tile = document.getElementById('tile-'+m.key);
+    if(tile){
+      tile.classList.remove('active');
+      if(m.key === key && !tile.classList.contains('done')){
+        tile.classList.add('active');
+      }
+    }
+  });
+
+  // Show capture panel
+  const panel = document.getElementById('faCapturePanel');
+  panel.style.display = 'block';
+  document.getElementById('faCaptureTitle').textContent = metric.icon + ' ' + metric.label;
+
+  // Build player input rows
+  const data = faMetricData[key] || {};
+  const filled = presentPlayers.filter(p => data[p.id] !== undefined && data[p.id] !== null && data[p.id] !== '').length;
+  document.getElementById('faCaptureSub').textContent = filled+'/'+presentPlayers.length+' done';
+
+  const inputsDiv = document.getElementById('faPlayerInputs');
+  inputsDiv.innerHTML = '';
+  presentPlayers.forEach(p => {
+    const val = data[p.id] !== undefined ? data[p.id] : '';
+    const row = document.createElement('div');
+    row.className = 'fa-player-input-row';
+    row.innerHTML = `
+      <div class="fa-pi-num">${p.num}</div>
+      <div class="fa-pi-name">${p.name}</div>
+      <input class="fa-pi-input ${val?'filled':''}"
+        type="${metric.type==='integer'?'number':metric.type==='decimal'?'number':'text'}"
+        ${metric.type==='decimal'?'step="0.1"':''}
+        placeholder="${metric.placeholder}"
+        value="${val}"
+        inputmode="${metric.type==='text'?'text':'decimal'}"
+        id="fainput-${key}-${p.id}"
+        oninput="onFaInput('${key}','${p.id}',this)">`;
+    inputsDiv.appendChild(row);
+  });
+
+  // Scroll to panel
+  setTimeout(()=>panel.scrollIntoView({behavior:'smooth',block:'start'}),100);
 }
 
-function clearFaPlayer(id){
-  faData[id] = {};
+function onFaInput(key, playerId, el){
+  el.classList.toggle('filled', el.value.trim() !== '');
+  // Update sub count live
+  const presentPlayers = players.filter(p => att[p.id]==='x' || att[p.id]==='L');
+  const data = faMetricData[key] || {};
+  // Count filled including this new value
+  let filled = 0;
+  presentPlayers.forEach(p => {
+    const inp = document.getElementById('fainput-'+key+'-'+p.id);
+    if(inp && inp.value.trim()) filled++;
+  });
+  document.getElementById('faCaptureSub').textContent = filled+'/'+presentPlayers.length+' done';
+}
+
+function saveCurrentMetric(){
+  if(!faActiveMetric) return;
+  const metric = FA_METRICS.find(m => m.key === faActiveMetric);
+  const presentPlayers = players.filter(p => att[p.id]==='x' || att[p.id]==='L');
+  if(!faMetricData[faActiveMetric]) faMetricData[faActiveMetric] = {};
+
+  let savedCount = 0;
+  presentPlayers.forEach(p => {
+    const inp = document.getElementById('fainput-'+faActiveMetric+'-'+p.id);
+    if(!inp) return;
+    const raw = inp.value.trim();
+    if(raw === ''){ faMetricData[faActiveMetric][p.id] = null; return; }
+    if(metric.type === 'decimal') faMetricData[faActiveMetric][p.id] = parseFloat(raw) || null;
+    else if(metric.type === 'integer') faMetricData[faActiveMetric][p.id] = parseInt(raw) || null;
+    else faMetricData[faActiveMetric][p.id] = raw;
+    savedCount++;
+  });
+
+  // Save to localStorage immediately
+  save(K.FA, faMetricData);
+
+  // Sync to each player's fitness profile immediately
+  const date = document.getElementById('sDate').value || new Date().toISOString().split('T')[0];
+  presentPlayers.forEach(p => {
+    const val = faMetricData[faActiveMetric][p.id];
+    if(val === null || val === undefined) return;
+    const player = players.find(x => x.id === p.id);
+    if(!player) return;
+    if(!player.fitness) player.fitness = [];
+    // Find or create entry for this date
+    let entry = player.fitness.find(f => f.date === date);
+    if(!entry){
+      entry = {date, beep:null, burpees:null, situps:null, jsquats:null, agility:null, laps:null, notes:'Assessment'};
+      player.fitness.push(entry);
+    }
+    entry[faActiveMetric] = val;
+  });
+  save(K.PL, players);
+
+  showToast(metric.label + ' saved ✓');
+
+  // Close panel, refresh tiles
+  document.getElementById('faCapturePanel').style.display = 'none';
+  faActiveMetric = null;
   renderFaCapture();
 }
 
-function updateFaProgress(){
-  const total = players.length;
-  const done  = players.filter(p=>{ const d=faData[p.id]||{}; return d.beep||d.burpees||d.situps||d.jsquats||d.agility||d.laps; }).length;
-  document.getElementById('faProgress').textContent = `${done}/${total}`;
+function resetFaData(){
+  faMetricData = {};
+  faActiveMetric = null;
+  save(K.FA, {});
+  const panel = document.getElementById('faCapturePanel');
+  if(panel) panel.style.display = 'none';
+  // Reset tiles
+  FA_METRICS.forEach(m => {
+    const tile = document.getElementById('tile-'+m.key);
+    const check = document.getElementById('check-'+m.key);
+    if(tile){ tile.classList.remove('active','done'); }
+    if(check){ check.textContent = ''; }
+  });
+  const prog = document.getElementById('faProgress');
+  if(prog) prog.textContent = '0/6';
 }
 
-// Called from saveSession — embeds fitness data into the session and syncs to player profiles
 function embedFitnessIntoSession(session){
   const date = session.date;
   const fitnessEntries = [];
-  players.forEach(p=>{
-    const d = faData[p.id];
-    if(!d) return;
-    const hasData = d.beep||d.burpees||d.situps||d.jsquats||d.agility||d.laps;
-    if(!hasData) return;
-    const entry = {
-      playerId: p.id,
-      playerName: p.name,
-      beep: d.beep||null,
-      burpees: d.burpees||null,
-      situps: d.situps||null,
-      jsquats: d.jsquats||null,
-      agility: d.agility||null,
-      laps: d.laps||null,
-      notes: d.notes||'',
-    };
-    fitnessEntries.push(entry);
-    // Sync to player fitness profile
-    const player = players.find(x=>x.id===p.id);
-    if(player){
-      if(!player.fitness) player.fitness=[];
-      // Remove existing entry for same date to avoid duplicates
-      player.fitness = player.fitness.filter(f=>f.date!==date);
-      player.fitness.push({date, beep:d.beep||null, burpees:d.burpees||null, situps:d.situps||null, jsquats:d.jsquats||null, agility:d.agility||null, laps:d.laps||null, notes:d.notes||''});
-    }
+  const presentPlayers = players.filter(p =>
+    (session.present||[]).some(x=>x.id===p.id) ||
+    (session.late||[]).some(x=>x.id===p.id)
+  );
+  presentPlayers.forEach(p => {
+    const entry = { playerId:p.id, playerName:p.name };
+    let hasData = false;
+    FA_METRICS.forEach(m => {
+      const val = faMetricData[m.key] ? faMetricData[m.key][p.id] : null;
+      entry[m.key] = val !== undefined ? val : null;
+      if(val !== null && val !== undefined) hasData = true;
+    });
+    if(hasData) fitnessEntries.push(entry);
   });
-  save(K.PL, players);
   session.fitnessData = fitnessEntries;
   return session;
 }
-
-// Reset FA data after session saved
-function resetFaData(){
-  faData = {};
-}
-
-
-// ═══════════════════════════════════════════════════════════
-// HOME PAGE
-// ═══════════════════════════════════════════════════════════
-let activeSessionId = null;
-
-function initHome(){
-  const hist = load(K.HI,[]);
-  // Last session
-  if(hist.length){
-    const s = hist[0];
-    const oppStr = s.opp ? ` vs ${s.opp}` : '';
-    const resStr = s.result ? ` · ${s.result}` : '';
-    document.getElementById('homeLastSess').textContent = `${fmtDate(s.date)} · ${s.type}${oppStr}${resStr}`;
-  } else {
-    document.getElementById('homeLastSess').textContent = 'No sessions yet';
-  }
-  // W/D/L record
-  let w=0,d=0,l=0,gf=0,ga=0;
-  hist.filter(s=>s.type==='Game'||s.type==='Tournament').forEach(s=>{
-    if(s.result==='Win') w++;
-    else if(s.result==='Draw') d++;
-    else if(s.result==='Loss') l++;
-    if(s.score){ gf+=s.score.gf||0; ga+=s.score.ga||0; }
-  });
-  document.getElementById('homeW').textContent=w;
-  document.getElementById('homeD').textContent=d;
-  document.getElementById('homeL').textContent=l;
-  document.getElementById('homeGF').textContent=gf;
-  document.getElementById('homeGA').textContent=ga;
-}
-
-function showHome(){
-  document.getElementById('homePage').style.display='flex';
-  document.getElementById('appHdr').style.display='none';
-  document.getElementById('appStatsBar').style.display='none';
-  document.getElementById('appTabs').style.display='none';
-  document.getElementById('appNav').style.display='flex';
-  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
-  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
-  // Highlight Home nav item
-  const homeNi=document.getElementById('ni-home');
-  if(homeNi) homeNi.classList.add('active');
-  activeSessionId = null;
-  initHome();
-  // Keep bottom nav always visible
-  document.getElementById('appNav').style.display='flex';
-  // Highlight home on boot
-  const hn=document.getElementById('ni-home');
-  if(hn) hn.classList.add('active');
-  window.scrollTo(0,0);
-}
-
-function homeStartSession(type){
-  // Set session type
-  document.getElementById('sType').value = type;
-  updateBadge(); toggleGameFields();
-  // Hide home, show app
-  document.getElementById('homePage').style.display='none';
-  showTab('attend',0);
-  activeSessionId = null;
-}
-
-function homeGoTo(tab){
-  document.getElementById('homePage').style.display='none';
-  showTab(tab, 0); // idx handled inside showTab via maps
-}
-
-// ═══════════════════════════════════════════════════════════
-// AGE STATUS HELPER
-// ═══════════════════════════════════════════════════════════
-function getAgeStatus(dob){
-  if(!dob) return null;
-  const birth = new Date(dob);
-  const yearBorn = birth.getFullYear();
-  const ageIn2026 = 2026 - yearBorn;
-  // Safe: turning 13 in 2026 (born 2013)
-  if(yearBorn === 2013) return {cls:'age-safe', label:'✓ Safe'};
-  // Borderline: turning 14 in 2026 (born 2012)
-  if(yearBorn === 2012) return {cls:'age-border', label:'⚠ Borderline'};
-  // Overage: already 14+ (born 2011 or earlier)
-  if(yearBorn <= 2011) return {cls:'age-over', label:'✕ Overage'};
-  // Under 13 (born 2014+) — safe
-  return {cls:'age-safe', label:'✓ Safe'};
-}
-
-// ═══════════════════════════════════════════════════════════
-// EDIT HISTORY SESSION MODAL
-// ═══════════════════════════════════════════════════════════
-let editingSessionId = null;
-
-function openEditModal(sessionId){
-  const hist = load(K.HI,[]);
-  const s = hist.find(x=>x.id===sessionId);
-  if(!s) return;
-  editingSessionId = sessionId;
-  const isGame = s.type==='Game'||s.type==='Tournament';
-
-  document.getElementById('editModalTitle').textContent = `Edit · ${s.type}`;
-
-  const scoreHtml = isGame ? `
-    <div class="edit-field">
-      <label>Score (GF – GA)</label>
-      <div style="display:flex;gap:8px;align-items:center">
-        <input type="number" id="edit-gf" value="${s.score?.gf??''}" min="0" style="width:60px;text-align:center;border:1.5px solid var(--border);border-radius:8px;padding:7px;font-size:14px;font-weight:700;background:var(--grey);outline:none">
-        <span style="font-weight:700;color:var(--mgrey)">–</span>
-        <input type="number" id="edit-ga" value="${s.score?.ga??''}" min="0" style="width:60px;text-align:center;border:1.5px solid var(--border);border-radius:8px;padding:7px;font-size:14px;font-weight:700;background:var(--grey);outline:none">
-      </div>
-    </div>
-    <div class="edit-field">
-      <label>Scorers (comma separated)</label>
-      <input type="text" id="edit-scorers" value="${(s.scorers||[]).map(sc=>sc.name+(sc.goals>1?` (${sc.goals})`:'') ).join(', ')}" placeholder="e.g. Seth (2), Hlumelo">
-    </div>
-    <div class="edit-field">
-      <label>Venue</label>
-      <input type="text" id="edit-venue" value="${s.venue||''}">
-    </div>
-    <div class="edit-field">
-      <label>Competition</label>
-      <input type="text" id="edit-comp" value="${s.competition||''}">
-    </div>` : '';
-
-  const motmVal = s.motm ? (typeof s.motm==='object'?s.motm.name:s.motm) : '';
-
-  // Build attendance editor — all squad members
-  const attRows = players.map(p=>{
-    const wasPresent = (s.present||[]).some(x=>x.id===p.id);
-    const wasLate    = (s.late||[]).some(x=>x.id===p.id);
-    const wasInj     = (s.injured||[]).some(x=>x.id===p.id);
-    const wasAbs     = (s.absent||[]).some(x=>x.id===p.id) || (!wasPresent&&!wasLate&&!wasInj);
-    const val = wasPresent?'x':wasLate?'L':wasInj?'I':'A';
-    return `<div class="edit-att-row">
-      <span style="font-weight:600;font-size:12px;min-width:26px;color:var(--navy)">${p.num}</span>
-      <span style="flex:1;font-size:12px">${p.name}</span>
-      <select id="edit-att-${p.id}">
-        <option value="x" ${val==='x'?'selected':''}>✓ Present</option>
-        <option value="L" ${val==='L'?'selected':''}>⏰ Late</option>
-        <option value="I" ${val==='I'?'selected':''}>🤕 Injured</option>
-        <option value="A" ${val==='A'?'selected':''}>✕ Absent</option>
-      </select>
-    </div>`;
-  }).join('');
-
-  document.getElementById('editModalBody').innerHTML = `
-    <div class="edit-modal-form">
-      <div class="edit-field">
-        <label>Date</label>
-        <input type="date" id="edit-date" value="${s.date}">
-      </div>
-      <div class="edit-field">
-        <label>Notes</label>
-        <textarea id="edit-notes" rows="2">${s.notes||''}</textarea>
-      </div>
-      <div class="edit-field">
-        <label>Player of the Session</label>
-        <input type="text" id="edit-motm" value="${motmVal}" placeholder="Player name">
-      </div>
-      ${scoreHtml}
-      <div class="edit-field">
-        <label>Attendance</label>
-        <div class="edit-att-grid">${attRows}</div>
-      </div>
-      <button class="edit-save-btn" onclick="saveEditedSession()">💾 Save Changes</button>
-    </div>`;
-
-  document.getElementById('editOverlay').classList.add('open');
-}
-
-function closeEditModal(){
-  document.getElementById('editOverlay').classList.remove('open');
-  editingSessionId = null;
-}
-
-function saveEditedSession(){
-  const hist = load(K.HI,[]);
-  const idx  = hist.findIndex(s=>s.id===editingSessionId);
-  if(idx<0){ showToast('Session not found'); return; }
-  const s = hist[idx];
-  const isGame = s.type==='Game'||s.type==='Tournament';
-
-  // Date & notes
-  s.date  = document.getElementById('edit-date').value || s.date;
-  s.notes = document.getElementById('edit-notes').value;
-
-  // MOTM
-  const motmName = document.getElementById('edit-motm').value.trim();
-  s.motm = motmName ? {name:motmName} : null;
-
-  // Game-specific
-  if(isGame){
-    const gf = parseInt(document.getElementById('edit-gf').value)||0;
-    const ga = parseInt(document.getElementById('edit-ga').value)||0;
-    s.score  = {gf,ga};
-    s.result = gf>ga?'Win':gf===ga?'Draw':'Loss';
-    // Parse scorers
-    const scorersRaw = document.getElementById('edit-scorers').value;
-    s.scorers = scorersRaw.split(',').map(t=>{
-      t=t.trim(); if(!t)return null;
-      const m = t.match(/^(.+?)\s*\((\d+)\)$/);
-      return m ? {name:m[1].trim(), goals:parseInt(m[2])} : {name:t, goals:1};
-    }).filter(Boolean);
-    s.venue       = document.getElementById('edit-venue').value;
-    s.competition = document.getElementById('edit-comp').value;
-  }
-
-  // Attendance
-  const newPresent=[], newLate=[], newInj=[], newAbs=[];
-  players.forEach(p=>{
-    const sel = document.getElementById(`edit-att-${p.id}`);
-    const val = sel ? sel.value : 'A';
-    const entry = {id:p.id, name:p.name};
-    if(val==='x') newPresent.push(entry);
-    else if(val==='L') newLate.push(entry);
-    else if(val==='I') newInj.push(entry);
-    else newAbs.push(entry);
-  });
-  s.present = newPresent;
-  s.late    = newLate;
-  s.injured = newInj;
-  s.absent  = newAbs;
-
-  hist[idx] = s;
-  save(K.HI, hist);
-  closeEditModal();
-  renderHistory();
-  showToast('Session updated ✓');
-}
-
-
 
 // ═══════════════════════════════════════════════════════════
 // SCRIMMAGE
@@ -2300,6 +2200,8 @@ function fullSessionReset(){
   document.getElementById('tagsSection').style.display='none';
   document.getElementById('scrimmageToggle').style.display='none';
   document.getElementById('faSection').style.display='none';
+  // Reset fitness
+  resetFaData();
   // Re-render
   renderAttend();
   renderScorers();
@@ -2308,6 +2210,8 @@ function fullSessionReset(){
 
 // ═══════════════════════════════════════════════════════════
 // BOOT
+// Restore fitness metric data from storage
+faMetricData = load(K.FA, {});
 // ═══════════════════════════════════════════════════════════
 loadHdr();
 document.getElementById('sDate').addEventListener('change',saveHdr);
