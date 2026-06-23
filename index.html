@@ -79,7 +79,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .att-btn.late{background:#FEF3C7;border-color:#F59E0B;color:#B45309}
 .att-btn.inj{background:#FEE2E2;border-color:#EF4444;color:#B91C1C}
 .att-btn.abs{background:#F1F5F9;border-color:#94A3B8;color:#475569}
-.att-btn.ns{background:#FFE4E6;border-color:#DC2626;color:#B91C1C}
 
 /* ── PLAYERS ── */
 .pc{background:#fff;border:1px solid #e2e8f0;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,0.15);overflow:hidden}
@@ -112,7 +111,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .fi:focus{border-color:var(--primary)}
 .fi::placeholder{color:#94a3b8}
 
-/* ── SKILLS ASSESSMENT SECTION ── */
+/* ── SKILLS ASSESSMENT ── */
 .skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
 .skill-card{background:var(--alt);border:1.5px solid var(--border-c);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:6px}
 .skill-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-2)}
@@ -121,72 +120,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .skill-meter{width:100%;height:6px;background:var(--border-c);border-radius:3px;overflow:hidden;margin-top:4px}
 .skill-meter-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-700));border-radius:3px;transition:width 0.2s}
 .skill-value{font-size:11px;font-weight:700;color:var(--text-2);margin-top:2px;text-align:center}
-
-/* ── HOME PAGE ── */
-.home-page{min-height:100vh;background:var(--app-bg);display:flex;flex-direction:column;align-items:center;padding:0 20px 100px;padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
-.home-logo-wrap{background:var(--primary);width:calc(100% + 40px);margin:0 -20px;padding:36px 20px 28px;border-radius:0 0 24px 24px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:center}
-.home-logo{width:110px;height:110px;border-radius:22px;object-fit:cover;box-shadow:0 8px 24px rgba(15,23,42,0.25),0 0 0 4px rgba(255,255,255,0.15)}
-.home-team-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:3px;margin-top:12px;text-align:center}
-.home-team-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;letter-spacing:1px;text-transform:uppercase}
-.home-last-sess{background:var(--card);border:1px solid var(--border-c);box-shadow:var(--shadow-soft);border-radius:12px;padding:10px 16px;width:100%;margin-top:20px;margin-bottom:20px;text-align:center}
-.home-last-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px}
-.home-last-text{font-size:13px;color:var(--text);font-weight:600}
-.home-sec-label{font-family:'Bebas Neue',sans-serif;font-size:12px;color:var(--text-2);letter-spacing:2px;margin-bottom:10px;align-self:flex-start;width:100%;margin-top:20px}
-.home-session-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:12px}
-.hsc{background:var(--card);border:1px solid var(--border-c);box-shadow:var(--shadow-soft);border-radius:16px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all 0.18s;text-align:center;position:relative;overflow:hidden}
-.hsc:active{transform:scale(0.95);opacity:0.85}
-.hsc::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--text-muted)}
-.hsc.practice::before{background:#3B82F6}
-.hsc.game::before{background:var(--secondary)}
-.hsc.tournament::before{background:var(--accent)}
-.hsc.fitness::before{background:var(--success)}
-.hsc-icon{font-size:30px}
-.hsc-label{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text);letter-spacing:1px;line-height:1.1}
-.hsc-sub{font-size:10px;color:var(--text-2)}
-.home-record{display:flex;justify-content:space-around;width:100%;background:var(--card);border:1px solid var(--border-c);box-shadow:var(--shadow-soft);border-radius:14px;padding:12px 16px}
-.hr-stat .hrv{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--text);line-height:1;text-align:center}
-.hr-stat .hrk{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-2);text-align:center}
-.hrv.w{color:var(--success)!important}.hrv.d{color:var(--accent)!important}.hrv.l{color:var(--danger-c)!important}
-
-/* ── HOME BUTTON IN HEADER ── */
-.hdr-home-btn{background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:4px}
-.hdr-logo-img{width:30px;height:30px;border-radius:7px;object-fit:cover;margin-right:2px}
-
-/* ── MODAL ── */
-.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.4);z-index:500;align-items:flex-end}
-.overlay.open{display:flex}
-.modal{background:#fff;border-radius:20px 20px 0 0;width:100%;max-height:75vh;overflow-y:auto;padding-bottom:env(safe-area-inset-bottom,16px);box-shadow:0 -8px 40px rgba(0,0,0,0.18)}
-.modal-hdr{display:flex;align-items:center;justify-content:space-between;padding:14px 16px 10px;border-bottom:1px solid var(--border-c);position:sticky;top:0;background:var(--card);z-index:10}
-.modal-title{font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--text);letter-spacing:1px}
-.modal-close{width:30px;height:30px;border-radius:50%;border:none;background:#f1f5f9;font-size:14px;cursor:pointer;color:#64748b}
-.modal-body{padding:8px 12px 16px}
-
-/* ── TOAST ── */
-.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#0F172A;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all 0.3s;z-index:1000}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-
-/* ── GAME DETAILS ── */
-.game-details{background:#fff;border:1px solid #e2e8f0;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,0.15);overflow:hidden}
-.game-hdr{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:10px 14px;border-bottom:1px solid var(--card-border)}
-.game-hdr-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold);letter-spacing:1px}
-.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}
-.game-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#475569;display:block;margin-bottom:3px}
-.game-field input{width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:#0f172a;background:#f8fafc;outline:none}
-.game-field input:focus{border-color:var(--red)}
-.game-field input::placeholder{color:#94a3b8}
-.game-field.full{grid-column:1/-1}
-
-/* ── NOTES ── */
-.notes-input{width:100%;border:1.5px solid var(--card-border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--txt);background:rgba(255,255,255,0.05);outline:none;resize:none;margin-bottom:10px;min-height:60px}
-.notes-input:focus{border-color:var(--red)}
-.save-btn{width:100%;padding:14px;background:linear-gradient(135deg,#166534,var(--green));color:#fff;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 15px rgba(34,197,94,0.25)}
-.save-btn:active{transform:scale(0.98)}
-
-/* ── STATS PANEL ── */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.stat-box{background:var(--alt);border:1px solid var(--border-c);border-radius:10px;padding:10px;text-align:center}
-.stat-box .sv{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--txt);line-height:1}
-.stat-box .sk{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-2)}
 
 /* ── FITNESS PANEL ── */
 .fitness-entry{background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:10px;padding:10px;margin-bottom:8px;position:relative}
@@ -199,10 +132,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .fa.up{color:var(--green)}.fa.down{color:var(--danger)}.fa.same{color:var(--txt3)}
 
 /* ── HISTORY ── */
-.hist-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:4px}
-.hist-filter::-webkit-scrollbar{display:none}
-.hf-btn{padding:6px 12px;border:1.5px solid var(--card-border);background:rgba(255,255,255,0.05);border-radius:20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--mgrey);cursor:pointer}
-.hf-btn.active{background:var(--red-dim);border-color:var(--red);color:var(--red)}
 .hc{background:#fff;border:1px solid #e2e8f0;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,0.15);overflow:hidden}
 .hc-hdr{background:var(--navy);padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .hc-date{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold);letter-spacing:1px}
@@ -214,17 +143,33 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .hs{flex:1;text-align:center;padding:4px;background:#f8fafc;border-radius:7px;border:1px solid #e2e8f0}
 .hs .hn{font-family:'Bebas Neue',sans-serif;font-size:17px;line-height:1}
 .hs .hl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey)}
-.hs.hp .hn{color:var(--green)}.hs.hi .hn{color:#F87171}.hs.hlt .hn{color:var(--gold)}.hs.ha .hn{color:var(--mgrey)}
-.hc-tags{display:flex;flex-wrap:wrap;gap:4px;padding:8px 14px;border-bottom:1px solid var(--border)}
-.htag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
 .hc-body{padding:10px 14px;font-size:12px;color:var(--dgrey);line-height:1.8}
 .hc-body strong{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--navy)}
-.hc-acts{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border)}
-.hc-btn{flex:1;padding:8px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
-.hc-btn.edit{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c}
-.hc-btn.del{background:#FEE2E2;color:#DC2626}
-.h-empty{text-align:center;padding:40px 20px;color:var(--mgrey);font-size:13px;line-height:1.8}
-.h-empty .big{font-size:36px;margin-bottom:8px}
+
+/* ── HOME PAGE ── */
+.home-page{min-height:100vh;background:var(--app-bg);display:flex;flex-direction:column;align-items:center;padding:0 20px 100px;padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
+.home-logo-wrap{background:var(--primary);width:calc(100% + 40px);margin:0 -20px;padding:36px 20px 28px;border-radius:0 0 24px 24px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:center}
+.home-team-name{font-family:'Bebas Neue',sans-serif;font-size:22px;color:#fff;letter-spacing:3px;margin-top:12px;text-align:center}
+.home-team-sub{font-size:11px;color:rgba(255,255,255,0.7);margin-top:3px;letter-spacing:1px;text-transform:uppercase}
+.home-last-sess{background:var(--card);border:1px solid var(--border-c);box-shadow:var(--shadow-soft);border-radius:12px;padding:10px 16px;width:100%;margin-top:20px;margin-bottom:20px;text-align:center}
+.home-last-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);margin-bottom:4px}
+.home-last-text{font-size:13px;color:var(--text);font-weight:600}
+.home-session-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:100%;margin-bottom:12px}
+.hsc{background:var(--card);border:1px solid var(--border-c);box-shadow:var(--shadow-soft);border-radius:16px;padding:18px 12px;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:all 0.18s;text-align:center}
+.hsc:active{transform:scale(0.95);opacity:0.85}
+.hsc-label{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text);letter-spacing:1px;line-height:1.1}
+.hsc-sub{font-size:10px;color:var(--text-2)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#0F172A;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all 0.3s;z-index:1000}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── ARCHIVED SECTION ── */
+.archive-section{margin-top:20px}
+.archive-hdr{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:#f8fafc;border-radius:12px;cursor:pointer;margin-bottom:6px;border:1.5px solid var(--border)}
+.archive-hdr-title{font-size:12px;font-weight:700;color:var(--mgrey);text-transform:uppercase;letter-spacing:0.8px}
+.pc.archived-card{opacity:0.75;border-left:4px solid var(--mgrey)}
+.archived-badge{display:inline-block;background:#E2E5EC;color:var(--mgrey);font-size:9px;font-weight:700;padding:2px 7px;border-radius:10px;letter-spacing:0.8px;text-transform:uppercase;margin-left:6px}
 
 </style>
 </head>
@@ -234,7 +179,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 <div id="homePage" style="display:flex">
   <div class="home-page" style="width:100%">
     <div class="home-logo-wrap">
-      <img class="home-logo" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="GSC Logo">
       <div class="home-team-name">George Soccer Club</div>
       <div class="home-team-sub">Under 13 · Season 2026</div>
     </div>
@@ -242,35 +186,35 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
       <div class="home-last-label">Last Session</div>
       <div class="home-last-text" id="homeLastSess">No sessions yet</div>
     </div>
-    <div class="home-sec-label">START A SESSION</div>
+    <div style="font-family:'Bebas Neue',sans-serif;font-size:12px;color:var(--text-2);letter-spacing:2px;margin-bottom:10px;align-self:flex-start;width:100%;margin-top:20px">START A SESSION</div>
     <div class="home-session-grid">
-      <div class="hsc practice" onclick="homeStartSession('Practice')">
-        <div class="hsc-icon">🏃</div>
+      <div class="hsc" onclick="homeStartSession('Practice')">
+        <div style="font-size:30px">🏃</div>
         <div class="hsc-label">Practice</div>
         <div class="hsc-sub">Training session</div>
       </div>
-      <div class="hsc game" onclick="homeStartSession('Game')">
-        <div class="hsc-icon">⚽</div>
+      <div class="hsc" onclick="homeStartSession('Game')">
+        <div style="font-size:30px">⚽</div>
         <div class="hsc-label">Game</div>
         <div class="hsc-sub">Competitive match</div>
       </div>
-      <div class="hsc tournament" onclick="homeStartSession('Tournament')">
-        <div class="hsc-icon">🏆</div>
+      <div class="hsc" onclick="homeStartSession('Tournament')">
+        <div style="font-size:30px">🏆</div>
         <div class="hsc-label">Tournament</div>
         <div class="hsc-sub">Cup / tourney day</div>
       </div>
-      <div class="hsc fitness" onclick="homeStartSession('Fitness Assessment')">
-        <div class="hsc-icon">💪</div>
+      <div class="hsc" onclick="homeStartSession('Fitness Assessment')">
+        <div style="font-size:30px">💪</div>
         <div class="hsc-label">Fitness</div>
         <div class="hsc-sub">Physical assessment</div>
       </div>
     </div>
-    <div class="home-record" id="homeRecord">
-      <div class="hr-stat"><div class="hrv w" id="homeW">0</div><div class="hrk">Wins</div></div>
-      <div class="hr-stat"><div class="hrv d" id="homeD">0</div><div class="hrk">Draws</div></div>
-      <div class="hr-stat"><div class="hrv l" id="homeL">0</div><div class="hrk">Losses</div></div>
-      <div class="hr-stat"><div class="hrv" id="homeGF" style="color:var(--primary)">0</div><div class="hrk">Goals For</div></div>
-      <div class="hr-stat"><div class="hrv" id="homeGA" style="color:var(--primary)">0</div><div class="hrk">Conceded</div></div>
+    <div style="display:flex;justify-content:space-around;width:100%;background:var(--card);border:1px solid var(--border-c);box-shadow:var(--shadow-soft);border-radius:14px;padding:12px 16px">
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--success);line-height:1" id="homeW">0</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-2)">Wins</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--accent);line-height:1" id="homeD">0</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-2)">Draws</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--danger-c);line-height:1" id="homeL">0</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-2)">Losses</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--primary);line-height:1" id="homeGF">0</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-2)">Goals For</div></div>
+      <div style="text-align:center"><div style="font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--primary);line-height:1" id="homeGA">0</div><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-2)">Conceded</div></div>
     </div>
   </div>
 </div>
@@ -278,29 +222,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 <!-- HEADER -->
 <div class="hdr" id="appHdr" style="display:none">
   <div class="hdr-top">
-    <img class="hdr-logo-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNkYPhfDwAChwGA60e6kgAAAABJRU5ErkJggg==" alt="GSC">
     <div class="club" style="flex:1">GSC U13</div>
     <div class="badge" id="badge">Practice</div>
-    <button class="hdr-home-btn" onclick="showHome()">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
-        <polyline points="9 22 9 12 15 12 15 22"></polyline>
-      </svg>
-    </button>
+    <button class="hdr-home-btn" style="background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.2);color:#fff;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer" onclick="showHome()">🏠 Home</button>
   </div>
   <div class="sbar">
     <div class="sf"><label>Date</label><input type="date" id="sDate"></div>
-    <div class="sf"><label>Type</label>
-      <select id="sType" onchange="onTypeChange()">
-        <option value="">Select…</option>
-        <option>Practice</option>
-        <option>Game</option>
-        <option>Fitness Assessment</option>
-        <option>Tournament</option>
-      </select>
-    </div>
-    <div class="sf" id="oppWrap" style="display:none"><label>Opponent</label><input type="text" id="sOpp" placeholder="e.g. Shimba FC" oninput="saveHdr()"></div>
-    <div class="sf"><label>Notes</label><input type="text" id="sNotes" placeholder="Venue, kit…" oninput="saveHdr()"></div>
+    <div class="sf"><label>Type</label><select id="sType" onchange="onTypeChange()"><option value="">Select…</option><option>Practice</option><option>Game</option><option>Fitness Assessment</option><option>Tournament</option></select></div>
+    <div class="sf" id="oppWrap" style="display:none"><label>Opponent</label><input type="text" id="sOpp" placeholder="e.g. Shimba FC"></div>
+    <div class="sf"><label>Venue</label><input type="text" id="sVenue" placeholder="Location…"></div>
   </div>
 </div>
 
@@ -314,51 +244,24 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 
 <!-- ═══ ATTENDANCE SECTION ═══ -->
 <div class="sec" id="sec-attend">
-  <div class="card" id="attendCard" style="margin-bottom:10px"></div>
-</div>
-
-<!-- ═══ GAME DETAILS SECTION ═══ -->
-<div class="sec" id="sec-gamedetails">
-  <div class="game-details" id="gameDetails" style="display:block">
-    <div class="game-hdr"><div class="game-hdr-title">Match Details</div></div>
-    <div class="game-grid">
-      <div class="game-field"><label>Competition</label><input type="text" id="gComp"></div>
-      <div class="game-field"><label>Venue</label><input type="text" id="gVenue"></div>
-      <div class="game-field"><label>Kick-off</label><input type="time" id="gKickoff"></div>
-      <div class="game-field"><label>Goals For</label><input type="number" id="gGF" min="0"></div>
-      <div class="game-field"><label>Goals Against</label><input type="number" id="gGA" min="0"></div>
-      <div class="game-field"><label>Result</label>
-        <select id="gResult">
-          <option value="">Select…</option>
-          <option>Win</option>
-          <option>Draw</option>
-          <option>Loss</option>
-        </select>
-      </div>
-    </div>
-  </div>
+  <div class="card" id="attendCard"></div>
 </div>
 
 <!-- ═══ SQUAD SECTION ═══ -->
 <div class="sec" id="sec-squad">
-  <div id="squadList"></div>
-  <button class="add-player" id="addPlayerBtn" onclick="openAddPlayerModal()" style="width:calc(100% - 28px);margin:4px 14px 12px;padding:14px;background:rgba(255,255,255,0.04);border:2px dashed var(--card-border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--txt3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">➕ Add Player</button>
+  <div id="activeSquad"></div>
+  <div class="archive-section" id="archiveSection" style="display:none">
+    <div class="archive-hdr" onclick="toggleArchiveSection()">
+      <div class="archive-hdr-title">📦 Archived Players (<span id="archiveCount">0</span>)</div>
+      <div style="font-size:13px;color:var(--mgrey)">⌄</div>
+    </div>
+    <div id="archivedSquad" style="display:none"></div>
+  </div>
 </div>
 
 <!-- ═══ HISTORY ═══ -->
 <div class="sec" id="sec-history">
   <div id="historyList"></div>
-</div>
-
-<!-- ═══ NOTES SECTION ═══ -->
-<div class="sec" id="sec-notes" style="display:none">
-  <div class="card">
-    <div style="padding:14px">
-      <label class="fl" style="margin-bottom:10px">Session Notes</label>
-      <textarea class="notes-input" id="sessionNotes" placeholder="Add session notes, observations, tactical feedback…"></textarea>
-      <button class="save-btn" onclick="saveSession()">💾 Save Session</button>
-    </div>
-  </div>
 </div>
 
 <!-- BOTTOM NAV -->
@@ -371,14 +274,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
       <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
     </svg>
     <div class="ni-lbl">Attendance</div>
-  </div>
-  <div class="ni" onclick="switchSection('sec-gamedetails')">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
-      <line x1="9" y1="9" x2="15" y2="15"></line>
-      <line x1="15" y1="9" x2="9" y2="15"></line>
-    </svg>
-    <div class="ni-lbl">Match</div>
   </div>
   <div class="ni" onclick="switchSection('sec-squad')">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -403,50 +298,47 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 
 <script>
 // ════════════════════════════════════════════════════════════════
+// COMPLETE LEGACY DATA WITH ALL DETAILS
+// ════════════════════════════════════════════════════════════════
+const LEGACY_FULL_DATA = {
+  players: [
+    {id:"legacy-002",num:1,name:"Ethan Pietersen",dob:"2014-01-29",pos:"FWD",parent:"Neil / Miss B",phone:"0609728226",archived:false,fitness:[{date:"2026-02-07",beep:3.3,burpees:12,situps:13,jsquats:33,agility:"00:37:02",laps:"03:37"},{date:"2026-05-16",beep:3.6,burpees:16,situps:20,jsquats:25,agility:"00:36:03",laps:"05:31"},{date:"2025-09-27",beep:3.2,burpees:43,situps:22,jsquats:37,agility:"34.20",laps:"4:18"}],skills:{dribbling:6,passing:7,shooting:8,firstTouch:6}},
+    {id:"legacy-003",num:2,name:"Hlumelo Mjacu",dob:"2013-02-25",pos:"DEF",parent:"",phone:"",archived:false,fitness:[{date:"2026-02-07",beep:2.4,burpees:15,situps:25,jsquats:45,agility:"00:31:59",laps:"10:00"},{date:"2026-05-16",beep:4.7,burpees:18,situps:41,jsquats:55,agility:"00:32:08",laps:"10:00"}],skills:{dribbling:7,passing:7,shooting:5,firstTouch:7}},
+    {id:"legacy-004",num:3,name:"Jared Samboer",dob:"2013-09-04",pos:"FWD",parent:"Kelly / Kels",phone:"0605836247",archived:false,fitness:[{date:"2026-05-16",beep:2.1,burpees:17,situps:31,jsquats:45,agility:"00:34:01",laps:"04:31"}],skills:{dribbling:6,passing:6,shooting:7,firstTouch:6}},
+    {id:"legacy-005",num:4,name:"Khayone Kwetana",dob:"2014-04-17",pos:"MID",parent:"Nelson",phone:"0739868947",archived:false,fitness:[{date:"2026-02-07",beep:6.3,burpees:10,situps:36,jsquats:37,agility:"00:31:02",laps:"10:00"},{date:"2025-09-27",beep:7.8,burpees:17,situps:47,jsquats:37,agility:"38:38",laps:"10:00"}],skills:{dribbling:8,passing:8,shooting:7,firstTouch:8}},
+    {id:"legacy-006",num:5,name:"Olothando",dob:"2014-09-13",pos:"DEF",parent:"",phone:"",archived:false,fitness:[{date:"2026-02-07",beep:2.2,burpees:15,situps:24,jsquats:30,agility:"00:39:42",laps:"08:00"}],skills:{dribbling:5,passing:6,shooting:4,firstTouch:5}},
+    {id:"legacy-007",num:6,name:"Robert Curtis",dob:"",pos:"DEF",parent:"Sarah",phone:"",archived:true,fitness:[{date:"2026-02-07",beep:6.2,burpees:15,situps:32,jsquats:44,agility:"00:37:47",laps:"10:00"}],skills:{dribbling:6,passing:6,shooting:5,firstTouch:6}},
+    {id:"legacy-008",num:7,name:"Tyler Dunn",dob:"",pos:"MID",parent:"Martina Dunn",phone:"0732594916",archived:true,fitness:[{date:"2026-02-07",beep:6.3,burpees:15,situps:28,jsquats:48,agility:"00:35:03",laps:"10:00"}],skills:{dribbling:7,passing:7,shooting:6,firstTouch:7}},
+    {id:"legacy-009",num:8,name:"Seth Tilley",dob:"2014-04-03",pos:"DEF",parent:"Brad",phone:"",archived:false,fitness:[{date:"2026-02-07",beep:5.6,burpees:13,situps:23,jsquats:39,agility:"00:34:01",laps:"10:00"},{date:"2026-05-16",beep:5.7,burpees:15,situps:35,jsquats:45,agility:"00:30:03",laps:"10:00"},{date:"2025-09-27",beep:5.1,burpees:29,situps:34,jsquats:40,agility:"32:55",laps:"10:00"}],skills:{dribbling:7,passing:7,shooting:5,firstTouch:7}},
+    {id:"legacy-010",num:9,name:"Vhuthu Kwinda",dob:"",pos:"FWD",parent:"Pheliswa",phone:"0795435451",archived:false,fitness:[{date:"2026-05-16",beep:4.3,burpees:17,situps:31,jsquats:46,agility:"00:33:08",laps:"08:06"}],skills:{dribbling:8,passing:6,shooting:8,firstTouch:7}},
+    {id:"legacy-011",num:10,name:"Wade Potts",dob:"2014-06-25",pos:"MID",parent:"",phone:"",archived:false,fitness:[{date:"2026-05-16",beep:3.6,burpees:18,situps:27,jsquats:45,agility:"00:34:13",laps:"06:02"}],skills:{dribbling:6,passing:7,shooting:6,firstTouch:6}},
+    {id:"legacy-012",num:11,name:"Lina Lingani",dob:"2014-01-01",pos:"MID",parent:"Thembeka Lingani",phone:"0737374217",archived:false,fitness:[],skills:{dribbling:7,passing:8,shooting:7,firstTouch:7}},
+    {id:"legacy-013",num:12,name:"Elokhanyo Faku",dob:"2013-09-15",pos:"FWD",parent:"",phone:"0796880470",archived:false,fitness:[{date:"2026-05-16",beep:7.1,situps:null,jsquats:null,agility:"00:32:51",laps:null}],skills:{dribbling:7,passing:6,shooting:8,firstTouch:7}},
+    {id:"legacy-014",num:13,name:"Onele Saptoe",dob:"2013-09-22",pos:"MID",parent:"",phone:"",archived:true,fitness:[],skills:{dribbling:5,passing:6,shooting:5,firstTouch:5}},
+    {id:"legacy-015",num:14,name:"Limise Nkamane",dob:"2012-06-07",pos:"MID",parent:"",phone:"",archived:true,fitness:[{date:"2026-05-16",beep:1.4,burpees:20,situps:38,jsquats:47,agility:"00:45:01",laps:"03:35"}],skills:{dribbling:5,passing:5,shooting:5,firstTouch:5}},
+    {id:"legacy-016",num:15,name:"Armand Victor",dob:"2012-12-12",pos:"FWD",parent:"",phone:"",archived:true,fitness:[],skills:{dribbling:6,passing:5,shooting:7,firstTouch:6}},
+    {id:"legacy-017",num:16,name:"Nqobile Biyela",dob:"",pos:"FWD",parent:"",phone:"",archived:false,fitness:[{date:"2026-05-16",beep:7.1,burpees:null,situps:null,jsquats:null,agility:"00:32:04",laps:null}],skills:{dribbling:7,passing:6,shooting:8,firstTouch:7}},
+    {id:"legacy-018",num:17,name:"Yosimela Jaftha",dob:"2013-06-12",pos:"MID",parent:"Zandi",phone:"0676556017",archived:true,fitness:[{date:"2026-02-07",beep:4.8,burpees:14,situps:42,jsquats:47,agility:"00:34:53",laps:"10:00"},{date:"2026-05-16",beep:7.1,burpees:18,situps:41,jsquats:50,agility:"00:31:04",laps:"10:00"}],skills:{dribbling:7,passing:8,shooting:6,firstTouch:8}},
+    {id:"legacy-019",num:18,name:"Imnophele Hans",dob:"2012-09-08",pos:"DEF",parent:"Mama Sis",phone:"0695718652",archived:true,fitness:[],skills:{dribbling:6,passing:6,shooting:4,firstTouch:6}},
+    {id:"legacy-020",num:19,name:"Luniko Matholengwe",dob:"2013-03-08",pos:"GK",parent:"Nogbongwa",phone:"0838090412",archived:false,fitness:[{date:"2026-05-16",beep:7.1,burpees:20,situps:41,jsquats:56,agility:"00:37:00",laps:"03:19"}],skills:{dribbling:5,passing:6,shooting:3,firstTouch:5}},
+    {id:"legacy-021",num:20,name:"Simtha",dob:"",pos:"DEF",parent:"",phone:"",archived:false,fitness:[{date:"2026-05-16",beep:3.6,burpees:15,situps:38,jsquats:55,agility:"00:33:08",laps:"10:00"}],skills:{dribbling:6,passing:6,shooting:4,firstTouch:6}},
+    {id:"legacy-022",num:21,name:"Gift Phiri",dob:"2012-12-12",pos:"FWD",parent:"Sandra",phone:"",archived:true,fitness:[{date:"2026-05-16",beep:5.7,burpees:21,situps:39,jsquats:60,agility:"00:36:57",laps:"10:00"}],skills:{dribbling:7,passing:6,shooting:8,firstTouch:7}}
+  ],
+  sessionHistory: [
+    {date:"2026-04-11",type:"Game",opponent:"Shimba",venue:"GSC Home",kickoff:"22:30",goalsFor:1,goalsAgainst:1,result:"Draw",notes:"Lost on penalties",competition:"Shimba",attendance:{"4":"pres","6":"pres","9":"pres","10":"pres","11":"pres","14":"abs","15":"pres","16":"pres","17":"pres","18":"pres","19":"pres","20":"pres","21":"abs"}},
+    {date:"2026-05-02",type:"Game",opponent:"Shimba",venue:"GSC Home",kickoff:"22:30",goalsFor:3,goalsAgainst:3,result:"Draw",notes:"Won on Penalties",competition:"Shimba",attendance:{"1":"pres","2":"pres","3":"pres","4":"pres","7":"pres","9":"pres","10":"pres","11":"pres","12":"pres","14":"pres","15":"pres","16":"pres","17":"pres","18":"pres","19":"pres","20":"pres","21":"abs"}},
+    {date:"2026-05-30",type:"Game",opponent:"GSA",venue:"Rooi-Rivier Rif",kickoff:"12:00",goalsFor:0,goalsAgainst:2,result:"Loss",notes:"",competition:"GSA",attendance:{"1":"pres","2":"pres","3":"pres","4":"pres","5":"pres","8":"pres","9":"pres","11":"pres","12":"pres","14":"pres","15":"pres","17":"pres","18":"pres","19":"pres","20":"pres"}}
+  ]
+};
+
+// ════════════════════════════════════════════════════════════════
 // GLOBAL STATE
 // ════════════════════════════════════════════════════════════════
 const appState = {
   currentSession: null,
   players: [],
   sessionHistory: [],
-  lastLoaded: null
-};
-
-// Core player skills metrics
-const SKILL_METRICS = ['dribbling', 'passing', 'shooting', 'firstTouch'];
-const SKILL_LABELS = {
-  dribbling: 'Dribbling',
-  passing: 'Passing',
-  shooting: 'Shooting',
-  firstTouch: 'First Touch'
-};
-
-// Legacy data migration
-const LEGACY_BACKUP = {
-  "version": 2,
-  "players": [
-    {"num": 1, "name": "Ethan Pietersen", "pos": "FWD"},
-    {"num": 2, "name": "Hlumelo Mjacu", "pos": "DEF"},
-    {"num": 3, "name": "Jared Samboer", "pos": "FWD"},
-    {"num": 4, "name": "Khayone Kwetana", "pos": "MID"},
-    {"num": 5, "name": "Olothando", "pos": "MID"},
-    {"num": 6, "name": "Robert Curtis", "pos": "DEF"},
-    {"num": 7, "name": "Tyler Dunn", "pos": "MID"},
-    {"num": 8, "name": "Seth Tilley", "pos": "DEF"},
-    {"num": 9, "name": "Vhuthu Kwinda", "pos": "FWD"},
-    {"num": 10, "name": "Wade Potts", "pos": "MID"},
-    {"num": 11, "name": "Lina Lingani", "pos": "MID"},
-    {"num": 12, "name": "Elokhanyo Faku", "pos": "FWD"},
-    {"num": 13, "name": "Onele Saptoe", "pos": "MID"},
-    {"num": 14, "name": "Limise Nkamane", "pos": "MID"},
-    {"num": 15, "name": "Armand Victor", "pos": "FWD"},
-    {"num": 16, "name": "Nqobile Biyela", "pos": "FWD"},
-    {"num": 17, "name": "Yosimela Jaftha", "pos": "MID"},
-    {"num": 18, "name": "Imnophele Hans", "pos": "DEF"},
-    {"num": 19, "name": "Luniko Matholengwe", "pos": "GK"},
-    {"num": 20, "name": "Simtha", "pos": "DEF"},
-    {"num": 21, "name": "Gift Phiri", "pos": "FWD"}
-  ]
+  archiveOpen: false
 };
 
 // ════════════════════════════════════════════════════════════════
@@ -454,7 +346,6 @@ const LEGACY_BACKUP = {
 // ════════════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', function() {
   loadAppData();
-  migratePlayersIfNeeded();
   renderHomePageStats();
 });
 
@@ -465,40 +356,26 @@ function loadAppData() {
       const data = JSON.parse(saved);
       appState.players = data.players || [];
       appState.sessionHistory = data.sessionHistory || [];
-      appState.lastLoaded = new Date(data.lastLoaded);
     } catch (error) {
       console.error('Error loading app data:', error);
-      appState.players = [];
-      appState.sessionHistory = [];
+      loadLegacyData();
     }
+  } else {
+    loadLegacyData();
   }
 }
 
-function migratePlayersIfNeeded() {
-  if (appState.players.length === 0) {
-    appState.players = LEGACY_BACKUP.players.map(p => ({
-      ...p,
-      firstName: p.name.split(' ')[0],
-      lastName: p.name.split(' ').slice(1).join(' '),
-      number: p.num,
-      position: p.pos,
-      skills: {
-        dribbling: 5,
-        passing: 5,
-        shooting: 5,
-        firstTouch: 5
-      }
-    }));
-    saveAppData();
-    showToast(`Migrated ${appState.players.length} players from legacy data`);
-  }
+function loadLegacyData() {
+  appState.players = LEGACY_FULL_DATA.players;
+  appState.sessionHistory = LEGACY_FULL_DATA.sessionHistory;
+  saveAppData();
+  showToast(`✓ Restored ${appState.players.length} players and ${appState.sessionHistory.length} sessions`);
 }
 
 function saveAppData() {
   const dataToSave = {
     players: appState.players,
-    sessionHistory: appState.sessionHistory,
-    lastLoaded: new Date().toISOString()
+    sessionHistory: appState.sessionHistory
   };
   localStorage.setItem('gscTrackerData', JSON.stringify(dataToSave));
 }
@@ -511,15 +388,14 @@ function homeStartSession(sessionType) {
     type: sessionType,
     date: new Date().toISOString().split('T')[0],
     opponent: '',
-    notes: '',
-    competition: '',
     venue: '',
     kickoff: '',
     goalsFor: 0,
     goalsAgainst: 0,
     result: '',
-    attendance: {},
-    players: appState.players.map(p => ({...p}))
+    competition: '',
+    notes: '',
+    attendance: {}
   };
   
   document.getElementById('homePage').style.display = 'none';
@@ -536,7 +412,7 @@ function homeStartSession(sessionType) {
 
 function showHome() {
   if (appState.currentSession) {
-    if (confirm('Discard this session? Make sure to save your data.')) {
+    if (confirm('Discard this session?')) {
       appState.currentSession = null;
       document.getElementById('homePage').style.display = 'flex';
       document.getElementById('appHdr').style.display = 'none';
@@ -567,7 +443,7 @@ function renderHomePageStats() {
   if (appState.sessionHistory.length > 0) {
     const lastSession = appState.sessionHistory[appState.sessionHistory.length - 1];
     const lastDate = new Date(lastSession.date).toLocaleDateString();
-    document.getElementById('homeLastSess').textContent = `${lastSession.type} - ${lastDate}`;
+    document.getElementById('homeLastSess').textContent = `${lastSession.type} vs ${lastSession.opponent} - ${lastDate}`;
   }
 }
 
@@ -580,8 +456,6 @@ function switchSection(sectionId) {
   
   if (sectionId === 'sec-attend') {
     renderAttendance();
-  } else if (sectionId === 'sec-gamedetails') {
-    renderGameDetails();
   } else if (sectionId === 'sec-squad') {
     renderSquad();
   } else if (sectionId === 'sec-history') {
@@ -598,10 +472,10 @@ function renderAttendance() {
   const card = document.getElementById('attendCard');
   card.innerHTML = '';
   
-  const present = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'pres').length;
-  const late = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'late').length;
-  const injured = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'inj').length;
-  const absent = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'abs').length;
+  const present = Object.values(appState.currentSession.attendance).filter(s => s === 'pres').length;
+  const late = Object.values(appState.currentSession.attendance).filter(s => s === 'late').length;
+  const injured = Object.values(appState.currentSession.attendance).filter(s => s === 'inj').length;
+  const absent = Object.values(appState.currentSession.attendance).filter(s => s === 'abs').length;
   
   document.getElementById('cP').textContent = present;
   document.getElementById('cL').textContent = late;
@@ -609,20 +483,20 @@ function renderAttendance() {
   document.getElementById('cA').textContent = absent;
   
   let html = '';
-  appState.players.forEach(player => {
-    const status = appState.currentSession.attendance[player.number] || '';
+  appState.players.filter(p => !p.archived).forEach(player => {
+    const status = appState.currentSession.attendance[player.num] || '';
     html += `
       <div class="att-row">
-        <div class="att-num">${player.number}</div>
+        <div class="att-num">${player.num}</div>
         <div class="att-info">
           <div class="att-name">${player.name}</div>
-          <div class="att-pos">${player.position}</div>
+          <div class="att-pos">${player.pos}</div>
         </div>
         <div class="att-btns">
-          <button class="att-btn ${status === 'pres' ? 'pres' : ''}" onclick="updateAttendance(${player.number}, 'pres')">✓</button>
-          <button class="att-btn ${status === 'late' ? 'late' : ''}" onclick="updateAttendance(${player.number}, 'late')">⏱</button>
-          <button class="att-btn ${status === 'inj' ? 'inj' : ''}" onclick="updateAttendance(${player.number}, 'inj')">⚕</button>
-          <button class="att-btn ${status === 'abs' ? 'abs' : ''}" onclick="updateAttendance(${player.number}, 'abs')">✕</button>
+          <button class="att-btn ${status === 'pres' ? 'pres' : ''}" onclick="updateAttendance(${player.num}, 'pres')">✓</button>
+          <button class="att-btn ${status === 'late' ? 'late' : ''}" onclick="updateAttendance(${player.num}, 'late')">⏱</button>
+          <button class="att-btn ${status === 'inj' ? 'inj' : ''}" onclick="updateAttendance(${player.num}, 'inj')">⚕</button>
+          <button class="att-btn ${status === 'abs' ? 'abs' : ''}" onclick="updateAttendance(${player.num}, 'abs')">✕</button>
         </div>
       </div>
     `;
@@ -642,111 +516,94 @@ function updateAttendance(playerNum, status) {
 }
 
 // ════════════════════════════════════════════════════════════════
-// GAME DETAILS SECTION
-// ════════════════════════════════════════════════════════════════
-function renderGameDetails() {
-  if (!appState.currentSession) return;
-  
-  const isGame = appState.currentSession.type === 'Game' || appState.currentSession.type === 'Tournament';
-  document.getElementById('gameDetails').style.display = isGame ? 'block' : 'none';
-  
-  if (isGame) {
-    document.getElementById('gComp').value = appState.currentSession.competition || '';
-    document.getElementById('gVenue').value = appState.currentSession.venue || '';
-    document.getElementById('gKickoff').value = appState.currentSession.kickoff || '';
-    document.getElementById('gGF').value = appState.currentSession.goalsFor || '';
-    document.getElementById('gGA').value = appState.currentSession.goalsAgainst || '';
-    document.getElementById('gResult').value = appState.currentSession.result || '';
-  }
-}
-
-function onTypeChange() {
-  const type = document.getElementById('sType').value;
-  const oppWrap = document.getElementById('oppWrap');
-  
-  if (type === 'Game' || type === 'Tournament') {
-    oppWrap.style.display = 'flex';
-  } else {
-    oppWrap.style.display = 'none';
-  }
-}
-
-// ════════════════════════════════════════════════════════════════
 // SQUAD SECTION
 // ════════════════════════════════════════════════════════════════
 function renderSquad() {
-  const squadList = document.getElementById('squadList');
-  squadList.innerHTML = '';
+  const activeList = document.getElementById('activeSquad');
+  activeList.innerHTML = '';
   
-  appState.players.forEach((player, index) => {
-    const playerCard = createPlayerCard(player, index);
-    squadList.appendChild(playerCard);
+  const active = appState.players.filter(p => !p.archived);
+  const archived = appState.players.filter(p => p.archived);
+  
+  active.forEach((player, index) => {
+    activeList.appendChild(createPlayerCard(player));
   });
+  
+  if (archived.length > 0) {
+    document.getElementById('archiveCount').textContent = archived.length;
+    document.getElementById('archiveSection').style.display = 'block';
+    
+    const archivedList = document.getElementById('archivedSquad');
+    archivedList.innerHTML = '';
+    if (appState.archiveOpen) {
+      archived.forEach(player => {
+        const card = createPlayerCard(player);
+        card.classList.add('archived-card');
+        archivedList.appendChild(card);
+      });
+    }
+  }
 }
 
-function createPlayerCard(player, index) {
+function createPlayerCard(player) {
   const card = document.createElement('div');
   card.className = 'pc';
   
   const skillsAvg = calculatePlayerSkillsAverage(player);
   
   card.innerHTML = `
-    <div class="pc-hdr" onclick="togglePlayerBody(${index})">
-      <div class="pc-num">${player.number}</div>
+    <div class="pc-hdr" onclick="togglePlayerBody('${player.id}')">
+      <div class="pc-num">${player.num}</div>
       <div class="pc-info">
-        <div class="pc-name">${player.name}</div>
-        <div class="pc-sub">${player.position || 'MID'}</div>
-        ${skillsAvg > 0 ? `<div class="pc-stats-row">
-          <span class="pstat green">Skills: ${skillsAvg.toFixed(1)}/10</span>
-        </div>` : ''}
+        <div class="pc-name">${player.name}${player.archived ? '<span class="archived-badge">Archived</span>' : ''}</div>
+        <div class="pc-sub">${player.pos} • DOB: ${player.dob || 'N/A'}</div>
+        ${skillsAvg > 0 ? `<div class="pc-stats-row"><span class="pstat green">Skills: ${skillsAvg.toFixed(1)}/10</span></div>` : ''}
       </div>
-      <div class="pc-arr" id="arr-${index}">⌄</div>
+      <div class="pc-arr" id="arr-${player.id}">⌄</div>
     </div>
-    <div class="pc-body" id="body-${index}">
+    <div class="pc-body" id="body-${player.id}">
       <div class="pc-tabs">
-        <div class="pc-tab active" onclick="switchPlayerTab(${index}, 'info')">Info</div>
-        <div class="pc-tab" onclick="switchPlayerTab(${index}, 'skills')">Skills</div>
+        <div class="pc-tab active" onclick="switchPlayerTab('${player.id}', 'info')">Info</div>
+        <div class="pc-tab" onclick="switchPlayerTab('${player.id}', 'skills')">Skills</div>
+        <div class="pc-tab" onclick="switchPlayerTab('${player.id}', 'fitness')">Fitness</div>
       </div>
       
-      <div class="pc-panel active" id="tab-info-${index}">
+      <div class="pc-panel active" id="tab-info-${player.id}">
         <div class="fg">
-          <div>
-            <label class="fl">Number</label>
-            <input type="number" class="fi" value="${player.number || ''}" onchange="updatePlayer(${index}, 'number', this.value)">
-          </div>
-          <div>
-            <label class="fl">Position</label>
-            <input type="text" class="fi" value="${player.position || ''}" onchange="updatePlayer(${index}, 'position', this.value)">
-          </div>
+          <div><label class="fl">Position</label><input type="text" class="fi" value="${player.pos}" onchange="updatePlayer('${player.id}', 'pos', this.value)"></div>
+          <div><label class="fl">DOB</label><input type="date" class="fi" value="${player.dob || ''}" onchange="updatePlayer('${player.id}', 'dob', this.value)"></div>
         </div>
         <div class="fg">
-          <div>
-            <label class="fl">First Name</label>
-            <input type="text" class="fi" value="${player.firstName || ''}" onchange="updatePlayer(${index}, 'firstName', this.value)">
-          </div>
-          <div>
-            <label class="fl">Last Name</label>
-            <input type="text" class="fi" value="${player.lastName || ''}" onchange="updatePlayer(${index}, 'lastName', this.value)">
-          </div>
+          <div><label class="fl">Parent/Guardian</label><input type="text" class="fi" value="${player.parent || ''}" onchange="updatePlayer('${player.id}', 'parent', this.value)"></div>
+          <div><label class="fl">Phone</label><input type="tel" class="fi" value="${player.phone || ''}" onchange="updatePlayer('${player.id}', 'phone', this.value)"></div>
         </div>
       </div>
       
-      <div class="pc-panel" id="tab-skills-${index}">
+      <div class="pc-panel" id="tab-skills-${player.id}">
         <div style="font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px">Technical Skills (1-10)</div>
         <div class="skills-grid">
-          ${SKILL_METRICS.map(metric => `
-            <div class="skill-card">
-              <div class="skill-label">${SKILL_LABELS[metric]}</div>
-              <input type="number" class="skill-input" min="0" max="10" value="${player.skills?.[metric] || 0}" 
-                onchange="updatePlayerSkill(${index}, '${metric}', this.value)" 
-                onkeyup="updateSkillMeter(this, ${index}, '${metric}')">
-              <div class="skill-meter">
-                <div class="skill-meter-fill" id="meter-${index}-${metric}" style="width:${(player.skills?.[metric] || 0) * 10}%"></div>
-              </div>
-              <div class="skill-value">${player.skills?.[metric] || 0}/10</div>
-            </div>
-          `).join('')}
+          <div class="skill-card"><div class="skill-label">Dribbling</div><input type="number" class="skill-input" min="0" max="10" value="${player.skills?.dribbling || 0}" onchange="updateSkill('${player.id}', 'dribbling', this.value)"><div class="skill-meter"><div class="skill-meter-fill" style="width:${(player.skills?.dribbling || 0) * 10}%"></div></div><div class="skill-value">${player.skills?.dribbling || 0}/10</div></div>
+          <div class="skill-card"><div class="skill-label">Passing</div><input type="number" class="skill-input" min="0" max="10" value="${player.skills?.passing || 0}" onchange="updateSkill('${player.id}', 'passing', this.value)"><div class="skill-meter"><div class="skill-meter-fill" style="width:${(player.skills?.passing || 0) * 10}%"></div></div><div class="skill-value">${player.skills?.passing || 0}/10</div></div>
+          <div class="skill-card"><div class="skill-label">Shooting</div><input type="number" class="skill-input" min="0" max="10" value="${player.skills?.shooting || 0}" onchange="updateSkill('${player.id}', 'shooting', this.value)"><div class="skill-meter"><div class="skill-meter-fill" style="width:${(player.skills?.shooting || 0) * 10}%"></div></div><div class="skill-value">${player.skills?.shooting || 0}/10</div></div>
+          <div class="skill-card"><div class="skill-label">First Touch</div><input type="number" class="skill-input" min="0" max="10" value="${player.skills?.firstTouch || 0}" onchange="updateSkill('${player.id}', 'firstTouch', this.value)"><div class="skill-meter"><div class="skill-meter-fill" style="width:${(player.skills?.firstTouch || 0) * 10}%"></div></div><div class="skill-value">${player.skills?.firstTouch || 0}/10</div></div>
         </div>
+      </div>
+      
+      <div class="pc-panel" id="tab-fitness-${player.id}">
+        <div style="font-size:11px;font-weight:700;color:var(--text-2);margin-bottom:10px;text-transform:uppercase;letter-spacing:0.8px">Fitness History</div>
+        ${player.fitness && player.fitness.length > 0 ? player.fitness.map(f => `
+          <div class="fitness-entry">
+            <div class="fitness-date">${new Date(f.date).toLocaleDateString()}</div>
+            <div class="fitness-metrics">
+              <div class="fm"><div class="fv">${f.beep}</div><div class="fk">Beep</div></div>
+              <div class="fm"><div class="fv">${f.burpees || '-'}</div><div class="fk">Burpees</div></div>
+              <div class="fm"><div class="fv">${f.situps || '-'}</div><div class="fk">Sit-ups</div></div>
+              <div class="fm"><div class="fv">${f.jsquats || '-'}</div><div class="fk">J-Squats</div></div>
+              <div class="fm"><div class="fv">${f.agility}</div><div class="fk">Agility</div></div>
+              <div class="fm"><div class="fv">${f.laps || '-'}</div><div class="fk">Laps</div></div>
+            </div>
+          </div>
+        `).join('') : '<div style="font-size:12px;color:var(--text-2);text-align:center;padding:20px">No fitness assessments recorded</div>'}
       </div>
     </div>
   `;
@@ -754,50 +611,36 @@ function createPlayerCard(player, index) {
   return card;
 }
 
-function togglePlayerBody(index) {
-  const body = document.getElementById(`body-${index}`);
-  const arr = document.getElementById(`arr-${index}`);
+function togglePlayerBody(playerId) {
+  const body = document.getElementById(`body-${playerId}`);
+  const arr = document.getElementById(`arr-${playerId}`);
   body.classList.toggle('open');
   arr.classList.toggle('open');
 }
 
-function switchPlayerTab(index, tabName) {
-  document.querySelectorAll(`#body-${index} .pc-tab`).forEach(tab => tab.classList.remove('active'));
-  document.querySelectorAll(`#body-${index} .pc-panel`).forEach(panel => panel.classList.remove('active'));
+function switchPlayerTab(playerId, tabName) {
+  document.querySelectorAll(`#body-${playerId} .pc-tab`).forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`#body-${playerId} .pc-panel`).forEach(p => p.classList.remove('active'));
   
   event.currentTarget.classList.add('active');
-  document.getElementById(`tab-${tabName}-${index}`).classList.add('active');
+  document.getElementById(`tab-${tabName}-${playerId}`).classList.add('active');
 }
 
-function updatePlayer(index, field, value) {
-  if (field === 'firstName') {
-    appState.players[index].firstName = value;
-    appState.players[index].name = `${value} ${appState.players[index].lastName || ''}`.trim();
-  } else if (field === 'lastName') {
-    appState.players[index].lastName = value;
-    appState.players[index].name = `${appState.players[index].firstName || ''} ${value}`.trim();
-  } else {
-    appState.players[index][field] = field === 'number' ? parseInt(value) : value;
+function updatePlayer(playerId, field, value) {
+  const player = appState.players.find(p => p.id === playerId);
+  if (player) {
+    player[field] = value;
+    saveAppData();
+    renderSquad();
   }
-  saveAppData();
-  renderSquad();
-  showToast(`${appState.players[index].name} updated`);
 }
 
-function updatePlayerSkill(index, metric, value) {
-  const numValue = Math.max(0, Math.min(10, parseInt(value) || 0));
-  if (!appState.players[index].skills) {
-    appState.players[index].skills = {};
-  }
-  appState.players[index].skills[metric] = numValue;
-  saveAppData();
-}
-
-function updateSkillMeter(input, index, metric) {
-  const value = Math.max(0, Math.min(10, parseInt(input.value) || 0));
-  const meter = document.getElementById(`meter-${index}-${metric}`);
-  if (meter) {
-    meter.style.width = `${value * 10}%`;
+function updateSkill(playerId, metric, value) {
+  const player = appState.players.find(p => p.id === playerId);
+  if (player) {
+    if (!player.skills) player.skills = {};
+    player.skills[metric] = Math.max(0, Math.min(10, parseInt(value) || 0));
+    saveAppData();
   }
 }
 
@@ -808,26 +651,9 @@ function calculatePlayerSkillsAverage(player) {
   return values.reduce((a, b) => a + b, 0) / values.length;
 }
 
-function openAddPlayerModal() {
-  const newNum = Math.max(...appState.players.map(p => p.number || 0)) + 1;
-  const newPlayer = {
-    name: 'New Player',
-    firstName: 'New',
-    lastName: 'Player',
-    number: newNum,
-    position: 'MID',
-    skills: {
-      dribbling: 5,
-      passing: 5,
-      shooting: 5,
-      firstTouch: 5
-    }
-  };
-  
-  appState.players.push(newPlayer);
-  saveAppData();
-  renderSquad();
-  showToast('New player added');
+function toggleArchiveSection() {
+  appState.archiveOpen = !appState.archiveOpen;
+  document.getElementById('archivedSquad').style.display = appState.archiveOpen ? 'block' : 'none';
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -838,76 +664,44 @@ function renderHistory() {
   historyList.innerHTML = '';
   
   if (appState.sessionHistory.length === 0) {
-    historyList.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--mgrey)"><div style="font-size:36px;margin-bottom:8px">📊</div><div style="font-size:13px">No sessions yet</div></div>';
+    historyList.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--mgrey)"><div style="font-size:36px;margin-bottom:8px">📊</div><div>No sessions recorded</div></div>';
     return;
   }
   
   appState.sessionHistory.slice().reverse().forEach((session) => {
-    const sessionCard = document.createElement('div');
-    sessionCard.className = 'hc';
-    sessionCard.innerHTML = `
+    const attended = Object.keys(session.attendance || {}).length;
+    const historyCard = document.createElement('div');
+    historyCard.className = 'hc';
+    historyCard.innerHTML = `
       <div class="hc-hdr">
         <div class="hc-date">${new Date(session.date).toLocaleDateString()}</div>
         <div class="hc-type">${session.type}</div>
         <div class="hc-opp">${session.opponent || 'Internal'}</div>
       </div>
       <div class="hc-stats">
-        <div class="hs"><div class="hn">${Object.keys(session.attendance || {}).length}</div><div class="hl">Attended</div></div>
-        ${session.goalsFor !== undefined ? `<div class="hs"><div class="hn">${session.goalsFor}</div><div class="hl">Goals For</div></div>` : ''}
-        ${session.goalsAgainst !== undefined ? `<div class="hs"><div class="hn">${session.goalsAgainst}</div><div class="hl">Conceded</div></div>` : ''}
+        <div class="hs"><div class="hn">${attended}</div><div class="hl">Attended</div></div>
+        ${session.goalsFor !== undefined ? `<div class="hs"><div class="hn">${session.goalsFor}</div><div class="hl">GF</div></div>` : ''}
+        ${session.goalsAgainst !== undefined ? `<div class="hs"><div class="hn">${session.goalsAgainst}</div><div class="hl">GA</div></div>` : ''}
+        ${session.result ? `<div class="hs"><div class="hn hc-result ${session.result.toLowerCase()}">${session.result}</div><div class="hl">Result</div></div>` : ''}
       </div>
+      ${session.venue ? `<div class="hc-body"><strong>Venue:</strong> ${session.venue}${session.kickoff ? ' @ ' + session.kickoff : ''}</div>` : ''}
       ${session.notes ? `<div class="hc-body"><strong>Notes:</strong> ${session.notes}</div>` : ''}
     `;
-    historyList.appendChild(sessionCard);
+    historyList.appendChild(historyCard);
   });
 }
 
 // ════════════════════════════════════════════════════════════════
 // SESSION MANAGEMENT
 // ════════════════════════════════════════════════════════════════
-function saveHdr() {
-  if (appState.currentSession) {
-    appState.currentSession.date = document.getElementById('sDate').value;
-    appState.currentSession.type = document.getElementById('sType').value;
-    appState.currentSession.opponent = document.getElementById('sOpp').value;
-    appState.currentSession.notes = document.getElementById('sNotes').value;
-    appState.currentSession.competition = document.getElementById('gComp')?.value || '';
-    appState.currentSession.venue = document.getElementById('gVenue')?.value || '';
-    appState.currentSession.kickoff = document.getElementById('gKickoff')?.value || '';
-    appState.currentSession.goalsFor = parseInt(document.getElementById('gGF')?.value || 0);
-    appState.currentSession.goalsAgainst = parseInt(document.getElementById('gGA')?.value || 0);
-    appState.currentSession.result = document.getElementById('gResult')?.value || '';
-  }
-}
-
-function saveSession() {
-  saveHdr();
+function onTypeChange() {
+  const type = document.getElementById('sType').value;
+  const oppWrap = document.getElementById('oppWrap');
   
-  if (appState.currentSession) {
-    const sessionRecord = {
-      date: appState.currentSession.date,
-      type: appState.currentSession.type,
-      opponent: appState.currentSession.opponent || 'Internal',
-      notes: document.getElementById('sessionNotes')?.value || '',
-      competition: appState.currentSession.competition,
-      venue: appState.currentSession.venue,
-      kickoff: appState.currentSession.kickoff,
-      goalsFor: appState.currentSession.goalsFor,
-      goalsAgainst: appState.currentSession.goalsAgainst,
-      result: appState.currentSession.result,
-      attendance: appState.currentSession.attendance
-    };
-    
-    appState.sessionHistory.push(sessionRecord);
-    saveAppData();
-    renderHomePageStats();
-    appState.currentSession = null;
-    
-    document.getElementById('homePage').style.display = 'flex';
-    document.getElementById('appHdr').style.display = 'none';
-    document.getElementById('appStatsBar').style.display = 'none';
-    
-    showToast('✓ Session saved');
+  if (type === 'Game' || type === 'Tournament') {
+    oppWrap.style.display = 'flex';
+  } else {
+    oppWrap.style.display = 'none';
   }
 }
 
