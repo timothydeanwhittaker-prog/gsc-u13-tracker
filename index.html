@@ -122,12 +122,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .skill-meter-fill{height:100%;background:linear-gradient(90deg,var(--primary),var(--primary-700));border-radius:3px;transition:width 0.2s}
 .skill-value{font-size:11px;font-weight:700;color:var(--text-2);margin-top:2px;text-align:center}
 
-/* ── STATS PANEL ── */
-.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
-.stat-box{background:var(--alt);border:1px solid var(--border-c);border-radius:10px;padding:10px;text-align:center}
-.stat-box .sv{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--text);line-height:1}
-.stat-box .sk{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-2)}
-
 /* ── HOME PAGE ── */
 .home-page{min-height:100vh;background:var(--app-bg);display:flex;flex-direction:column;align-items:center;padding:0 20px 100px;padding-bottom:calc(80px + env(safe-area-inset-bottom,0px))}
 .home-logo-wrap{background:var(--primary);width:calc(100% + 40px);margin:0 -20px;padding:36px 20px 28px;border-radius:0 0 24px 24px;box-shadow:var(--shadow-soft);display:flex;flex-direction:column;align-items:center}
@@ -171,25 +165,66 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:#0F172A;color:#fff;padding:10px 20px;border-radius:20px;font-size:13px;font-weight:600;opacity:0;pointer-events:none;transition:all 0.3s;z-index:1000}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-/* ── PRACTICE FLOW ── */
-.pf-stage{background:#fff;border:1px solid #e2e8f0;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,0.15);overflow:hidden}
-.pf-stage-hdr{display:flex;align-items:center;padding:13px 14px;cursor:pointer;gap:10px;user-select:none}
-.pf-stage-icon{font-size:20px;flex-shrink:0}
-.pf-stage-info{flex:1;min-width:0}
-.pf-stage-title{font-family:'Bebas Neue',sans-serif;font-size:16px;color:#0f172a;letter-spacing:1px}
-.pf-stage-summary{font-size:11px;color:#64748b;margin-top:1px}
-.pf-stage-status{font-size:18px;flex-shrink:0;transition:transform 0.2s}
-.pf-stage-status.open{transform:rotate(180deg)}
-.pf-stage-body{display:none;border-top:1px solid #e2e8f0}
-.pf-stage-body.open{display:block}
-.pf-stage.done .pf-stage-hdr{background:#f0fdf4}
-.pf-stage.done .pf-stage-title{color:#166534}
+/* ── GAME DETAILS ── */
+.game-details{background:#fff;border:1px solid #e2e8f0;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,0.15);overflow:hidden}
+.game-hdr{background:linear-gradient(135deg,var(--navy2),var(--navy3));padding:10px 14px;border-bottom:1px solid var(--card-border)}
+.game-hdr-title{font-family:'Bebas Neue',sans-serif;font-size:15px;color:var(--gold);letter-spacing:1px}
+.game-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:12px 14px}
+.game-field label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:#475569;display:block;margin-bottom:3px}
+.game-field input{width:100%;border:1.5px solid #cbd5e1;border-radius:8px;padding:7px 10px;font-family:'DM Sans',sans-serif;font-size:13px;color:#0f172a;background:#f8fafc;outline:none}
+.game-field input:focus{border-color:var(--red)}
+.game-field input::placeholder{color:#94a3b8}
+.game-field.full{grid-column:1/-1}
 
-/* ── PROMPT CARD ── */
-.prompt-card{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:24px 16px;text-align:center;box-shadow:0 2px 12px rgba(0,0,0,0.15);margin-bottom:10px}
-.prompt-card-icon{font-size:36px;margin-bottom:10px}
-.prompt-card-title{font-family:'Bebas Neue',sans-serif;font-size:20px;color:#0f172a;letter-spacing:1px;margin-bottom:4px}
-.prompt-card-sub{font-size:12px;color:#64748b;line-height:1.6}
+/* ── NOTES ── */
+.notes-input{width:100%;border:1.5px solid var(--card-border);border-radius:10px;padding:10px 12px;font-family:'DM Sans',sans-serif;font-size:13px;color:var(--txt);background:rgba(255,255,255,0.05);outline:none;resize:none;margin-bottom:10px;min-height:60px}
+.notes-input:focus{border-color:var(--red)}
+.save-btn{width:100%;padding:14px;background:linear-gradient(135deg,#166534,var(--green));color:#fff;border:none;border-radius:14px;font-family:'DM Sans',sans-serif;font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;box-shadow:0 4px 15px rgba(34,197,94,0.25)}
+.save-btn:active{transform:scale(0.98)}
+
+/* ── STATS PANEL ── */
+.stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.stat-box{background:var(--alt);border:1px solid var(--border-c);border-radius:10px;padding:10px;text-align:center}
+.stat-box .sv{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--txt);line-height:1}
+.stat-box .sk{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-2)}
+
+/* ── FITNESS PANEL ── */
+.fitness-entry{background:rgba(255,255,255,0.05);border:1px solid var(--card-border);border-radius:10px;padding:10px;margin-bottom:8px;position:relative}
+.fitness-date{font-size:11px;font-weight:700;color:var(--gold);margin-bottom:6px}
+.fitness-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:4px}
+.fm{text-align:center;background:rgba(255,255,255,0.07);border-radius:6px;padding:5px 3px}
+.fm .fv{font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--txt);line-height:1}
+.fm .fk{font-size:8px;font-weight:700;color:var(--txt3);text-transform:uppercase;letter-spacing:0.5px}
+.fm .fa{font-size:10px}
+.fa.up{color:var(--green)}.fa.down{color:var(--danger)}.fa.same{color:var(--txt3)}
+
+/* ── HISTORY ── */
+.hist-filter{display:flex;gap:6px;overflow-x:auto;padding-bottom:8px;scrollbar-width:none;margin-bottom:4px}
+.hist-filter::-webkit-scrollbar{display:none}
+.hf-btn{padding:6px 12px;border:1.5px solid var(--card-border);background:rgba(255,255,255,0.05);border-radius:20px;font-family:'DM Sans',sans-serif;font-size:11px;font-weight:700;color:var(--mgrey);cursor:pointer}
+.hf-btn.active{background:var(--red-dim);border-color:var(--red);color:var(--red)}
+.hc{background:#fff;border:1px solid #e2e8f0;border-radius:14px;margin-bottom:10px;box-shadow:0 2px 12px rgba(0,0,0,0.15);overflow:hidden}
+.hc-hdr{background:var(--navy);padding:10px 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.hc-date{font-family:'Bebas Neue',sans-serif;font-size:14px;color:var(--gold);letter-spacing:1px}
+.hc-type{font-size:10px;font-weight:700;padding:2px 7px;border-radius:20px;background:var(--red);color:#fff;text-transform:uppercase;letter-spacing:1px}
+.hc-opp{font-size:11px;color:rgba(255,255,255,0.7);flex:1;text-align:right;font-style:italic}
+.hc-result{font-family:'Bebas Neue',sans-serif;font-size:14px;letter-spacing:1px}
+.hc-result.win{color:#4ADE80}.hc-result.draw{color:var(--gold)}.hc-result.loss{color:#F87171}
+.hc-stats{display:flex;padding:8px 14px;gap:6px;border-bottom:1px solid var(--border)}
+.hs{flex:1;text-align:center;padding:4px;background:#f8fafc;border-radius:7px;border:1px solid #e2e8f0}
+.hs .hn{font-family:'Bebas Neue',sans-serif;font-size:17px;line-height:1}
+.hs .hl{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.8px;color:var(--mgrey)}
+.hs.hp .hn{color:var(--green)}.hs.hi .hn{color:#F87171}.hs.hlt .hn{color:var(--gold)}.hs.ha .hn{color:var(--mgrey)}
+.hc-tags{display:flex;flex-wrap:wrap;gap:4px;padding:8px 14px;border-bottom:1px solid var(--border)}
+.htag{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;background:#f1f5f9;color:#475569;border:1px solid #e2e8f0}
+.hc-body{padding:10px 14px;font-size:12px;color:var(--dgrey);line-height:1.8}
+.hc-body strong{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--navy)}
+.hc-acts{display:flex;gap:8px;padding:10px 14px;border-top:1px solid var(--border)}
+.hc-btn{flex:1;padding:8px;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;cursor:pointer}
+.hc-btn.edit{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c}
+.hc-btn.del{background:#FEE2E2;color:#DC2626}
+.h-empty{text-align:center;padding:40px 20px;color:var(--mgrey);font-size:13px;line-height:1.8}
+.h-empty .big{font-size:36px;margin-bottom:8px}
 
 </style>
 </head>
@@ -240,17 +275,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
   </div>
 </div>
 
-<!-- EDIT HISTORY OVERLAY -->
-<div class="overlay" id="editOverlay" onclick="closeEditModal()" style="z-index:600">
-  <div class="modal" onclick="event.stopPropagation()" style="max-height:85vh">
-    <div class="modal-hdr">
-      <div class="modal-title" id="editModalTitle">Edit Session</div>
-      <button class="modal-close" onclick="closeEditModal()">✕</button>
-    </div>
-    <div id="editModalBody"></div>
-  </div>
-</div>
-
 <!-- HEADER -->
 <div class="hdr" id="appHdr" style="display:none">
   <div class="hdr-top">
@@ -266,11 +290,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
   </div>
   <div class="sbar">
     <div class="sf"><label>Date</label><input type="date" id="sDate"></div>
-    <div class="sf"><label>Session Type</label>
+    <div class="sf"><label>Type</label>
       <select id="sType" onchange="onTypeChange()">
-        <option value="" disabled selected>Select type…</option>
-        <option>Practice</option><option>Game</option>
-        <option>Fitness Assessment</option><option>Tournament</option>
+        <option value="">Select…</option>
+        <option>Practice</option>
+        <option>Game</option>
+        <option>Fitness Assessment</option>
+        <option>Tournament</option>
       </select>
     </div>
     <div class="sf" id="oppWrap" style="display:none"><label>Opponent</label><input type="text" id="sOpp" placeholder="e.g. Shimba FC" oninput="saveHdr()"></div>
@@ -286,15 +312,37 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
   <div class="sp abs"><div class="sn" id="cA">0</div><div class="sl">Absent</div></div>
 </div>
 
-<!-- ═══ SECTIONS ═══ -->
-<div class="sec" id="sec-squad">
-  <div class="prompt-card" id="squadPrompt" style="display:none">
-    <div class="prompt-card-icon">📋</div>
-    <div class="prompt-card-title">Squad Management</div>
-    <div class="prompt-card-sub">Add and manage player profiles, track skills and fitness</div>
+<!-- ═══ ATTENDANCE SECTION ═══ -->
+<div class="sec" id="sec-attend">
+  <div class="card" id="attendCard" style="margin-bottom:10px"></div>
+</div>
+
+<!-- ═══ GAME DETAILS SECTION ═══ -->
+<div class="sec" id="sec-gamedetails">
+  <div class="game-details" id="gameDetails" style="display:block">
+    <div class="game-hdr"><div class="game-hdr-title">Match Details</div></div>
+    <div class="game-grid">
+      <div class="game-field"><label>Competition</label><input type="text" id="gComp"></div>
+      <div class="game-field"><label>Venue</label><input type="text" id="gVenue"></div>
+      <div class="game-field"><label>Kick-off</label><input type="time" id="gKickoff"></div>
+      <div class="game-field"><label>Goals For</label><input type="number" id="gGF" min="0"></div>
+      <div class="game-field"><label>Goals Against</label><input type="number" id="gGA" min="0"></div>
+      <div class="game-field"><label>Result</label>
+        <select id="gResult">
+          <option value="">Select…</option>
+          <option>Win</option>
+          <option>Draw</option>
+          <option>Loss</option>
+        </select>
+      </div>
+    </div>
   </div>
+</div>
+
+<!-- ═══ SQUAD SECTION ═══ -->
+<div class="sec" id="sec-squad">
   <div id="squadList"></div>
-  <button class="add-player" id="addPlayerBtn" onclick="openAddPlayerModal()">➕ Add Player</button>
+  <button class="add-player" id="addPlayerBtn" onclick="openAddPlayerModal()" style="width:calc(100% - 28px);margin:4px 14px 12px;padding:14px;background:rgba(255,255,255,0.04);border:2px dashed var(--card-border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:700;color:var(--txt3);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px">➕ Add Player</button>
 </div>
 
 <!-- ═══ HISTORY ═══ -->
@@ -302,10 +350,38 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
   <div id="historyList"></div>
 </div>
 
+<!-- ═══ NOTES SECTION ═══ -->
+<div class="sec" id="sec-notes" style="display:none">
+  <div class="card">
+    <div style="padding:14px">
+      <label class="fl" style="margin-bottom:10px">Session Notes</label>
+      <textarea class="notes-input" id="sessionNotes" placeholder="Add session notes, observations, tactical feedback…"></textarea>
+      <button class="save-btn" onclick="saveSession()">💾 Save Session</button>
+    </div>
+  </div>
+</div>
+
 <!-- BOTTOM NAV -->
 <div class="bnav">
-  <div class="ni active" onclick="switchSection('sec-squad')">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ni-icon" style="color:var(--primary)">
+  <div class="ni active" onclick="switchSection('sec-attend')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--primary)">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+      <circle cx="9" cy="7" r="4"></circle>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+    </svg>
+    <div class="ni-lbl">Attendance</div>
+  </div>
+  <div class="ni" onclick="switchSection('sec-gamedetails')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+      <line x1="9" y1="9" x2="15" y2="15"></line>
+      <line x1="15" y1="9" x2="9" y2="15"></line>
+    </svg>
+    <div class="ni-lbl">Match</div>
+  </div>
+  <div class="ni" onclick="switchSection('sec-squad')">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
       <circle cx="9" cy="7" r="4"></circle>
       <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
@@ -314,7 +390,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--txt);mi
     <div class="ni-lbl">Squad</div>
   </div>
   <div class="ni" onclick="switchSection('sec-history')">
-    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="ni-icon">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10"></circle>
       <polyline points="12 6 12 12 16 14"></polyline>
     </svg>
@@ -345,13 +421,41 @@ const SKILL_LABELS = {
   firstTouch: 'First Touch'
 };
 
+// Legacy data migration
+const LEGACY_BACKUP = {
+  "version": 2,
+  "players": [
+    {"num": 1, "name": "Ethan Pietersen", "pos": "FWD"},
+    {"num": 2, "name": "Hlumelo Mjacu", "pos": "DEF"},
+    {"num": 3, "name": "Jared Samboer", "pos": "FWD"},
+    {"num": 4, "name": "Khayone Kwetana", "pos": "MID"},
+    {"num": 5, "name": "Olothando", "pos": "MID"},
+    {"num": 6, "name": "Robert Curtis", "pos": "DEF"},
+    {"num": 7, "name": "Tyler Dunn", "pos": "MID"},
+    {"num": 8, "name": "Seth Tilley", "pos": "DEF"},
+    {"num": 9, "name": "Vhuthu Kwinda", "pos": "FWD"},
+    {"num": 10, "name": "Wade Potts", "pos": "MID"},
+    {"num": 11, "name": "Lina Lingani", "pos": "MID"},
+    {"num": 12, "name": "Elokhanyo Faku", "pos": "FWD"},
+    {"num": 13, "name": "Onele Saptoe", "pos": "MID"},
+    {"num": 14, "name": "Limise Nkamane", "pos": "MID"},
+    {"num": 15, "name": "Armand Victor", "pos": "FWD"},
+    {"num": 16, "name": "Nqobile Biyela", "pos": "FWD"},
+    {"num": 17, "name": "Yosimela Jaftha", "pos": "MID"},
+    {"num": 18, "name": "Imnophele Hans", "pos": "DEF"},
+    {"num": 19, "name": "Luniko Matholengwe", "pos": "GK"},
+    {"num": 20, "name": "Simtha", "pos": "DEF"},
+    {"num": 21, "name": "Gift Phiri", "pos": "FWD"}
+  ]
+};
+
 // ════════════════════════════════════════════════════════════════
 // INITIALIZATION
 // ════════════════════════════════════════════════════════════════
 window.addEventListener('DOMContentLoaded', function() {
   loadAppData();
+  migratePlayersIfNeeded();
   renderHomePageStats();
-  initializeEventListeners();
 });
 
 function loadAppData() {
@@ -370,6 +474,26 @@ function loadAppData() {
   }
 }
 
+function migratePlayersIfNeeded() {
+  if (appState.players.length === 0) {
+    appState.players = LEGACY_BACKUP.players.map(p => ({
+      ...p,
+      firstName: p.name.split(' ')[0],
+      lastName: p.name.split(' ').slice(1).join(' '),
+      number: p.num,
+      position: p.pos,
+      skills: {
+        dribbling: 5,
+        passing: 5,
+        shooting: 5,
+        firstTouch: 5
+      }
+    }));
+    saveAppData();
+    showToast(`Migrated ${appState.players.length} players from legacy data`);
+  }
+}
+
 function saveAppData() {
   const dataToSave = {
     players: appState.players,
@@ -377,10 +501,6 @@ function saveAppData() {
     lastLoaded: new Date().toISOString()
   };
   localStorage.setItem('gscTrackerData', JSON.stringify(dataToSave));
-}
-
-function initializeEventListeners() {
-  // Any additional event listeners can be added here
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -392,6 +512,12 @@ function homeStartSession(sessionType) {
     date: new Date().toISOString().split('T')[0],
     opponent: '',
     notes: '',
+    competition: '',
+    venue: '',
+    kickoff: '',
+    goalsFor: 0,
+    goalsAgainst: 0,
+    result: '',
     attendance: {},
     players: appState.players.map(p => ({...p}))
   };
@@ -404,34 +530,29 @@ function homeStartSession(sessionType) {
   document.getElementById('badge').textContent = sessionType;
   
   onTypeChange();
-  switchSection('sec-squad');
+  switchSection('sec-attend');
+  renderAttendance();
 }
 
 function showHome() {
   if (appState.currentSession) {
-    if (confirm('Are you sure you want to leave this session? Make sure to save your data.')) {
+    if (confirm('Discard this session? Make sure to save your data.')) {
       appState.currentSession = null;
       document.getElementById('homePage').style.display = 'flex';
       document.getElementById('appHdr').style.display = 'none';
       document.getElementById('appStatsBar').style.display = 'none';
       renderHomePageStats();
     }
-  } else {
-    document.getElementById('homePage').style.display = 'flex';
-    document.getElementById('appHdr').style.display = 'none';
-    document.getElementById('appStatsBar').style.display = 'none';
-    renderHomePageStats();
   }
 }
 
 function renderHomePageStats() {
-  // Calculate W/D/L from session history
   let wins = 0, draws = 0, losses = 0, goalsFor = 0, goalsAgainst = 0;
   
   appState.sessionHistory.forEach(session => {
-    if (session.result === 'win') wins++;
-    else if (session.result === 'draw') draws++;
-    else if (session.result === 'loss') losses++;
+    if (session.result === 'Win') wins++;
+    else if (session.result === 'Draw') draws++;
+    else if (session.result === 'Loss') losses++;
     
     goalsFor += session.goalsFor || 0;
     goalsAgainst += session.goalsAgainst || 0;
@@ -446,7 +567,7 @@ function renderHomePageStats() {
   if (appState.sessionHistory.length > 0) {
     const lastSession = appState.sessionHistory[appState.sessionHistory.length - 1];
     const lastDate = new Date(lastSession.date).toLocaleDateString();
-    document.getElementById('homeLastSess').textContent = `${lastSession.type} vs ${lastSession.opponent || 'Internal'} - ${lastDate}`;
+    document.getElementById('homeLastSess').textContent = `${lastSession.type} - ${lastDate}`;
   }
 }
 
@@ -457,10 +578,96 @@ function switchSection(sectionId) {
   document.querySelectorAll('.ni').forEach(ni => ni.classList.remove('active'));
   event.currentTarget.classList.add('active');
   
-  if (sectionId === 'sec-squad') {
+  if (sectionId === 'sec-attend') {
+    renderAttendance();
+  } else if (sectionId === 'sec-gamedetails') {
+    renderGameDetails();
+  } else if (sectionId === 'sec-squad') {
     renderSquad();
   } else if (sectionId === 'sec-history') {
     renderHistory();
+  }
+}
+
+// ════════════════════════════════════════════════════════════════
+// ATTENDANCE SECTION
+// ════════════════════════════════════════════════════════════════
+function renderAttendance() {
+  if (!appState.currentSession) return;
+  
+  const card = document.getElementById('attendCard');
+  card.innerHTML = '';
+  
+  const present = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'pres').length;
+  const late = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'late').length;
+  const injured = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'inj').length;
+  const absent = appState.players.filter(p => appState.currentSession.attendance[p.number] === 'abs').length;
+  
+  document.getElementById('cP').textContent = present;
+  document.getElementById('cL').textContent = late;
+  document.getElementById('cI').textContent = injured;
+  document.getElementById('cA').textContent = absent;
+  
+  let html = '';
+  appState.players.forEach(player => {
+    const status = appState.currentSession.attendance[player.number] || '';
+    html += `
+      <div class="att-row">
+        <div class="att-num">${player.number}</div>
+        <div class="att-info">
+          <div class="att-name">${player.name}</div>
+          <div class="att-pos">${player.position}</div>
+        </div>
+        <div class="att-btns">
+          <button class="att-btn ${status === 'pres' ? 'pres' : ''}" onclick="updateAttendance(${player.number}, 'pres')">✓</button>
+          <button class="att-btn ${status === 'late' ? 'late' : ''}" onclick="updateAttendance(${player.number}, 'late')">⏱</button>
+          <button class="att-btn ${status === 'inj' ? 'inj' : ''}" onclick="updateAttendance(${player.number}, 'inj')">⚕</button>
+          <button class="att-btn ${status === 'abs' ? 'abs' : ''}" onclick="updateAttendance(${player.number}, 'abs')">✕</button>
+        </div>
+      </div>
+    `;
+  });
+  
+  card.innerHTML = html;
+}
+
+function updateAttendance(playerNum, status) {
+  if (!appState.currentSession) return;
+  if (appState.currentSession.attendance[playerNum] === status) {
+    delete appState.currentSession.attendance[playerNum];
+  } else {
+    appState.currentSession.attendance[playerNum] = status;
+  }
+  renderAttendance();
+}
+
+// ════════════════════════════════════════════════════════════════
+// GAME DETAILS SECTION
+// ════════════════════════════════════════════════════════════════
+function renderGameDetails() {
+  if (!appState.currentSession) return;
+  
+  const isGame = appState.currentSession.type === 'Game' || appState.currentSession.type === 'Tournament';
+  document.getElementById('gameDetails').style.display = isGame ? 'block' : 'none';
+  
+  if (isGame) {
+    document.getElementById('gComp').value = appState.currentSession.competition || '';
+    document.getElementById('gVenue').value = appState.currentSession.venue || '';
+    document.getElementById('gKickoff').value = appState.currentSession.kickoff || '';
+    document.getElementById('gGF').value = appState.currentSession.goalsFor || '';
+    document.getElementById('gGA').value = appState.currentSession.goalsAgainst || '';
+    document.getElementById('gResult').value = appState.currentSession.result || '';
+  }
+}
+
+function onTypeChange() {
+  const type = document.getElementById('sType').value;
+  const oppWrap = document.getElementById('oppWrap');
+  
+  if (type === 'Game' || type === 'Tournament') {
+    oppWrap.style.display = 'flex';
+  } else {
+    oppWrap.style.display = 'none';
   }
 }
 
@@ -485,12 +692,12 @@ function createPlayerCard(player, index) {
   
   card.innerHTML = `
     <div class="pc-hdr" onclick="togglePlayerBody(${index})">
-      <div class="pc-num">${player.number || '-'}</div>
+      <div class="pc-num">${player.number}</div>
       <div class="pc-info">
         <div class="pc-name">${player.name}</div>
-        <div class="pc-sub">${player.position || 'Position TBD'}</div>
+        <div class="pc-sub">${player.position || 'MID'}</div>
         ${skillsAvg > 0 ? `<div class="pc-stats-row">
-          <span class="pstat green">Avg: ${skillsAvg.toFixed(1)}/10</span>
+          <span class="pstat green">Skills: ${skillsAvg.toFixed(1)}/10</span>
         </div>` : ''}
       </div>
       <div class="pc-arr" id="arr-${index}">⌄</div>
@@ -522,7 +729,6 @@ function createPlayerCard(player, index) {
             <input type="text" class="fi" value="${player.lastName || ''}" onchange="updatePlayer(${index}, 'lastName', this.value)">
           </div>
         </div>
-        <button class="rm-btn" onclick="removePlayer(${index})">🗑️ Remove Player</button>
       </div>
       
       <div class="pc-panel" id="tab-skills-${index}">
@@ -564,12 +770,7 @@ function switchPlayerTab(index, tabName) {
 }
 
 function updatePlayer(index, field, value) {
-  if (field === 'name') {
-    const [first, last] = value.split(' ');
-    appState.players[index].firstName = first;
-    appState.players[index].lastName = last;
-    appState.players[index].name = value;
-  } else if (field === 'firstName') {
+  if (field === 'firstName') {
     appState.players[index].firstName = value;
     appState.players[index].name = `${value} ${appState.players[index].lastName || ''}`.trim();
   } else if (field === 'lastName') {
@@ -589,10 +790,7 @@ function updatePlayerSkill(index, metric, value) {
     appState.players[index].skills = {};
   }
   appState.players[index].skills[metric] = numValue;
-  
-  updateSkillMeter(document.querySelector(`[id="tab-skills-${index}"] .skill-input`), index, metric);
   saveAppData();
-  renderSquad();
 }
 
 function updateSkillMeter(input, index, metric) {
@@ -610,21 +808,13 @@ function calculatePlayerSkillsAverage(player) {
   return values.reduce((a, b) => a + b, 0) / values.length;
 }
 
-function removePlayer(index) {
-  if (confirm(`Remove ${appState.players[index].name}?`)) {
-    appState.players.splice(index, 1);
-    saveAppData();
-    renderSquad();
-    showToast('Player removed');
-  }
-}
-
 function openAddPlayerModal() {
+  const newNum = Math.max(...appState.players.map(p => p.number || 0)) + 1;
   const newPlayer = {
     name: 'New Player',
     firstName: 'New',
     lastName: 'Player',
-    number: appState.players.length + 1,
+    number: newNum,
     position: 'MID',
     skills: {
       dribbling: 5,
@@ -648,30 +838,25 @@ function renderHistory() {
   historyList.innerHTML = '';
   
   if (appState.sessionHistory.length === 0) {
-    historyList.innerHTML = '<div class="prompt-card"><div class="prompt-card-icon">📊</div><div class="prompt-card-title">No Sessions Yet</div><div class="prompt-card-sub">Complete a session to view history</div></div>';
+    historyList.innerHTML = '<div style="text-align:center;padding:40px 20px;color:var(--mgrey)"><div style="font-size:36px;margin-bottom:8px">📊</div><div style="font-size:13px">No sessions yet</div></div>';
     return;
   }
   
-  appState.sessionHistory.slice().reverse().forEach((session, index) => {
+  appState.sessionHistory.slice().reverse().forEach((session) => {
     const sessionCard = document.createElement('div');
-    sessionCard.className = 'card';
+    sessionCard.className = 'hc';
     sessionCard.innerHTML = `
-      <div style="padding:14px;background:var(--alt);border-bottom:1px solid var(--border-c)">
-        <div style="display:flex;align-items:center;gap:8px;justify-content:space-between">
-          <div>
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:16px;color:var(--text);letter-spacing:1px">${session.type}</div>
-            <div style="font-size:11px;color:var(--text-2);margin-top:2px">${new Date(session.date).toLocaleDateString()}</div>
-          </div>
-          <div style="text-align:right">
-            <div style="font-family:'Bebas Neue',sans-serif;font-size:14px;color:${session.result === 'win' ? 'var(--success)' : session.result === 'draw' ? 'var(--accent)' : 'var(--danger-c)'}">${session.result?.toUpperCase() || 'N/A'}</div>
-            <div style="font-size:10px;color:var(--text-2);margin-top:2px">${session.opponent || 'Internal'}</div>
-          </div>
-        </div>
+      <div class="hc-hdr">
+        <div class="hc-date">${new Date(session.date).toLocaleDateString()}</div>
+        <div class="hc-type">${session.type}</div>
+        <div class="hc-opp">${session.opponent || 'Internal'}</div>
       </div>
-      <div style="padding:12px 14px;font-size:13px;color:var(--text-2);line-height:1.6">
-        ${session.notes ? `<strong>Notes:</strong> ${session.notes}<br>` : ''}
-        <strong>Date:</strong> ${new Date(session.date).toLocaleDateString()}
+      <div class="hc-stats">
+        <div class="hs"><div class="hn">${Object.keys(session.attendance || {}).length}</div><div class="hl">Attended</div></div>
+        ${session.goalsFor !== undefined ? `<div class="hs"><div class="hn">${session.goalsFor}</div><div class="hl">Goals For</div></div>` : ''}
+        ${session.goalsAgainst !== undefined ? `<div class="hs"><div class="hn">${session.goalsAgainst}</div><div class="hl">Conceded</div></div>` : ''}
       </div>
+      ${session.notes ? `<div class="hc-body"><strong>Notes:</strong> ${session.notes}</div>` : ''}
     `;
     historyList.appendChild(sessionCard);
   });
@@ -680,23 +865,49 @@ function renderHistory() {
 // ════════════════════════════════════════════════════════════════
 // SESSION MANAGEMENT
 // ════════════════════════════════════════════════════════════════
-function onTypeChange() {
-  const type = document.getElementById('sType').value;
-  const oppWrap = document.getElementById('oppWrap');
-  
-  if (type === 'Game' || type === 'Tournament') {
-    oppWrap.style.display = 'flex';
-  } else {
-    oppWrap.style.display = 'none';
-  }
-}
-
 function saveHdr() {
   if (appState.currentSession) {
     appState.currentSession.date = document.getElementById('sDate').value;
     appState.currentSession.type = document.getElementById('sType').value;
     appState.currentSession.opponent = document.getElementById('sOpp').value;
     appState.currentSession.notes = document.getElementById('sNotes').value;
+    appState.currentSession.competition = document.getElementById('gComp')?.value || '';
+    appState.currentSession.venue = document.getElementById('gVenue')?.value || '';
+    appState.currentSession.kickoff = document.getElementById('gKickoff')?.value || '';
+    appState.currentSession.goalsFor = parseInt(document.getElementById('gGF')?.value || 0);
+    appState.currentSession.goalsAgainst = parseInt(document.getElementById('gGA')?.value || 0);
+    appState.currentSession.result = document.getElementById('gResult')?.value || '';
+  }
+}
+
+function saveSession() {
+  saveHdr();
+  
+  if (appState.currentSession) {
+    const sessionRecord = {
+      date: appState.currentSession.date,
+      type: appState.currentSession.type,
+      opponent: appState.currentSession.opponent || 'Internal',
+      notes: document.getElementById('sessionNotes')?.value || '',
+      competition: appState.currentSession.competition,
+      venue: appState.currentSession.venue,
+      kickoff: appState.currentSession.kickoff,
+      goalsFor: appState.currentSession.goalsFor,
+      goalsAgainst: appState.currentSession.goalsAgainst,
+      result: appState.currentSession.result,
+      attendance: appState.currentSession.attendance
+    };
+    
+    appState.sessionHistory.push(sessionRecord);
+    saveAppData();
+    renderHomePageStats();
+    appState.currentSession = null;
+    
+    document.getElementById('homePage').style.display = 'flex';
+    document.getElementById('appHdr').style.display = 'none';
+    document.getElementById('appStatsBar').style.display = 'none';
+    
+    showToast('✓ Session saved');
   }
 }
 
@@ -710,10 +921,6 @@ function showToast(message) {
   setTimeout(() => {
     toast.classList.remove('show');
   }, 3000);
-}
-
-function closeEditModal() {
-  document.getElementById('editOverlay').classList.remove('open');
 }
 </script>
 
