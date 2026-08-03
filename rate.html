@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>GSC U13 — Rate the squad</title>
+<style>
+  :root{
+    --pitch:#0F3D2E;
+    --pitch-deep:#0A2A1F;
+    --chalk:#F5F3EA;
+    --lime:#C6F135;
+    --amber:#E8A33D;
+    --line: rgba(245,243,234,0.14);
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--pitch-deep);
+    color:var(--chalk);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    padding-bottom:120px;
+  }
+  header{
+    padding:20px 16px 14px;
+    background:var(--pitch);
+    border-bottom:1px solid var(--line);
+    position:sticky; top:0; z-index:5;
+  }
+  .eyebrow{
+    font-family:"Courier New", monospace;
+    font-size:11px;
+    letter-spacing:2px;
+    text-transform:uppercase;
+    color:var(--lime);
+    margin:0 0 4px;
+  }
+  h1{ font-size:20px; font-weight:800; margin:0 0 2px; }
+  .sub{ font-size:12.5px; color:rgba(245,243,234,0.65); margin:0 0 14px; }
+  .scoreboard{ display:flex; align-items:baseline; gap:8px; font-family:"Courier New", monospace; }
+  .scoreboard .count{ font-size:26px; font-weight:700; color:var(--lime); }
+  .scoreboard .of{ font-size:13px; color:rgba(245,243,234,0.6); }
+  .track{ height:4px; background:rgba(245,243,234,0.12); border-radius:2px; margin-top:8px; overflow:hidden; }
+  .track-fill{ height:100%; background:var(--lime); width:0%; transition:width .25s ease; }
+  main{ padding:14px 12px; max-width:520px; margin:0 auto; }
+  .card{ background:var(--pitch); border:1px solid var(--line); border-radius:10px; padding:14px 14px 10px; margin-bottom:10px; }
+  .card.done{ border-color: rgba(198,241,53,0.35); }
+  .pname{ display:flex; align-items:center; justify-content:space-between; margin-bottom:10px; }
+  .pname .name{ font-size:15px; font-weight:700; }
+  .badge{
+    font-family:"Courier New", monospace; font-size:10.5px; letter-spacing:1px;
+    padding:2px 7px; border-radius:4px; background:rgba(245,243,234,0.08); color:rgba(245,243,234,0.5);
+  }
+  .badge.done{ background:rgba(198,241,53,0.16); color:var(--lime); }
+  .row{ display:flex; align-items:center; gap:10px; margin-bottom:6px; }
+  .row .lbl{ width:64px; flex-shrink:0; font-size:12px; color:rgba(245,243,234,0.6); }
+  .chips{ display:flex; gap:6px; flex:1; }
+  .chip{
+    flex:1; height:32px; border-radius:16px; border:1px solid var(--line);
+    background:transparent; color:var(--chalk); font-family:"Courier New", monospace;
+    font-size:13px; font-weight:700; display:flex; align-items:center; justify-content:center;
+  }
+  .chip.active{ background:var(--lime); border-color:var(--lime); color:var(--pitch-deep); }
+  .notes{
+    width:100%; margin-top:8px; background:rgba(245,243,234,0.06); border:1px solid var(--line);
+    border-radius:6px; color:var(--chalk); font-size:12.5px; padding:8px 10px; resize:none; font-family:inherit;
+  }
+  .notes::placeholder{ color:rgba(245,243,234,0.35); }
+  footer{
+    position:fixed; bottom:0; left:0; right:0; background:var(--pitch); border-top:1px solid var(--line);
+    padding:10px 12px calc(10px + env(safe-area-inset-bottom)); display:flex; gap:8px;
+  }
+  .btn{
+    flex:1; height:46px; border-radius:8px; border:none; font-size:14px; font-weight:700;
+    display:flex; align-items:center; justify-content:center; gap:6px;
+  }
+  .btn.copy{ background:rgba(245,243,234,0.1); color:var(--chalk); border:1px solid var(--line); }
+  .btn.send{ background:var(--lime); color:var(--pitch-deep); }
+  .btn.copy.flash{ background:var(--amber); color:var(--pitch-deep); }
+  .error{ padding:40px 20px; text-align:center; color:rgba(245,243,234,0.7); font-size:14px; }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow" id="eyebrow">GSC U13 — Assistant Coach</p>
+  <h1 id="title">Rate the squad</h1>
+  <p class="sub" id="sub">Tap a number for each category. Leave any that don't apply.</p>
+  <div class="scoreboard"><span class="count" id="doneCount">0</span><span class="of">/ 0 rated</span></div>
+  <div class="track"><div class="track-fill" id="trackFill"></div></div>
+</header>
+
+<main id="cardsRoot"></main>
+
+<footer id="footerBar" style="display:none">
+  <button class="btn copy" id="copyBtn">Copy summary</button>
+  <button class="btn send" id="sendBtn">Send to coach</button>
+</footer>
+
+<script>
+const CATS = [
+  { key:"technical", label:"Technical" },
+  { key:"tactical", label:"Tactical" },
+  { key:"physical", label:"Physical" },
+  { key:"mental", label:"Mental" }
+];
+const ABBR = { technical:"T", tactical:"TA", physical:"P", mental:"M" };
+
+function fmtDate(d){
+  if(!d) return "—";
+  const dt=new Date(d);
+  return dt.toLocaleDateString('en-ZA',{weekday:'short',day:'numeric',month:'short',year:'numeric'});
+}
+
+function b64ToJson(str){
+  return JSON.parse(decodeURIComponent(escape(atob(str))));
+}
+function jsonToB64(obj){
+  return btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+}
+
+let session = null;
+const draft = {};
+
+function boot(){
+  const params = new URLSearchParams(location.search);
+  const raw = params.get('d');
+  if(!raw){ showError("No session data in this link — ask for a fresh one from the app."); return; }
+  try{
+    session = b64ToJson(raw);
+  }catch(e){
+    showError("This link looks corrupted — ask for a fresh one from the app.");
+    return;
+  }
+  if(!session.players || !session.players.length){
+    showError("No players recorded as present/late for this session.");
+    return;
+  }
+  session.players.forEach(p => { draft[p.id] = {}; });
+  document.getElementById('title').textContent = 'Rate the squad';
+  document.getElementById('sub').textContent =
+    `${session.type||'Session'}: ${fmtDate(session.date)}${session.opp?' vs '+session.opp:''}`;
+  document.getElementById('footerBar').style.display = 'flex';
+  render();
+}
+
+function showError(msg){
+  document.getElementById('cardsRoot').innerHTML = `<div class="error">${msg}</div>`;
+}
+
+function isDone(pid){
+  return CATS.every(c => draft[pid][c.key] !== undefined);
+}
+
+function render(){
+  const root = document.getElementById('cardsRoot');
+  root.innerHTML = "";
+  session.players.forEach(pl => {
+    const r = draft[pl.id];
+    const card = document.createElement('div');
+    card.className = 'card' + (isDone(pl.id) ? ' done' : '');
+
+    const head = document.createElement('div');
+    head.className = 'pname';
+    head.innerHTML = `<span class="name">${pl.name}</span><span class="badge${isDone(pl.id)?' done':''}">${isDone(pl.id)?'RATED':'PENDING'}</span>`;
+    card.appendChild(head);
+
+    CATS.forEach(cat => {
+      const row = document.createElement('div');
+      row.className = 'row';
+      const lbl = document.createElement('span');
+      lbl.className = 'lbl';
+      lbl.textContent = cat.label;
+      row.appendChild(lbl);
+      const chips = document.createElement('div');
+      chips.className = 'chips';
+      for(let n=1;n<=5;n++){
+        const chip = document.createElement('button');
+        chip.type = 'button';
+        chip.className = 'chip' + (r[cat.key]===n ? ' active' : '');
+        chip.textContent = n;
+        chip.addEventListener('click', () => {
+          if(r[cat.key]===n) delete r[cat.key]; else r[cat.key]=n;
+          render();
+        });
+        chips.appendChild(chip);
+      }
+      row.appendChild(chips);
+      card.appendChild(row);
+    });
+
+    const notes = document.createElement('textarea');
+    notes.className = 'notes';
+    notes.rows = 2;
+    notes.placeholder = 'Notes (optional)';
+    notes.value = r.notes || '';
+    notes.addEventListener('input', () => { r.notes = notes.value; });
+    card.appendChild(notes);
+
+    root.appendChild(card);
+  });
+
+  const doneCount = session.players.filter(p => isDone(p.id)).length;
+  document.getElementById('doneCount').textContent = doneCount;
+  document.querySelector('.of').textContent = `/ ${session.players.length} rated`;
+  document.getElementById('trackFill').style.width = (doneCount / session.players.length * 100) + '%';
+}
+
+function buildSummaryText(){
+  let lines = [];
+  lines.push(`GSC U13 — Ratings`);
+  lines.push(`${session.type||'Session'}: ${fmtDate(session.date)}${session.opp?' vs '+session.opp:''}`);
+  lines.push('─'.repeat(28));
+  session.players.forEach(pl => {
+    const r = draft[pl.id];
+    const parts = CATS.map(c => `${ABBR[c.key]}${r[c.key]!==undefined?r[c.key]:'__'}`);
+    lines.push(`${pl.name}: ${parts.join(' / ')}${r.notes?' — '+r.notes:''}`);
+  });
+  return lines.join('\n');
+}
+
+function buildImportUrl(){
+  const payload = { sessionId: session.sessionId, ratings: draft };
+  const encoded = jsonToB64(payload);
+  const baseDir = location.pathname.replace(/[^/]*$/, '');
+  return `${location.origin}${baseDir}index.html?import=${encoded}`;
+}
+
+document.getElementById('copyBtn').addEventListener('click', async () => {
+  const text = buildSummaryText();
+  const btn = document.getElementById('copyBtn');
+  try{ await navigator.clipboard.writeText(text); }catch(e){}
+  btn.textContent = 'Copied';
+  btn.classList.add('flash');
+  setTimeout(() => { btn.textContent = 'Copy summary'; btn.classList.remove('flash'); }, 1400);
+});
+
+document.getElementById('sendBtn').addEventListener('click', () => {
+  const importUrl = buildImportUrl();
+  let msg = `${buildSummaryText()}\n\nTap to load these straight into the app:\n${importUrl}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`, '_blank');
+});
+
+boot();
+</script>
+
+</body>
+</html>
